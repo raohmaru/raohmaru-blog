@@ -1,0 +1,8 @@
+footer {
+    margin-top: 3rem;
+    border-top: solid 10px var(--color-gray-90);
+
+    p {
+        margin: 0;
+    }
+}

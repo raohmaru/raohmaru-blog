@@ -1,0 +1,35 @@
+{
+	"name": "raohmaru-blog",
+	"version": "1.0.0",
+	"author": {
+		"name": "Raul Parralejo",
+		"email": "namoracon@gmail.com",
+		"url": "https://github.com/raohmaru"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/raohmaru/raohmaru-blog.git"
+	},
+	"devDependencies": {
+		"@11ty/eleventy": "^3.0.0",
+		"@11ty/eleventy-navigation": "^0.3.5",
+		"@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+		"luxon": "^3.5.0",
+		"prismjs": "^1.29.0"
+	},
+	"description": "Raohmaru's blog web site using the Eleventy site generator.",
+	"engines": {
+		"node": ">=18"
+	},
+	"homepage": "https://raohmaru.github.io/raohmaru-blog",
+	"license": "MIT",
+	"scripts": {
+		"build": "bunx @11ty/eleventy --pathprefix=/raohmaru-blog/",
+		"watch": "bunx @11ty/eleventy --pathprefix=/raohmaru-blog/ --watch --quiet",
+		"start": "bunx @11ty/eleventy --pathprefix=/raohmaru-blog/ --serve --quiet",
+		"debug": "DEBUG=Eleventy* bunx @11ty/eleventy",
+		"debugstart": "DEBUG=Eleventy* bunx @11ty/eleventy --serve --quiet",
+		"benchmark": "DEBUG=Eleventy:Benchmark* bunx @11ty/eleventy"
+	},
+	"type": "module"
+}
