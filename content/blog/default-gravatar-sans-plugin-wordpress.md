@@ -2,7 +2,8 @@
 title: Default Gravatar Sans, un plugin para WordPress
 description: Creación de un plugin para Wordpress.
 date: 2012-04-29
-tags: worpdress
+tags: ["worpdress", "PHP"]
+language: es
 ---
 
 Tras actualizar la bitácora a la plataforma [WordPress](http://es.wordpress.org/), el siguiente paso ha sido descubrir y jugar con la configuración hasta quedar satisfecho, o al menos casi satisfecho: no me acaba de convencer el sistema para mostrar los [avatares](http://es.wikipedia.org/wiki/Avatar_%28Internet%29) de los usuarios. Por imperativo del [CMS](http://es.wikipedia.org/wiki/Sistema_de_gesti%C3%B3n_de_contenidos) las imágenes son «filtradas» por el sitio [Gravatar.com](http://gravatar.com/) aun cuando éstas sean archivos locales sin ninguna afiliación a tal sitio.

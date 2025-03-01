@@ -1,6 +1,6 @@
-# Reinventing the wheel. A Blog About Frrrontend Development.
+# Reinventing the wheel
 
-Migration of the old Wordpress blog site to markdown documents.
+Migration of the old Wordpress blog site about frontend development to markdown documents.
 
 ## Development
 Built with [Eleventy](https://www.11ty.dev/).  
