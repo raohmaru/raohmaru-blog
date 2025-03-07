@@ -15,3 +15,15 @@
 .links-nextprev-next {
 	text-align: right;
 }
+
+p img {
+    display: block;
+    margin-inline: auto;
+}
+
+blockquote {
+    margin: 2rem 0;
+    padding-inline: 2rem 1rem;
+    font-style: italic;
+    border-left: solid 5px var(--color-gray-50);
+}

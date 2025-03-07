@@ -7,7 +7,7 @@
 /* Theme colors */
 :root {
 	--color-gray-20: #e0e0e0;
-	--color-gray-50: #C0C0C0;
+	--color-gray-50: #868686;
 	--color-gray-90: #222;
 	--background-color: #f4ebe5;
 	--text-color: var(--color-gray-90);
@@ -20,7 +20,7 @@
 @media (prefers-color-scheme: dark) {
 	:root {
 		--color-gray-20: #e0e0e0;
-		--color-gray-50: #C0C0C0;
+		--color-gray-50: #868686;
 		--color-gray-90: #dad8d8;
 		/* --text-color and --text-color-link are assigned to --color-gray-_ above */
 		--text-color-link-active: #1493fb;
