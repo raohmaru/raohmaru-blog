@@ -15,10 +15,6 @@
     }
 }
 
-.postlist-item > .post-tag {
-	align-self: center;
-}
-
 /* Tags list */
 .post-metadata {
 	display: inline-flex;

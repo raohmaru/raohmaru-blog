@@ -1,43 +1,29 @@
 /* Posts list */
 .postlist {
-	list-style: none;
 	padding: 0;
 	padding-left: 1.5rem;
+    list-style-type: decimal-leading-zero;
 }
 
 .postlist-item {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	counter-increment: start-from -1;
 	margin-bottom: 1em;
 }
 
-.postlist-item:before {
-	display: inline-block;
-	pointer-events: none;
-	content: "" counter(start-from, decimal-leading-zero) ". ";
-	line-height: 100%;
-	text-align: right;
-	margin-left: -1.5rem;
-}
-
 .postlist-date,
-.postlist-item:before {
+.postlist-item::marker {
 	font-size: 0.8125em; /* 13px /16 */
 	color: var(--color-gray-90);
 }
 
 .postlist-date {
+    padding-left: .25em;
 	word-spacing: -0.5px;
 }
 
 .postlist-link {
 	font-size: 1.1875em; /* 19px /16 */
 	font-weight: 700;
-	flex-basis: calc(100% - 1.5rem);
-	padding-left: .25em;
-	padding-right: .5em;
+    padding-left: .25em;
 	text-underline-position: from-font;
 	text-underline-offset: 0;
 	text-decoration-thickness: 1px;

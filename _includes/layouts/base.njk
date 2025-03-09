@@ -25,8 +25,6 @@
 		{%- css %}{% include "public/css/header.css" %}{% endcss %}
 		{%- css %}{% include "public/css/footer.css" %}{% endcss %}
 		{%- css %}{% include "public/css/navigation.css" %}{% endcss %}
-		{%- css %}{% include "public/css/postlist.css" %}{% endcss %}
-		{%- css %}{% include "public/css/tags.css" %}{% endcss %}
 		{#- Or you can add from node_modules #}
 		{# {%- css %}{% include "node_modules/prismjs/themes/prism-okaidia.css" %}{% endcss %} #}
 
@@ -39,32 +37,36 @@
 		<a href="#skip" class="visually-hidden">Skip to main content</a>
 
 		<header>
-			<a href="/" class="home-link">{{ metadata.title }}</a>
+            <div class="section">
+                <a href="/" class="home-link">{{ metadata.title }}</a>
 
-			{#- Read more about `eleventy-navigation` at https://www.11ty.dev/docs/plugins/navigation/ #}
-			<nav>
-				<h2 class="visually-hidden">Top level navigation menu</h2>
-				<ul class="nav">
-				{%- for entry in collections.all | eleventyNavigation %}
-					<li class="nav-item"><a href="{{ entry.url }}"{% if entry.url == page.url %} aria-current="page"{% endif %}>{{ entry.title }}</a></li>
-				{%- endfor %}
-				</ul>
-			</nav>
+                {#- Read more about `eleventy-navigation` at https://www.11ty.dev/docs/plugins/navigation/ #}
+                <nav>
+                    <h2 class="visually-hidden">Top level navigation menu</h2>
+                    <ul class="nav">
+                    {%- for entry in collections.all | eleventyNavigation %}
+                        <li class="nav-item"><a href="{{ entry.url }}"{% if entry.url == page.url %} aria-current="page"{% endif %}>{{ entry.title }}</a></li>
+                    {%- endfor %}
+                    </ul>
+                </nav>
+            </div>
 		</header>
 
 		<main id="skip">
-			<heading-anchors>
-				{{ content | safe }}
-			</heading-anchors>
+            <div class="section">
+                {{ content | safe }}
+            </div>
 		</main>
 
 		<footer>
-			<p>
-                Built with <a href="https://www.11ty.dev/">{{ eleventy.generator }}</a><br>
-                This page was built on {% currentBuildDate %}
-            </p>
+            <div class="section">
+                <p>
+                    Built with <a href="https://www.11ty.dev/">{{ eleventy.generator }}</a><br>
+                    This page was built on {% currentBuildDate %}
+                </p>
+            </div>
 		</footer>
 
-		<script type="module" src="{% getBundleFileUrl "js" %}"></script>
+        <script type="module" src="/js/main.js?v={% bust %}"></script>
 	</body>
 </html>

@@ -1,12 +1,15 @@
 /* Header */
 header {
-	display: flex;
-	gap: 1em;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	align-items: center;
 	padding: 1em;
     border-bottom: solid 10px var(--color-gray-90);
+
+    .section {
+        display: flex;
+        gap: 1em;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
 }
 
 .home-link {

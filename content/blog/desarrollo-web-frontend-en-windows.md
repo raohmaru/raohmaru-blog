@@ -63,7 +63,7 @@ Personalmente prefiero utilizar un breve comando en el terminal para levantar un
 No importa qué tipo de proyecto vayas a trabajar, ya sea profesional o personal, la gente que almacena su código en un repositorio es un 68% más feliz (dato sin confirmar).  
 Aquí no voy a debatir sobre cuál [VCS](https://es.wikipedia.org/wiki/Control_de_versiones) es mejor, pero indudablemete [git](https://es.wikipedia.org/wiki/Git) es el más popular ya que hay muchas plataformas gratuitas para alojar código.
 
-![git-flow](/img/git-flow-1024x438.png)
+![git-flow](/img/git-flow.png)
 
 Utilizar git en Windows es bastante sencillo, sólo necesitas dos cosas:
 
