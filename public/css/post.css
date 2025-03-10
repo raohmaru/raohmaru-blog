@@ -67,3 +67,12 @@ h1 {
     */
     view-transition-name: title;
 }
+
+/* h2:is([id]) {
+    display: inline-block;
+    margin-top: 0;
+
+    &:hover::after {
+        content: ' #';
+    }
+} */

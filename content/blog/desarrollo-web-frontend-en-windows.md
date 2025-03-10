@@ -53,10 +53,16 @@ Si estás utilizando Webpack, entonces podrás fácilmente implementar el [servi
 Personalmente prefiero utilizar un breve comando en el terminal para levantar un servidor en cualquier directorio y no tener que configurar mucho (o nada si es posible). Y para lograrlo tenemos dos opciones:
 
 1.  **Si tienes instalado [Python](https://es.wikipedia.org/wiki/Python) en tu ordenador**, entonces ya tienes un servidor súper económico y fácil de arrancar desde el terminal:  
-    [code gutter=»false»]python -m http.server 8000 [/code] Abre http://localhost:8000/ y podrás acceder a tu página.  
+    ```bash
+    python -m http.server 8000
+    ```
+    Abre http://localhost:8000/ y podrás acceder a tu página.  
     
 2.  **Hay una alternativa parecida que utiliza node.js**, del que ya hemos hablado que tienes instalado con nvm (¿verdad?). Es el [Live Server](https://github.com/tapio/live-server) y lo puedes ejecutar utilizando el comando [npx](https://github.com/npm/npx):  
-    [code gutter=»false»]npx live-server[/code]Tarda más en arrancar que el servidor de Python, pero puedes guardar la configuración en un archivo `.live-server.json`. Y como que mola más si está hecho en node.js, ¿no?
+    ```bash
+    npx live-server
+    ```
+    Tarda más en arrancar que el servidor de Python, pero puedes guardar la configuración en un archivo `.live-server.json`. Y como que mola más si está hecho en node.js, ¿no?
 
 ## El Repositorio
 
