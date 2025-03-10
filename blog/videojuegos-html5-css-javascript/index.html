@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Videojuegos en HTML5 con CSS y JavaScript</title>
+		<meta name="description" content="Desarrollando videojuegos en HTML5, CSS y JavaScript.">
+		
+		
+		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+            <div class="section">
+                <a href="/raohmaru-blog/" class="home-link">Reinventing the wheel</a>
+                <nav>
+                    <h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/raohmaru-blog/about/">About</a></li>
+                        <li class="nav-item"><a href="/raohmaru-blog/tags/">Tags</a></li>
+                        <li class="nav-item"><a href="https://github.com/raohmaru">Github</a></li>
+                    </ul>
+                </nav>
+            </div>
+		</header>
+
+		<main id="skip">
+            <div class="section">
+                
+<h1 id="videojuegos-en-html5-con-css-y-javascript">Videojuegos en HTML5 con CSS y JavaScript</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2019-09-01">01 September 2019</time></li>
+        <li><a href="/raohmaru-blog/tags/javascript/" class="post-tag">JavaScript</a>, </li>
+        <li><a href="/raohmaru-blog/tags/game-dev/" class="post-tag">Game Dev</a></li>
+</ul>
+
+<p>Siguiendo con la serie de desarrollo de videojuegos para la web, tras haber probado la <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">API de Canvas 2D</a> (si te interesa puede ver el post sobre <a href="/raohmaru-blog/blog/experimentos-con-html5-canvas/">experimiento de visualización</a> o el de <a href="/raohmaru-blog/blog/javascript-experiments-desarrollando-un-motor-de-videojuego/">motor videojuego con Canvas 2D</a>), y antes de dar el salto a <a href="https://www.khronos.org/webgl/">WebGL</a> (la mayoría de motores de videojuego en JavaScript utilizan WebGL para el renderizado) quería probar el rendimiento del navegador desarrollando un juego muy simple que manipulase el <a href="https://developer.mozilla.org/en-US/docs/Glossary/DOM">DOM</a> para mostrar los gráficos.</p>
+<p><strong>(Si quieres ir al juego directamente</strong> <a href="https://raohmaru.github.io/DOM-Tennis/src/"><strong>puedes hacerlo clicando aquí 🎾</strong></a><strong>.<br>
+O <a href="https://github.com/raohmaru/DOM-Tennis">clica aquí</a> para investigar el código fuente.)</strong></p>
+<blockquote>
+<p>DOM (Document Object Model) representa una página web como un árbol, dónde los elementos de la página son nodos. A este representación se puede acceder y manipular con lenguajes de programación como JavaScript.</p>
+</blockquote>
+<p>El problema de manipular el DOM es que es lento. Cada vez que un elemento de la página cambia (al insertar o eliminar nodos, modificar estilos, cambiar el contenido de la página) se provoca un <em>reflow</em>: el navegador vuelve a calcular las posiciones y formas de los elementos con el objetivo de volver a renderizarlos de forma total o parcial. Esto es un proceso costoso que puede reducir el rendimiento de la página, y como regla general se debería evitar en la medida de lo posible.</p>
+<p><strong><em>Entonces, ¿se pueden hacer juegos que manipulen DOM y que vayan a un framerate aceptable?</em></strong></p>
+<p>La respuesta es sí, siempre que se sigan algunas técnicas para no afectar demasiado el rendimiento del navegador.</p>
+<p>Durante el desarrollo del juego me documenté y experimenté con las técnicas más comunes para optimizar sitios webs (<a href="https://developers.google.com/speed/docs/insights/browser-reflow">como en este artículo</a> de nuestros amigos de Google), además de seguir algunos consejos útiles al programar videojuegos para el navegador.</p>
+<h2 id="ideas-para-optimizar-un-juego-basado-en-css-y-javascript">Ideas para optimizar un juego basado en CSS y JavaScript</h2>
+<h3 id="window-requestanimationframe">window.requestAnimationFrame</h3>
+<p>La parte más importante de tu juego será el <em>main loop</em>, la función que se repetirá 60 veces por segundo para conseguir una animación fluida. Y la mejor manera de conseguir este bucle es utilizando <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame">window.requestAnimationFrame</a>, un método que se ejecuta en la frequencia antes mencionada y que nos permite actualizar el estado y las animaciones de nuestro juego antes del repintado de la ventana.</p>
+<p>Ejemplo de clase con un método que se invoca con <code>requestAnimationFrame()</code>.</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">class</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">fps<span class="token punctuation">,</span> cb</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>_fps <span class="token operator">=</span> fps<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>_cb <span class="token operator">=</span> cb<span class="token punctuation">;</span>
+        
+        <span class="token keyword">this</span><span class="token punctuation">.</span>_fpsInterval <span class="token operator">=</span> <span class="token number">1000</span> <span class="token operator">/</span> fps<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>_frameCount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>_currentTime <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>_prevTime <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token keyword">get</span> <span class="token function">currentFps</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">1000</span> <span class="token operator">/</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>_currentTime <span class="token operator">-</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_prevTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">let</span> me <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+        
+        <span class="token keyword">this</span><span class="token punctuation">.</span>_startTime <span class="token operator">=</span> window<span class="token punctuation">.</span>performance<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>_then <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_startTime<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function-variable function">_onFrame</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">currentTime</span><span class="token punctuation">)</span> <span class="token operator">=></span> me<span class="token punctuation">.</span><span class="token function">frame</span><span class="token punctuation">(</span>currentTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">frame</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        window<span class="token punctuation">.</span><span class="token function">cancelAnimationFrame</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>_timerID<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>_cb <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>_onFrame <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">frame</span><span class="token punctuation">(</span><span class="token parameter">currentTime</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// calc elapsed time since last loop</span>
+        <span class="token keyword">let</span> elapsed <span class="token operator">=</span> currentTime <span class="token operator">-</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_then<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>_currentTime <span class="token operator">=</span> currentTime<span class="token punctuation">;</span>
+        <span class="token comment">// if enough time has elapsed, draw the next frame</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>elapsed <span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>_fpsInterval<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// Get ready for next frame by setting then=currentTime, but...</span>
+            <span class="token comment">// Also, adjust for fpsInterval not being multiple of 16.67</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>_then <span class="token operator">=</span> currentTime <span class="token operator">-</span> <span class="token punctuation">(</span>elapsed <span class="token operator">%</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_fpsInterval<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">_cb</span><span class="token punctuation">(</span>currentTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            
+            <span class="token keyword">this</span><span class="token punctuation">.</span>_frameCount<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>_prevTime <span class="token operator">=</span> currentTime<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token keyword">this</span><span class="token punctuation">.</span>_timerID <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>_onFrame<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>En el anterior ejemplo nuestra clase intenta llamar al método <code>frame()</code> cada 1/60 segundos, y en el caso que disminuya el rendimiento y bajen los fps intentará ajustar esta merma para que el juego siga fluido.</p>
+<h3 id="css-3d-transforms">CSS 3D Transforms</h3>
+<p>Ya hemos visto que mover elementos dentro del flujo de la página es caro (para el navegador), ya que provoca <em>reflows</em>. Para evitar esto efecto negativo, debemos sacar los elementos del flujo de la página cambiando su posicionamiento a «absolute» (<code>position: absolute</code>) y utilizar las propiedades <code>top</code> y <code>left</code> para moverlo.</p>
+<p>También podemos sacar provecho de la GPU utilizando un «truco» que lleva rondando por internet desde que aparecieron las especificaciones de <a href="https://drafts.csswg.org/css-transforms-2/#three-d-transform-functions">CSS 3D Transforms</a>:</p>
+<pre class="language-css" tabindex="0"><code class="language-css"><span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">translateZ</span><span class="token punctuation">(</span>0<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>El truco consiste en que el navegador crea un nuevo contexto, una nueva capa para ese elemento y es la GPU quién se encarga de componerla y dibujarla, liberando a la CPU de esta tarea. Con esto es posible arañar unos cuantos frames y hacer más fluida la animación.</p>
+<p>Como punto negativo hay que tener en cuenta que el procesamiento de CSS 3D no es tan potente como una aplicación 3D real con WebGL, y que muchas elementos utilizando aceleración por hardware pueden tener el efecto contrario y ralentizar el juego (cada capa compuesta por la GPU consume memoria adicional, por ejemplo).</p>
+<h3 id="filtros-css">Filtros CSS</h3>
+<p>Evita los filtros como <code>box-shadow</code>, <code>border-radius</code> o la propiedad <a href="https://developer.mozilla.org/es/docs/Web/CSS/filter"><code>filter</code></a>. Cuando se aplica un filtro a un elemento, el navegador lo convierte en una <a href="https://es.wikipedia.org/wiki/Imagen_de_mapa_de_bits">imagen mapa de bits</a> y entonces aplica el filtro a cada píxel de esta imagen. Este proceso se hace en la CPU (aunque algunos navegadores pueden enviarlo a la GPU) con lo que nos quita tiempo de proceso para nuestro juego. Sobretodo se nota si los filtros se aplican a elementos que se animan y se actualizan a cada <em>frame</em> del juego.</p>
+<h3 id="anima-el-menor-numero-de-elementos-posible">Anima el menor número de elementos posible</h3>
+<p>Con todo lo anterior comentado, ya nos ha quedado un poco claro que no podemos abusar del DOM y animar tantos elementos como haríamos en un juego utilizando Canvas 2D o WebGL. Mantener una estructura poco profunda de nodos también ayuda, ya que una modificación en el nodo padre provoca un redibujado de los nodos descendientes.</p>
+<h3 id="el-inspector-de-rendimiento-es-tu-amigo">El inspector de rendimiento es tu amigo</h3>
+<p>En los navegadores tenemos una herramienta pontentísima para revisar el rendimiento de nuestro juego. Con el <a href="https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/">inspector de rendimiento</a> podemos analizar el tiempo de proceso de cada fotograma y encontrar posibles los momentos en que los frames bajen a menos de 60 y la animación deje de ser fluida.</p>
+<h2 id="el-juego-dom-tennis">El juego: DOM Tennis 🎾</h2>
+<p>Teniendo en cuenta lo anteriormente expuesto, he intentado mantener al mínimo los elementos con una mecánica de juego muy sencilla: golpear una bola con el cursor sin que toque el suelo. En el <em>main loop</em> ocurre lo siguiente:</p>
+<ul>
+<li>Se ejecuta el motor de físicas.</li>
+<li>Actualizar la posición de la bola.</li>
+<li>Actualizar la posición del cursor.</li>
+<li>Animar la puntuación.</li>
+</ul>
+<p>Cada elemento es compuesto en la GPU, y su posición CSS cambía sólo cuando es necesario. Tanto en ordenador como en móviles el rendimiento llega a los 60 fps; tuve más problemas con el <a href="https://raohmaru.com/blog/javascript/experimentos-con-la-web-audio-api-de-javascript/">audio generado</a> en dispositivos móvile que no con los gráficos.</p>
+<p><a href="https://raohmaru.github.io/DOM-Tennis/src/"><strong>Jugar 🎾</strong></a><br>
+<a href="https://github.com/raohmaru/DOM-Tennis"><strong>Código fuente</strong></a></p>
+<h2 id="notas">Notas</h2>
+<ol>
+<li>Se considera un framerate aceptable para videojuegos entre el rango de 30 y 60 fotogramas por segundo.</li>
+</ol>
+<h2 id="referencias">Referencias</h2>
+<ul>
+<li><a href="https://gist.github.com/paulirish/5d52fb081b3570c81e3a">What forces layout / reflow</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Games/Anatomy">Anatomy of a video game</a></li>
+<li><a href="https://aerotwist.com/blog/on-translate3d-and-layer-creation-hacks/">On translate3d and layer creation hacks</a></li>
+<li><a href="https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right/">CSS GPU Animation: Doing It Right</a></li>
+</ul>
+
+        <ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/raohmaru-blog/blog/experimentos-con-la-web-audio-api-de-javascript/">Experimentos con la Web Audio API de JavaScript</a></li><li class="links-nextprev-next">Next →<br><a href="/raohmaru-blog/blog/desarrollo-web-frontend-en-windows/">Desarrollo web frontend en Windows</a></li>
+        </ul>
+
+            </div>
+		</main>
+
+		<footer>
+            <div class="section">
+                <p>
+                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
+                    This page was built on 2025-03-10T21:08:11.683Z
+                </p>
+            </div>
+		</footer>
+
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+	</body>
+</html>

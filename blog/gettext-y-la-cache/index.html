@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>gettext y la caché</title>
+		<meta name="description" content="El problema de la cache en GNU gettext.">
+		
+		
+		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+            <div class="section">
+                <a href="/raohmaru-blog/" class="home-link">Reinventing the wheel</a>
+                <nav>
+                    <h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/raohmaru-blog/about/">About</a></li>
+                        <li class="nav-item"><a href="/raohmaru-blog/tags/">Tags</a></li>
+                        <li class="nav-item"><a href="https://github.com/raohmaru">Github</a></li>
+                    </ul>
+                </nav>
+            </div>
+		</header>
+
+		<main id="skip">
+            <div class="section">
+                
+<h1 id="gettext-y-la-cache">gettext y la caché</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2012-06-08">08 June 2012</time></li>
+        <li><a href="/raohmaru-blog/tags/i18n/" class="post-tag">i18n</a>, </li>
+        <li><a href="/raohmaru-blog/tags/php/" class="post-tag">PHP</a></li>
+</ul>
+
+<p>Siguiendo con el <a href="/raohmaru-blog/blog/internacionalizacion-en-php/">tema del día anterior</a>, que versaba sobre la <a href="http://es.wikipedia.org/wiki/Internacionalizaci%C3%B3n_y_localizaci%C3%B3n">internacionalización</a> en PHP y la herramienta <a href="http://www.gnu.org/software/gettext/">GNU gettext</a>, nos dejamos en el tintero el problema de la caché.</p>
+<p>Cada vez que una aplicación PHP pide amablemente a la <a href="http://php.net/manual/es/book.gettext.php">extensión gettext</a> que establezca un nuevo dominio, indicando la ruta a los archivos de traducción MO, con un código como el que sigue:</p>
+<pre class="language-php" tabindex="0"><code class="language-php"><span class="token comment">// Especifica la ruta a los catálogos de traducción:  </span>
+<span class="token comment">// /locale/&lt;lang_COUNTRY>/LC_MESSAGES/mydomain.mo  </span>
+<span class="token function">bindtextdomain</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"mydomain"</span><span class="token punctuation">,</span> <span class="token string double-quoted-string">"./locale"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+<p>gettext en respuesta lee esos archivos MO según el <a href="http://www.langtag.net/">código idioma/país</a> del usuario y los carga en memoria, para disponer de su contenido a voluntad sin necesidad de leerlos de nuevo con cada petición de traducción.</p>
+<p>Y he aquí el problema: gettext considera que mientras estén en memoria no hace falta acceder a esos archivos físicamente (leerlos otra vez), <strong>aunque su contenido haya cambiado</strong> (esto es, los archivos han sido cacheados). Y como que esa memoria es la <a href="http://es.wikipedia.org/wiki/Memoria_de_acceso_aleatorio">memoria RAM</a> del ordenador que hace de servidor, perdurarán durante todo el tiempo de ejecución del programa servidor (que normalmente es <a href="http://httpd.apache.org/">Apache HTTP Server</a> cuando tratamos con PHP). Consecuencias: posteriores cambios en el texto, nuevas traducciones añadidas al catálogo, eliminaciones, etc., no se verán reflejadas en nuestro sitio aunque actualicemos en el servidor una nueva versión de los archivos MO.</p>
+<p>Por suerte la comunidad de PHP es muy grande y ya han lidiado con este tema, y las muchas soluciones que se han aportado se pueden resumir en tres ideas (ya adelanto que la que más me gusta es la tercera):</p>
+<p><strong>1. Reinicia Apache</strong><br>
+La solución más drástica pero efectiva: al reiniciar el servidor se libera la memoria RAM que ocupaba, y la próxima invocación a <code>bindtextdomain()</code> cargará de nuevo el archivo.</p>
+<p>Lo malo: sólo para <em>hostings</em> dedicados, donde te dejan toquetear casi todo (que por algo lo pagas). En <em>hostings</em> compartidos no se tiene este acceso al programa.</p>
+<p><strong>2. Renombrar catálogo</strong><br>
+¿Qué gettext no recarga el archivo MO? Pues engáñalo, renombrando el archivo para que piense que es nuevo de fábrica y quiera leerlo con avidez.</p>
+<p>Para no tener que hacer este paso manualmente con cada edición de la traducción, se pueden utilizar rutinas como <a href="http://php.net/manual/es/book.gettext.php#105413">ésta</a> de los comentarios del manual de PHP, o <a href="http://blog.ghost3k.net/articles/php/11/gettext-caching-in-php">esta otra</a> de un tal ghost3k.</p>
+<p>A tener en cuenta que con este proceso se van añadiendo a la memoria nuevos archivos sin liberar los anteriores, y desconozco que impacto puede tener a largo plazo si se hacen muchas modificaciones en archivos MO gordos (o grandes, o pesados).</p>
+<p><strong>3. Si la montaña no viene a Mahoma, pasa de la montaña</strong><br>
+Utilizar una alternativa a <code>gettext()</code> pero manteniendo sus funcionalidades. Existen algunas librerías que sin hacer uso de GNU gettext emulan sus métodos y cargan por igual archivos de catálogo MO, pero sin la contrapartida de la caché.</p>
+<p>La parte negativa es que al no utilizar precisamente gettext, el rendimiento puede ser más bajo con archivos grandes (como más tiempo de carga de la página).</p>
+<p><strong><a href="https://launchpad.net/php-gettext/">php-gettext</a></strong> es una de estas librerías que nos puede ayudar. Es sencilla y el autor asegura que está muy optimizada, aunque no se actualiza desde finales del 2010.</p>
+<p>La instalación e implementación es bastante sencilla, basta con descargar el archivo comprimido, descomprimirlo y subirlo al servidor; entonces se ha de configurar para su uso y listo. Pongo a continuación un ejemplo de esto último.</p>
+<pre class="language-php" tabindex="0"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>  
+<span class="token comment">// Define el idioma y región del usuario  </span>
+<span class="token variable">$user_locale</span> <span class="token operator">=</span> ‘es_ES’<span class="token punctuation">;</span>
+
+<span class="token comment">// Incluímos los archivos necesarios de php-gettext  </span>
+<span class="token keyword">include</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"php-gettext/gettext.php"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token keyword">include</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"php-gettext/streams.php"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Crea un lector de archivos MO, e indicamos la ruta del archivo  </span>
+<span class="token comment">// que queremos leer en el idioma del usuario  </span>
+<span class="token variable">$locale_streamer</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileReader</span><span class="token punctuation">(</span>‘locale<span class="token operator">/</span>’<span class="token operator">.</span><span class="token variable">$user_locale</span><span class="token operator">.</span>’<span class="token operator">.</span>mo’<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token variable">$locale_reader</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">gettext_reader</span><span class="token punctuation">(</span><span class="token variable">$locale_streamer</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Función de atajo para traducir cadenas  </span>
+<span class="token keyword">function</span> <span class="token function-definition function">__</span><span class="token punctuation">(</span><span class="token variable">$text</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token keyword">global</span> <span class="token variable">$locale_reader</span><span class="token punctuation">;</span>  
+    <span class="token keyword">return</span> <span class="token variable">$locale_reader</span><span class="token operator">-></span><span class="token function">translate</span><span class="token punctuation">(</span><span class="token variable">$text</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Función de atajo para traducir cadenas en plural  </span>
+<span class="token keyword">function</span> <span class="token function-definition function">_n</span><span class="token punctuation">(</span><span class="token variable">$text</span><span class="token punctuation">,</span> <span class="token variable">$plural</span><span class="token punctuation">,</span> <span class="token variable">$number</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token keyword">global</span> <span class="token variable">$locale_reader</span><span class="token punctuation">;</span>  
+    <span class="token keyword">return</span> <span class="token variable">$locale_reader</span><span class="token operator">-></span><span class="token function">ngettext</span><span class="token punctuation">(</span><span class="token variable">$text</span><span class="token punctuation">,</span> <span class="token variable">$plural</span><span class="token punctuation">,</span> <span class="token variable">$number</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Función de atajo que imprime directamente la traducción  </span>
+<span class="token keyword">function</span> <span class="token function-definition function">_e</span><span class="token punctuation">(</span><span class="token variable">$text</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token keyword">echo</span> <span class="token function">__</span><span class="token punctuation">(</span><span class="token variable">$text</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  
+<span class="token delimiter important">?></span></span>  </code></pre>
+<p>Otra librería de localización de las que emulan gettext, interesante y muy completa, la encontramos en el corazón de <a href="http://wordpress.org/">WordPress</a>, que aunque no tiene nombre oficial vamos a llamarla <strong><a href="http://phpdoc.wordpress.org/trunk/pomo/translations/Gettext_Translations.html">Gettext_Translations</a></strong>. En una distribución típica de WordPress (a la fecha del artículo van por la versión 3.3.2) los archivos de esta librería están ubicados en wp-includes/pomo/, y en el archivo wp-includes/l10n.php es donde se cocina todo. A parte de en el presente blog no he podido probarla en otros proyectos, pero parece que el <a href="http://core.trac.wordpress.org/ticket/17128">rendimiento no es muy bueno</a>.</p>
+<h2 id="conclusion">Conclusión</h2>
+<p>GNU gettext fue desarrollado para aplicaciones de escritorio, mótivo por el que hace uso de una memoria caché para acelerar y optimizar las tareas de traducción que perdura hasta que se cierra la aplicación. Pero se pueden producir efectos no deseados en aplicaciones en el lado del servidor donde los datos cambian continuamente, en la forma de textos no actualizados en las páginas.</p>
+
+        <ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/raohmaru-blog/blog/raohmaru-toolkit-actionscript/">Raohmaru Toolkit</a></li><li class="links-nextprev-next">Next →<br><a href="/raohmaru-blog/blog/ruby-blue-temas-para-flashdevelop/">Ruby Blue, o como crear temas para FlashDevelop</a></li>
+        </ul>
+
+            </div>
+		</main>
+
+		<footer>
+            <div class="section">
+                <p>
+                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
+                    This page was built on 2025-03-10T21:08:11.682Z
+                </p>
+            </div>
+		</footer>
+
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+	</body>
+</html>

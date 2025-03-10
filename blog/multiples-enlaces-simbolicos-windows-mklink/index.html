@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Múltiples enlaces simbólicos en Windows</title>
+		<meta name="description" content="Cómo crear enlaces simbólicos en Windows.">
+		
+		
+		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+            <div class="section">
+                <a href="/raohmaru-blog/" class="home-link">Reinventing the wheel</a>
+                <nav>
+                    <h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/raohmaru-blog/about/">About</a></li>
+                        <li class="nav-item"><a href="/raohmaru-blog/tags/">Tags</a></li>
+                        <li class="nav-item"><a href="https://github.com/raohmaru">Github</a></li>
+                    </ul>
+                </nav>
+            </div>
+		</header>
+
+		<main id="skip">
+            <div class="section">
+                
+<h1 id="multiples-enlaces-simbolicos-en-windows">Múltiples enlaces simbólicos en Windows</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2016-01-31">31 January 2016</time></li>
+        <li><a href="/raohmaru-blog/tags/shell/" class="post-tag">shell</a>, </li>
+        <li><a href="/raohmaru-blog/tags/windows/" class="post-tag">Windows</a></li>
+</ul>
+
+<p>Con esta entrada estreno una serie de publicaciones donde compartir unas pequeñas utilidades que he desarrollado, que me han ayudado a solucionar un problema en concreto e incluso me ha hecho ser un poco más productivo (de verdad).</p>
+<p>A veces nos encontramos que nos falta una herramienta para evitar tener que hacer alguna tarea tediosa manualmente. Es entonces cuando programamos una pequeña pieza de software para que lo haga por nosotros, invocando de esta manera la Primera Virtud del Programador según <a href="https://es.wikipedia.org/wiki/Larry_Wall">Larry Wall</a> (correcto, esa es la Pereza).</p>
+<p>Pero, ¿y por qué compartirla? ¿De verdad a alguien le va a interesar? Es probable que a nadie le vaya a resultar tremendamente útil, pero como <em>frontender</em> casi que tengo la obligación de devolver algo a la comunidad (en este punto me adhiero al <a href="http://f2em.com/#give-back">Front End Manifesto</a>).</p>
+<p>Y aquí va entonces la utilidad:</p>
+<p>Un script de <a href="https://en.wikipedia.org/wiki/Batch_file">Batch</a> para Windows con el que crear <a href="http://www.tecnologiadigerida.com/2007/11/links-simblicos-en-windows.html">enlaces simbólicos</a> de las subcarpetas de un directorio en otro directorio de destino. Utiliza el comando <a href="https://technet.microsoft.com/es-es/library/cc753194%28v=ws.10%29.aspx"><code>mklink</code></a> para enlazar cada subcarpeta con su destino.</p>
+<pre class="language-shell" tabindex="0"><code class="language-shell">@ECHO OFF
+
+IF <span class="token string">"%~1"</span><span class="token operator">==</span><span class="token string">""</span> GOTO Continue  
+IF <span class="token string">"%~1"</span><span class="token operator">==</span><span class="token string">"-h"</span> GOTO Continue  
+IF <span class="token string">"%~2"</span><span class="token operator">==</span><span class="token string">""</span> GOTO No2ndParam  
+IF NOT EXIST %1 GOTO NoWinDir1  
+IF NOT EXIST %2 GOTO NoWinDir2
+
+PUSHD %1
+
+FOR /D %%G <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token string">"\*"</span><span class="token punctuation">)</span> DO <span class="token punctuation">(</span>  
+    mklink /J <span class="token string">"%~2<span class="token entity" title="\\">\\</span>%%G"</span> <span class="token string">"%%G"</span>  
+<span class="token punctuation">)</span>  
+POPD  
+GOTO:EOF
+
+:NoWinDir1  
+ECHO %1 is not a valid directory. Type <span class="token string">"create_symlink -h"</span> to get help.  
+EXIT /B <span class="token number">0</span>
+
+:NoWinDir2  
+ECHO %2 is not a valid directory. Type <span class="token string">"create_symlink -h"</span> to get help.  
+EXIT /B <span class="token number">0</span>
+
+:No2ndParam  
+ECHO Missing argument target_dir. Type <span class="token string">"create_symlink -h"</span> to get help.  
+EXIT /B <span class="token number">0</span>
+
+:Continue  
+ECHO Creates a symlink <span class="token keyword">in</span> the target directory <span class="token keyword">for</span> each folder <span class="token keyword">in</span> the <span class="token builtin class-name">source</span> directory.  
+ECHO Usage: create_symlink source_dir target_dir  
+ECHO<span class="token punctuation">[</span>  
+ECHO source_dir The <span class="token builtin class-name">source</span> directory with subfolders to symlink  
+ECHO target_dir The target directory where to create the symlinks  </code></pre>
+<p>El problema que soluciona es que <code>mklink</code> solo permite enlazar un archivo o carpeta a la vez, con lo que enlazar varios elementos puede ser muy tedioso.</p>
+<p>Y aquí el script guardado en mi cuenta de GitHub Gist para quien quiera descargarlo: <a href="https://gist.github.com/raohmaru/3199ef79a4223cd3921d">https://gist.github.com/raohmaru/3199ef79a4223cd3921d</a></p>
+
+        <ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/raohmaru-blog/blog/el-orden-de-las-propiedades-css/">Orden de las propiedades en CSS</a></li><li class="links-nextprev-next">Next →<br><a href="/raohmaru-blog/blog/ajax-internet-explorer-y-la-cache/">Ajax, Internet Explorer y la caché</a></li>
+        </ul>
+
+            </div>
+		</main>
+
+		<footer>
+            <div class="section">
+                <p>
+                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
+                    This page was built on 2025-03-10T21:08:11.682Z
+                </p>
+            </div>
+		</footer>
+
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+	</body>
+</html>

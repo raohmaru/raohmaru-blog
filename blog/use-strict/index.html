@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>use strict</title>
+		<meta name="description" content="Qué es el modo estricto en JavaScript.">
+		
+		
+		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+            <div class="section">
+                <a href="/raohmaru-blog/" class="home-link">Reinventing the wheel</a>
+                <nav>
+                    <h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/raohmaru-blog/about/">About</a></li>
+                        <li class="nav-item"><a href="/raohmaru-blog/tags/">Tags</a></li>
+                        <li class="nav-item"><a href="https://github.com/raohmaru">Github</a></li>
+                    </ul>
+                </nav>
+            </div>
+		</header>
+
+		<main id="skip">
+            <div class="section">
+                
+<h1 id="use-strict">use strict</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2012-07-12">12 July 2012</time></li>
+        <li><a href="/raohmaru-blog/tags/javascript/" class="post-tag">JavaScript</a></li>
+</ul>
+
+<p>Como si de un aviso de alguna hermética entidad se tratara, desde hace un par de años ha ido apareciendo en las entrañas de algunas librerías JavaScript y en ejemplos de código dispersos por la red la enigmática frase <strong>‘use strict’</strong>.</p>
+<p>¿Y qué demonios significa esta sentencia?</p>
+<p>Más o menos indica al motor de interpretación de JavaScript de tu navegador favorito (y moderno, no me utilices Internet Explorer) que sea más restrictivo en la ejecución de <em>scripts</em>, un poco más seguro, y allá donde antes era permisivo y hacía la vista gorda ahora emita errores y regañe al programador.</p>
+<p>Así por ejemplo, crear una variable global dentro del contexto de una función:</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">function</span> <span class="token function">testFunction</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token keyword">var</span> localVar <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>  
+    globalVar <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  
+<span class="token function">testFunction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+<p>Con ‘use strict’ genera un error pues deja de estar permitido crear variables globales de forma implícita (tiene que haber sido declarada previamente con la palabra clave <code>var</code>):</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">function</span> <span class="token function">testFunction</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    ‘use strict’<span class="token punctuation">;</span> <span class="token comment">// A partir de aquí modo estricto</span>
+
+    <span class="token keyword">var</span> localVar <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>  
+    globalVar <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span> <span class="token comment">// Emite un ReferenceError  </span>
+<span class="token punctuation">}</span>  
+<span class="token function">testFunction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+<p>El uso de este modo “estricto” viene promovido desde la 5ª edición de la especificación del lenguaje ECMAScript, que es algo así como un primo cercano que define como debe comportarse el lenguaje y como deben interpretarlo los motores o <em>engines</em>.</p>
+<p>Un poco hartos los señores de <a href="http://es.wikipedia.org/wiki/ECMA">Ecma International</a> que les gritaran por la calle que JavaScript era un lenguaje <em>malo</em> (hasta Google les ha perdido el respeto y han creado <a href="http://www.dartlang.org/">Dart</a> con la intención de sustituirlo), decidieron corregir el mal uso del lenguaje y evitar sus puntos débiles implementando un modo que forzara a <em>programar mejor</em> y/o con más cuidado, y que obligase a prestar mayor atención a los errores que por la flexibilidad de JavaScript se pasan por alto.</p>
+<p>Por ventura ‘use strict’ no afecta a todo el código de un documento JavaScript: únicamente define como estricto el contexto donde va incluida la sentencia. Toda la programación de un archivo JS puede estar en modo estricto si ‘use strict’ se pone en el ámbito global, o sólo el contenido de una función o un <em><a href="https://developer.mozilla.org/en/JavaScript/Guide/Closures">closure</a></em> si se define dentro de la misma. Esto permite a nuestro código feo y no estricto incluir librerías externas que sí estén en modo estricto.</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token comment">// Código no estricto</span>
+
+<span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>  
+    ‘use strict’<span class="token punctuation">;</span>  
+    <span class="token comment">// En esta función el modo estricto está activado  </span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Código no estricto  </span></code></pre>
+<p>Por supuesto que la utilización de ‘use strict’ en nuestro código no nos hará mejores programadores, ni es un hechizo que optimice nuestra aplicación: simplemente ayuda al desarrollador a ser más eficiente y le protege de consabidos errores al trabajar con JavaScript.</p>
+<h2 id="restricciones-impuestas-por-el-strict-mode">Restricciones impuestas por el ‘strict mode’</h2>
+<p>Estas son las restricciones que impone el modo estricto de JavaScript. Cabe recordar que no todos los navegadores las cumplen a rajatabla.</p>
+<ul>
+<li>
+<p>Convierte faltas o descuidos en excepciones de error (o errores de excepción).</p>
+</li>
+<li>
+<p>No permite el uso de números enteros en <a href="http://www.javascripter.net/faq/octalsan.htm">base octal</a>. A parte de en MundoDisco, ¿quién más los utiliza?</p>
+<pre class="language-js" tabindex="0"><code class="language-js">‘use strict’<span class="token punctuation">;</span>  
+<span class="token keyword">var</span> octal_int <span class="token operator">=</span> <span class="token number">036</span><span class="token punctuation">;</span> <span class="token comment">// SyntaxError  </span></code></pre>
+</li>
+<li>
+<p>Impide crear variables de ámbito global “accidentalmente”. Toda variable ha de estar previamente declarada.</p>
+<pre class="language-js" tabindex="0"><code class="language-js">‘use strict’<span class="token punctuation">;</span>  
+globalVar <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token comment">// ReferenceError  </span></code></pre>
+</li>
+<li>
+<p>Lo que se crea con <code>eval()</code>, se queda en <code>eval()</code>. O lo que es lo mismo: las variables instanciadas dentro del contexto de <code>eval()</code> sólo son válidas en ese contexto.</p>
+<pre class="language-js" tabindex="0"><code class="language-js">‘use strict’<span class="token punctuation">;</span>  
+<span class="token keyword">var</span> a <span class="token operator">=</span> ‘Tesla’<span class="token punctuation">;</span>  
+<span class="token keyword">var</span> evalA <span class="token operator">=</span> <span class="token function">eval</span><span class="token punctuation">(</span>‘<span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token string">"Nicola"</span><span class="token punctuation">;</span> a<span class="token punctuation">;</span>’<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+a<span class="token punctuation">;</span> <span class="token comment">// = ‘Tesla’  </span>
+evalA<span class="token punctuation">;</span> <span class="token comment">// = ‘Nicola’  </span></code></pre>
+</li>
+<li>
+<p>Las propiedades inseguras <code>arguments.caller</code> y <code>arguments.callee</code> se eliminan, así como <code>Function.arguments</code> and <code>Function.caller</code>.</p>
+</li>
+<li>
+<p>La sentencia <code>with(){}</code> se va al garete. Además de no estar optimizada sólo daba dolores de cabeza.</p>
+</li>
+<li>
+<p>Mejorando la seguridad, la palabra clave <code>this</code> dentro de una función ya no intenta hacer referencia al objeto global <code>Window</code> si se ha invocado sin especificar el ámbito; en lugar de eso devolverá <code>null</code> o <code>undefined</code>.<br>
+Sin modo estricto:</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">function</span> <span class="token function">notfun</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>  
+<span class="token keyword">var</span> o <span class="token operator">=</span> <span class="token function">notfun</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Obtiene un objeto Window  </span></code></pre>
+<p>En modo estricto:<br>
+(ejemplo extraído de <a href="https://developer.mozilla.org/en/JavaScript/Strict_mode">https://developer.mozilla.org/en/JavaScript/Strict_mode</a>)</p>
+<pre class="language-js" tabindex="0"><code class="language-js">‘use strict’<span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">fun</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>  
+<span class="token comment">// Estas comparaciones devuelven true  </span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">fun</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">fun</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">fun</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">fun</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">undefined</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">fun</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+</li>
+<li>
+<p>Violación de las propiedades de un objeto: prohibido borrar o sobrescribir propiedades <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/defineProperty#Configurable_attribute">no configurables</a> de objetos, así como borrar variables, funciones o argumentos (sin modo estricto falla sin aviso, en modo estricto lanza un error).</p>
+<pre class="language-js" tabindex="0"><code class="language-js">‘use strict’<span class="token punctuation">;</span>
+
+<span class="token keyword">delete</span> <span class="token class-name">Object</span><span class="token punctuation">.</span>prototype<span class="token punctuation">;</span> <span class="token comment">// TypeError  </span>
+<span class="token number">NaN</span> <span class="token operator">=</span> <span class="token number">37</span><span class="token punctuation">;</span> <span class="token comment">// NaN is read-only  </span>
+<span class="token keyword">var</span> foo <span class="token operator">=</span> ‘bar’<span class="token punctuation">;</span>  
+<span class="token keyword">delete</span> foo<span class="token punctuation">;</span> <span class="token comment">// TypeError  </span></code></pre>
+</li>
+</ul>
+<h2 id="para-saber-mas">Para saber más</h2>
+<ul>
+<li>Tabla de compatibilidad de ECMAScript 5: <a href="http://kangax.github.com/es5-compat-table/">http://kangax.github.com/es5-compat-table/</a></li>
+<li>Definición de <em>strict mode</em> en Mozilla Developer Network: <a href="https://developer.mozilla.org/en/JavaScript/Strict_mode">https://developer.mozilla.org/en/JavaScript/Strict_mode</a></li>
+<li>Strict mode_ según MSDN: <a href="http://msdn.microsoft.com/en-us/library/br230269%28v=vs.94%29.aspx">http://msdn.microsoft.com/en-us/library/br230269%28v=vs.94%29.aspx</a></li>
+<li>Test de soporte de ‘use strict’ vía navegador (por <a href="http://www.twitter.com/angusTweets">Angus Crol</a>): <a href="http://java-script.limewebs.com/strictMode/test_hosted.html">http://java-script.limewebs.com/strictMode/test_hosted.html</a></li>
+<li>La especificación de ECMAScript 5 (+10.000 puntos de experiencia a quien se lo lea): <a href="http://ecma262-5.com/ELS5_HTML.htm">http://ecma262-5.com/ELS5_HTML.htm</a></li>
+</ul>
+
+        <ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/raohmaru-blog/blog/compartir-redes-sociales-compartir-google-analytics/">Compartir en redes sociales y medir con Google Analytics</a></li><li class="links-nextprev-next">Next →<br><a href="/raohmaru-blog/blog/el-orden-de-las-propiedades-css/">Orden de las propiedades en CSS</a></li>
+        </ul>
+
+            </div>
+		</main>
+
+		<footer>
+            <div class="section">
+                <p>
+                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
+                    This page was built on 2025-03-10T21:08:11.683Z
+                </p>
+            </div>
+		</footer>
+
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+	</body>
+</html>

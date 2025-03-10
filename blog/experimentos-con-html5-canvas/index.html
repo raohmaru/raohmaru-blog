@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Experimentos con HTML5 Canvas</title>
+		<meta name="description" content="Experimentos con el API HTML5 Canvas 2D en JavaScript.">
+		
+		
+		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+            <div class="section">
+                <a href="/raohmaru-blog/" class="home-link">Reinventing the wheel</a>
+                <nav>
+                    <h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/raohmaru-blog/about/">About</a></li>
+                        <li class="nav-item"><a href="/raohmaru-blog/tags/">Tags</a></li>
+                        <li class="nav-item"><a href="https://github.com/raohmaru">Github</a></li>
+                    </ul>
+                </nav>
+            </div>
+		</header>
+
+		<main id="skip">
+            <div class="section">
+                
+<h1 id="experimentos-con-html5-canvas">Experimentos con HTML5 Canvas</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2016-05-29">29 May 2016</time></li>
+        <li><a href="/raohmaru-blog/tags/javascript/" class="post-tag">JavaScript</a></li>
+</ul>
+
+<p>Todos, en algún momento, deberíamos trabajar en algún proyecto paralelo. Artículos como <a href="https://www.smashingmagazine.com/2016/05/a-guide-to-personal-side-projects/">A Guide To Personal Side Projects</a> (publicado en Smashing Magazine) nos recuerdan sus beneficios, tanto personales como para nuestra carrera profesional. En el caso de un programador web, estos proyectos representan una oportunidad para estudiar y practicar con nuevas tecnologías, oportunidades que no suelen presentarse en nuestro trabajo diario.</p>
+<p>En mi caso decidí experimentar con <a href="https://www.w3.org/TR/2dcontext/">Canvas 2D</a>. El resultado final se puede ver en <s>http://raohmaru.com/lab/js/erdt</s>.</p>
+<p>El elemento Canvas es una zona dentro de nuestra página HTML que renderiza en un <a href="https://es.wikipedia.org/wiki/Imagen_de_mapa_de_bits">mapa de bits</a>, y que con APIs de JavaScript podemos dibujar en él (como las APIs Canvas 2D o <a href="https://developer.mozilla.org/en-US/docs/Glossary/WebGL">WebGL</a>). El objetivo original del experimento era aprender la <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D">API de Canvas 2D</a> y empezar a dibujar cuadrados, círculos e imágenes, y finalmente acabó en un proyecto de arte efímero donde el usuario puede crear dibujos únicos que jamás podrá volver a repetir con exactitud.</p>
+<p><img src="/raohmaru-blog/img/chromatic-big-bang.jpg" alt="Chromatic Big Bang"></p>
+<p><em>Un colorido Big Bang creado con ERDT.</em></p>
+<p>No voy a poner mucho detalle en cómo he desarrollado el proyecto; hay multitud de tutoriales sobre como trabajar con Canvas 2D, baste decir que todos empiezan con</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">var</span> canvas <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'mycanvas'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  
+ctx<span class="token punctuation">;</span>  
+<span class="token keyword">if</span><span class="token punctuation">(</span>canvas<span class="token punctuation">.</span>getContext<span class="token punctuation">)</span><span class="token punctuation">{</span>  
+ctx <span class="token operator">=</span> canvas<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">'2d'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token comment">// Let the magic begin  </span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>  
+    <span class="token comment">// canvas-unsupported code here  </span>
+<span class="token punctuation">}</span>  </code></pre>
+<p>(Para los curiosos el código de la aplicación se encuentra en <a href="https://github.com/raohmaru/Ephemeral-Random-Drawing-Tool">mi repositorio público de GitHub</a>.)</p>
+<h2 id="objetivos-adicionales">Objetivos adicionales</h2>
+<p>O escrito de otra manera, ¿qué me ha permitido poner en práctica el proyecto?</p>
+<h3 id="gulp">Gulp</h3>
+<p>Soy bastante fan de <a href="http://gruntjs.com/">Grunt</a> como automatizador de tareas (concatenar archivos, comprimir, analizar código, etc.), pero esta vez quería dar una oportunidad a <a href="http://gulpjs.com/">Gulp</a>. Las dos diferencias principales con Grunt son que Gulp utiliza <em>streams</em> de Node.js, con lo que el flujo de datos se manipula en memoria y solo se guarda en disco una vez (con lo que se consigue más velocidad de proceso).</p>
+<p>La segunda diferencia es que se escribe más código (frente al objeto de configuración de Grunt).</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">var</span> gulp <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'gulp'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  
+    jshint <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'gulp-jshint'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+gulp<span class="token punctuation">.</span><span class="token function">task</span><span class="token punctuation">(</span><span class="token string">'jshint'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+gulp<span class="token punctuation">.</span><span class="token function">src</span><span class="token punctuation">(</span><span class="token string">'js/\*\*/\*.js'</span><span class="token punctuation">)</span>  
+    <span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">jshint</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+gulp<span class="token punctuation">.</span><span class="token function">task</span><span class="token punctuation">(</span><span class="token string">'default'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'jshint'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+<pre class="language-js" tabindex="0"><code class="language-js">module<span class="token punctuation">.</span><span class="token function-variable function">exports</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">grunt</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+grunt<span class="token punctuation">.</span><span class="token function">initConfig</span><span class="token punctuation">(</span><span class="token punctuation">{</span>  
+    <span class="token literal-property property">jshint</span><span class="token operator">:</span> <span class="token punctuation">{</span>  
+        <span class="token literal-property property">all</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'js/\*\*/\*.js'</span><span class="token punctuation">]</span>  
+    <span class="token punctuation">}</span>  
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+grunt<span class="token punctuation">.</span><span class="token function">loadNpmTasks</span><span class="token punctuation">(</span><span class="token string">'grunt-contrib-jshint'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+grunt<span class="token punctuation">.</span><span class="token function">registerTask</span><span class="token punctuation">(</span><span class="token string">'default'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'jshint'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span><span class="token punctuation">;</span>  </code></pre>
+<p>Sin querer empezar un debate, me siento mucho más cómodo con la sencillez y claridad del archivo de configuración de Grunt que con las funciones enlazadas de Gulp.</p>
+<h3 id="no-frameworks-javascript">No frameworks JavaScript</h3>
+<p>Una de las restricciones auto-impuestas fue la de no poder utililizar ninguna librería o framework JavaScript. No jQuery, no Angular, Backbone, Ember, XYZ.js…</p>
+<p>Lo anterior enumerado ha supuesto un gran avance para el desarrollo web en cuestión, y para JavaScript en particular. Pero también nos hacen olvidar las bases de JavaScript y como resolver problemas de manera «nativa» (en contraposición al uso de librerías y frameworks). Si sirve de comparación, es como ir a una casa rural perdida en el monte, sin cobertura móvil, conexión a internet o TV. ¿Eso de allá con cubiertas y hojas se llama libro?</p>
+<h3 id="compatibilidad">Compatibilidad</h3>
+<p>Cuando se empieza un proyecto web (ya sea un website o una webapp), la primera pregunta que debemos hacernos es: ¿qué navegadores queremos dar soporte?. Aunque en realidad la pregunta subyacente es: <em>¿a qué versiones de Internet Explorer queremos dar soporte?</em></p>
+<p>A principios de 2016 vimos como <a href="https://www.microsoft.com/es-es/WindowsForBusiness/End-of-IE-support">Microsoft cesaba el soporte a Internet Explorer 8, 9 y 10</a>. Pero esto no quiso decir que los clientes y usuarios dejarán de utilizarlos de súbito. Y menos los clientes de <strong>tú</strong> proyecto.</p>
+<p>Por ese motivo, siendo un proyecto personal, me he dado el gustazo de preocuparme sólo de IE11 y siguientes (bienvenidos <a href="https://developer.mozilla.org/es/docs/Web/CSS/CSS_Flexible_Box_Layout/Usando_las_cajas_flexibles_CSS">flexbox</a>, <a href="https://developer.mozilla.org/es/docs/Web/CSS/@keyframes">@keyframes</a>, <a href="http://raohmaru.com/blog/javascript/use-strict/">strict mode</a>…).<br>
+(La compatibilidad con Firefox, Chrome, Safari, Opera va implícita.)</p>
+<h2 id="conclusiones">Conclusiones</h2>
+<p>Empezar un proyecto personal requiere esfuerzo y tiempo, pero la experiencia merece la pena. Espero que este sea el primero de muchos proyectos o experimentos personales que consiga llevar a cabo</p>
+<p>Por otra parte animo al que esté leyendo estas líneas a que empiece ese proyecto que le ronda por la cabeza, que en el proceso intente cosas nuevas y se ponga objetivos asumibles.</p>
+<p>Happy coding!</p>
+<h2 id="enlaces">Enlaces</h2>
+<ul>
+<li><s>http://raohmaru.com/lab/js/erdt</s></li>
+<li><a href="https://github.com/raohmaru/Ephemeral-Random-Drawing-Tool">https://github.com/raohmaru/Ephemeral-Random-Drawing-Tool</a></li>
+</ul>
+
+        <ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/raohmaru-blog/blog/ajax-internet-explorer-y-la-cache/">Ajax, Internet Explorer y la caché</a></li><li class="links-nextprev-next">Next →<br><a href="/raohmaru-blog/blog/super-mario-64-entrevistas-con-los-desarrolladores/">Super Mario 64: Entrevistas con los desarrolladores</a></li>
+        </ul>
+
+            </div>
+		</main>
+
+		<footer>
+            <div class="section">
+                <p>
+                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
+                    This page was built on 2025-03-10T21:08:11.682Z
+                </p>
+            </div>
+		</footer>
+
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+	</body>
+</html>

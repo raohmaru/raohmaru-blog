@@ -1,0 +1,78 @@
+.links-nextprev {
+	display: flex;
+	justify-content: space-between;
+	gap: .5em 1em;
+	list-style: "";
+	border-top: 1px dashed var(--color-gray-20);
+	padding: 1em 0;
+    font-size: 0.75rem;
+}
+
+.links-nextprev > * {
+	flex-grow: 1;
+}
+
+.links-nextprev-next {
+	text-align: right;
+}
+
+p img {
+    display: block;
+    margin-inline: auto;
+}
+
+blockquote {
+    margin: 2rem 0;
+    padding-inline: 2rem 1rem;
+    font-style: italic;
+    border-left: solid 5px var(--color-gray-50);
+}
+
+/* Tags */
+.post-tag {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-transform: capitalize;
+
+    &:before {
+        content: '';
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 6px;
+        background: url(/raohmaru-blog/img/tag.svg) 0 0 / cover;
+    }
+}
+
+/* Tags list */
+.post-metadata {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: .5em;
+	list-style: none;
+	padding: 0;
+	margin-top: 0;
+    font-size: 0.75rem;
+}
+
+.post-metadata time {
+	margin-right: 1em;
+}
+
+h1 {
+    /*
+    Make the element participate in a separate view transition from the root view transition.
+    See main.js.
+    */
+    view-transition-name: title;
+}
+
+/* h2:is([id]) {
+    display: inline-block;
+    margin-top: 0;
+
+    &:hover::after {
+        content: ' #';
+    }
+} */

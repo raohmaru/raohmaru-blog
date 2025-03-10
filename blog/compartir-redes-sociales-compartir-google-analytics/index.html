@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Compartir en redes sociales y medir con Google Analytics</title>
+		<meta name="description" content="Cómo compartir artículos en redes sociales y medir interacciones con Google Analytics.">
+		
+		
+		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+            <div class="section">
+                <a href="/raohmaru-blog/" class="home-link">Reinventing the wheel</a>
+                <nav>
+                    <h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/raohmaru-blog/about/">About</a></li>
+                        <li class="nav-item"><a href="/raohmaru-blog/tags/">Tags</a></li>
+                        <li class="nav-item"><a href="https://github.com/raohmaru">Github</a></li>
+                    </ul>
+                </nav>
+            </div>
+		</header>
+
+		<main id="skip">
+            <div class="section">
+                
+<h1 id="compartir-en-redes-sociales-y-medir-con-google-analytics">Compartir en redes sociales y medir con Google Analytics</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2012-07-12">12 July 2012</time></li>
+        <li><a href="/raohmaru-blog/tags/javascript/" class="post-tag">JavaScript</a>, </li>
+        <li><a href="/raohmaru-blog/tags/analytics/" class="post-tag">Analytics</a></li>
+</ul>
+
+<p>¿Gestionas las estadísticas de visitas de un sitio web con ```Google Analytics(http://www.google.com/intl/es/analytics/), y quieres medir la efectividad de los botones para compartir en redes sociales?</p>
+<p>El código de seguimiento JavaScript de Google Analytics (<em>Tracking Code</em>, que carga en la página el archivo externo <code>ga.js</code> con todas las funcionalidades), dispone de una ```API(http://es.wikipedia.org/wiki/Interfaz_de_programaci%C3%B3n_de_aplicaciones) en la que consta un método que permite este tipo de medición, el método <code>_trackSocial()</code>. Con él se pueden registrar las interacciones “sociales” de nuestro sitio y categorizarlas correctamente.</p>
+<pre class="language-js" tabindex="0"><code class="language-js">_gaq<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">[</span>‘_trackSocial’<span class="token punctuation">,</span> ‘theSocialNetwork’<span class="token punctuation">,</span> ‘like’<span class="token punctuation">,</span> <span class="token literal-property property">‘http</span><span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>www<span class="token punctuation">.</span>mysite<span class="token punctuation">.</span>com<span class="token operator">/</span>abc’<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>El botón de Google+ invoca automáticamente éste método al ser activado y envía la información a nuestra cuenta de Google Analytics; pero si queremos medir las acciones de otras plataformas como Facebook o Twitter, entonces se requiere un poco más de trabajo e integración con las APIs de esos servicios.</p>
+<p><strong>Para medir las acciones con el botón “me gusta” de Facebook</strong>:</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">function</span> <span class="token function">initFBTrack</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token constant">FB</span><span class="token punctuation">)</span> <span class="token operator">==</span> ‘<span class="token keyword">undefined</span>’<span class="token punctuation">)</span>  
+    <span class="token punctuation">{</span>  
+        <span class="token function">setTimeout</span><span class="token punctuation">(</span>initFBTrack<span class="token punctuation">,</span> <span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token keyword">return</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>
+
+    <span class="token constant">FB</span><span class="token punctuation">.</span>Event<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>‘edge<span class="token punctuation">.</span>create’<span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">targetUrl</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+        _gaq<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">[</span>‘_trackSocial’<span class="token punctuation">,</span> ‘Facebook’<span class="token punctuation">,</span> ‘like’<span class="token punctuation">,</span> targetUrl<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  
+<span class="token comment">// Wait for Facebook API initialization  </span>
+<span class="token function">setTimeout</span><span class="token punctuation">(</span>initFBTrack<span class="token punctuation">,</span> <span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+<p>También se pueden medir los botones “me disgusta” y “compartir en Facebook”, cambiando el evento de suscripción (y la acción para identificarlo).</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token constant">FB</span><span class="token punctuation">.</span>Event<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>‘edge<span class="token punctuation">.</span> remove’<span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">targetUrl</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+    _gaq<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">[</span>‘_trackSocial’<span class="token punctuation">,</span> ‘Facebook’<span class="token punctuation">,</span> ‘unlike’<span class="token punctuation">,</span> targetUrl<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token constant">FB</span><span class="token punctuation">.</span>Event<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>‘ message<span class="token punctuation">.</span>send’<span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">targetUrl</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+    _gaq<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">[</span>‘_trackSocial’<span class="token punctuation">,</span> ‘Facebook’<span class="token punctuation">,</span> ‘send’<span class="token punctuation">,</span> targetUrl<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+<p><strong>Medición del botón de compartir en Twitter</strong>:</p>
+<pre class="language-js" tabindex="0"><code class="language-js">twttr<span class="token punctuation">.</span><span class="token function">ready</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">twttr</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    twttr<span class="token punctuation">.</span><span class="token function">events</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>‘tweet’<span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+        <span class="token keyword">if</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span>  
+        <span class="token punctuation">{</span>  
+            <span class="token keyword">var</span> opt_pagePath<span class="token punctuation">;</span>  
+            <span class="token keyword">if</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>target <span class="token operator">&amp;&amp;</span> e<span class="token punctuation">.</span>target<span class="token punctuation">.</span>nodeName <span class="token operator">==</span> ‘<span class="token constant">IFRAME</span>’<span class="token punctuation">)</span>  
+            <span class="token punctuation">{</span>  
+                <span class="token comment">// Gets the URL param to track  </span>
+                opt_pagePath <span class="token operator">=</span> <span class="token function">extractParamFromUri</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>target<span class="token punctuation">.</span>src<span class="token punctuation">,</span> ‘url’<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+            <span class="token punctuation">}</span>  
+            _gaq<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">[</span>‘_trackSocial’<span class="token punctuation">,</span> ‘Twitter’<span class="token punctuation">,</span> ‘tweet’<span class="token punctuation">,</span> opt_pagePath<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token punctuation">}</span>  
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">extractParamFromUri</span><span class="token punctuation">(</span><span class="token parameter">uri<span class="token punctuation">,</span> paramName</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>uri<span class="token punctuation">)</span>  
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">var</span> regex <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RegExp</span><span class="token punctuation">(</span>‘<span class="token punctuation">[</span>\\<span class="token operator">?</span><span class="token operator">&amp;</span>#<span class="token punctuation">]</span>’ <span class="token operator">+</span> paramName <span class="token operator">+</span> ‘<span class="token operator">=</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token operator">^</span><span class="token operator">&amp;</span>#<span class="token punctuation">]</span><span class="token operator">*</span><span class="token punctuation">)</span>’<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> params <span class="token operator">=</span> regex<span class="token punctuation">.</span><span class="token function">exec</span><span class="token punctuation">(</span>uri<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token keyword">if</span><span class="token punctuation">(</span>params <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>  
+        <span class="token keyword">return</span> <span class="token function">unescape</span><span class="token punctuation">(</span>params<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  </code></pre>
+<p>Otras acciones de Twitter que se pueden medir, simplemente cambiando el evento de suscripción: <code>click</code>, <code>favorite</code>, <code>tweet</code>, <code>retweet</code>, <code>follow</code>.</p>
+<pre class="language-js" tabindex="0"><code class="language-js">twttr<span class="token punctuation">.</span><span class="token function">events</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>‘retweet’<span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-js" tabindex="0"><code class="language-js">twttr<span class="token punctuation">.</span><span class="token function">events</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>‘follow’<span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><strong>Botón de compartir en LinkedIn:</strong></p>
+<pre class="language-html" tabindex="0"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>!–</span> <span class="token attr-name">Creates</span> <span class="token attr-name">a</span> <span class="token attr-name">plugin</span> <span class="token attr-name">to</span> <span class="token attr-name">share</span> <span class="token attr-name">the</span> <span class="token attr-name">current</span> <span class="token attr-name">page</span> <span class="token attr-name">–</span><span class="token punctuation">></span></span>  
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://platform.linkedin.com/in.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>  
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>IN/Share<span class="token punctuation">"</span></span> <span class="token attr-name">data-counter</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>top<span class="token punctuation">"</span></span> <span class="token attr-name">data-onsuccess</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>trackLinkedIn<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">  
+<span class="token comment">// Fired when the URL is successfully shared  </span>
+<span class="token keyword">function</span> <span class="token function">trackLinkedIn</span><span class="token punctuation">(</span><span class="token parameter">targetURL</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    _gaq<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">[</span>‘_trackSocial’<span class="token punctuation">,</span> ‘LinkedIn’<span class="token punctuation">,</span> ‘share’<span class="token punctuation">,</span> targetURL<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>  </code></pre>
+<h2 id="referencia">Referencia</h2>
+<ul>
+<li><a href="https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiSocialTracking">Tracking Code: Social Plug-in Analytics</a></li>
+<li><a href="https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingSocial">Social Interaction Analytics</a></li>
+<li><a href="https://developer.linkedin.com/share-plugin">LinkedIn Share Plugin</a></li>
+</ul>
+
+        <ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/raohmaru-blog/blog/imagenes-que-no-dicen-onload/">Imágenes que no dicen onLoad</a></li><li class="links-nextprev-next">Next →<br><a href="/raohmaru-blog/blog/use-strict/">use strict</a></li>
+        </ul>
+
+            </div>
+		</main>
+
+		<footer>
+            <div class="section">
+                <p>
+                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
+                    This page was built on 2025-03-10T21:08:11.680Z
+                </p>
+            </div>
+		</footer>
+
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+	</body>
+</html>

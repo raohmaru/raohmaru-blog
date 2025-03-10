@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Experimentos con la Web Audio API de JavaScript</title>
+		<meta name="description" content="Motor de videojuego en JavaScript.">
+		
+		
+		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+            <div class="section">
+                <a href="/raohmaru-blog/" class="home-link">Reinventing the wheel</a>
+                <nav>
+                    <h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/raohmaru-blog/about/">About</a></li>
+                        <li class="nav-item"><a href="/raohmaru-blog/tags/">Tags</a></li>
+                        <li class="nav-item"><a href="https://github.com/raohmaru">Github</a></li>
+                    </ul>
+                </nav>
+            </div>
+		</header>
+
+		<main id="skip">
+            <div class="section">
+                
+<h1 id="experimentos-con-la-web-audio-api-de-javascript">Experimentos con la Web Audio API de JavaScript</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2019-04-26">26 April 2019</time></li>
+        <li><a href="/raohmaru-blog/tags/javascript/" class="post-tag">JavaScript</a>, </li>
+        <li><a href="/raohmaru-blog/tags/audio/" class="post-tag">Audio</a></li>
+</ul>
+
+<p>La <a href="https://developer.mozilla.org/es/docs/Web/API/Web_Audio_API">Web Audio API</a> es una interfaz que nos permite generar y modificar flujos de audio. Vamos, crear sonido con JavaScript desde el navegador (o incluso música si eres un virtuoso).</p>
+<p>Esta tecnología lleva bastante tiempo disponible (<a href="https://webaudio.github.io/web-audio-api/">el primer borrador de la W3C</a> data de 2011), y <a href="https://caniuse.com/#search=web%20audio%20api">desde 2014</a> su soporte está incluído en la mayoría de navegadores web. Varias librerías JavaScript demuestran el potencial de esta API, tales como <a href="https://tonejs.github.io/">Tone.js</a> o <a href="https://howlerjs.com/">howler.js</a>, y hay web apps que hacen un uso impresionante del sonido sintetizado: véase <a href="http://labs.dinahmoe.com/plink/">Plink</a> o <a href="http://qiao.github.io/euphony/">Euphony</a>.</p>
+<p>Para empezar a trabajar con la Web Audio API hay primero que entender como funciona: toda operación para manipular sonido se realiza dentro de un <em>contexto sonido</em>, el cual está diseñado como un sistema de nodos interconectados que transforman uno o varios flujos de sonido. Desde un nodo origen se conectan cualquier número de <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioNode">nodos de audio</a> que procesan el flujo de audio hasta que finalmente se conecta a un nodo de destino. El flujo de audio pasa por todos estos nodos donde es procesado, hasta terminar en el nodo de destino que puede representar la salida por los altavoces o que se guarde en un archivo. Este conjunto de nodos enlazados se conoce como <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioNode#The_audio_routing_graph">audio routing graph</a>.</p>
+<p><img src="/raohmaru-blog/img/audio-context.png" alt="Contexto de audio y nodos de audio"></p>
+<p>Traducido a JavaScript, todo empieza con el objeto <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioContext">AudioContext</a>: el contexto de audio que nos permite crear nodos y procesar un flujo de sonido.</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token comment">// Safari todavía no ha implementado correctamente la API,</span>
+<span class="token comment">// así que tenemos que utilizar la versión con prefijo</span>
+<span class="token keyword">const</span> AudioContext <span class="token operator">=</span> window<span class="token punctuation">.</span>AudioContext <span class="token operator">||</span> window<span class="token punctuation">.</span>webkitAudioContext<span class="token punctuation">;</span>
+<span class="token keyword">const</span> audioCtx <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AudioContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>A continuación creamos un par de nodos para procesar el flujo de audio: un nodo para crear un tono constante a 240 Hz (<a href="https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode">OscillatorNode</a>), y otro nodo para controlar la <a href="http://blog.7notasestudio.com/diferencia-entre-ganancia-y-volumen/">ganancia</a> (<a href="https://developer.mozilla.org/en-US/docs/Web/API/GainNode">GainNode</a>).</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">const</span> oscillatorNode <span class="token operator">=</span> audioCtx<span class="token punctuation">.</span><span class="token function">createOscillator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      oscillatorNode<span class="token punctuation">.</span>frequency<span class="token punctuation">.</span><span class="token function">setValueAtTime</span><span class="token punctuation">(</span><span class="token number">240</span><span class="token punctuation">,</span> audioCtx<span class="token punctuation">.</span>currentTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> gainNode <span class="token operator">=</span> audioCtx<span class="token punctuation">.</span><span class="token function">createGain</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      gainNode<span class="token punctuation">.</span>gain<span class="token punctuation">.</span><span class="token function">setValueAtTime</span><span class="token punctuation">(</span><span class="token number">0.5</span><span class="token punctuation">,</span> audioCtx<span class="token punctuation">.</span>currentTime<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Y los conectaremos entre ellos y al <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioDestinationNode">nodo de destino</a> por defecto de AudioContext (normalmente es la salida de audio de tu ordenador).</p>
+<pre class="language-js" tabindex="0"><code class="language-js">oscillatorNode<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>gainNode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+gainNode<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>audioCtx<span class="token punctuation">.</span>destination<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Finalmente iniciamos el nodo oscilador y nos preparamos para escuchar un sonido monótono bastante insufrible. Pero ¡eh, estamos creando música!</p>
+<pre class="language-js" tabindex="0"><code class="language-js">oscillatorNode<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>(<em>Puedes ver este código en funcionamento</em> <a href="https://codepen.io/raohmaru/pen/bJOwvo?editors=1111"><em>aquí</em></a><em>. Asegúrate de bajar el volumen de tus altavoces.</em>)</p>
+<p>No voy a profundizar mucho más en la API ya que hay numerosas referencias y tutoriales que la explican con mucho detalle, empezando por <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">toda esta sección</a> en la fantástica MDN, o <a href="https://css-tricks.com/introduction-web-audio-api/">este artículo</a> en CSS-Tricks, o <a href="https://www.html5rocks.com/en/tutorials/webaudio/intro/">este otro genial artículo</a> en HTML5 Rocks (de los primeros que explicaron la Web Audio API).</p>
+<h3 id="el-experimento">El experimento</h3>
+<p>El ejercicio consiste, tras estudiar la Web Audio API, en crear sonidos sintéticos desde una sencilla aplicación web utilizando un único flujo de audio, pero con libertad para cambiar la mayor cantidad de parámetros posibles. Al no haber estudiado música en mi vida, Hulio, la tarea fue un poco díficil por algunos nuevos conceptos (por lo que recomiendo seguir los enlaces que encontrarás más abajo). Como ayuda, cada párametro que se puede modificar viene acompañado de un breve texto descriptivo para saber qué es lo que estamos tocando.</p>
+<p>El resultado es una pequeña aplicación web que genera sonidos utilizando como origen un OscillatorNode (para crear un tono constante) o un <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode">Audio​Buffer​Source​Node</a> (para generar <a href="https://es.wikipedia.org/wiki/Ruido_blanco">ruido blanco</a>), al que se le aplica un <a href="https://en.wikipedia.org/wiki/Envelope_(music)">envolvente acústico</a> para hacerlo más natural y filtros personalizables como nodos intermedios. El sonido generado se destina bien a los altavoces del sistema, o bien a un objeto <a href="https://developer.mozilla.org/en-US/docs/Web/API/Blob/Blob">Blob</a> que el usuario puede guardar en su máquina como un archivo OGG.</p>
+<p><a href="https://raohmaru.github.io"><img src="/raohmaru-blog/img/sasynth.png" alt="Simple Synthesizer with Web Audio API"></a></p>
+<p><strong>Puedes jugar con el sintetizador aquí:</strong> <a href="https://raohmaru.github.io/simple-audio-synthesizer/src/"><strong>https://raohmaru.github.io/simple-audio-synthesizer/src/</strong></a> 🎵</p>
+<p><strong>O probar el</strong> <a href="https://raohmaru.github.io/simple-audio-synthesizer/src/electric-piano.html"><strong>piano electrónico</strong></a> 🎹 <strong>.</strong></p>
+<p>Por supuesto, si tienes curiosidad por ver el código fuente, <a href="https://github.com/raohmaru/simple-audio-synthesizer">lo encontrarás en mi repositorio de GitHub</a>.</p>
+<h3 id="referencias">Referencias</h3>
+<ul>
+<li><a href="http://www.filmsound.org/articles/ninecomponents/9components.htm">Nine Components of Sound</a></li>
+<li><a href="https://teropa.info/blog/2016/07/28/javascript-systems-music.html">JavaScript Systems Music</a></li>
+<li><a href="https://codepen.io/gregh/post/recreating-legendary-8-bit-games-music-with-web-audio-api">Recreating legendary 8-bit games music with Web Audio API</a></li>
+<li><a href="https://www.html5rocks.com/en/tutorials/webaudio/games/">Developing Game Audio with the Web Audio API</a></li>
+<li><a href="https://fazli.sapuan.org/blog/electric-guitar-synth-in-html5/">Electric Guitar Synth in HTML5</a></li>
+<li><a href="https://dev.opera.com/articles/drum-sounds-webaudio/">Synthesising Drum Sounds with the Web Audio API</a></li>
+</ul>
+
+        <ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/raohmaru-blog/blog/javascript-experiments-desarrollando-un-motor-de-videojuego/">Desarrollando un motor de videojuego en JavaScript</a></li><li class="links-nextprev-next">Next →<br><a href="/raohmaru-blog/blog/videojuegos-html5-css-javascript/">Videojuegos en HTML5 con CSS y JavaScript</a></li>
+        </ul>
+
+            </div>
+		</main>
+
+		<footer>
+            <div class="section">
+                <p>
+                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
+                    This page was built on 2025-03-10T21:08:11.682Z
+                </p>
+            </div>
+		</footer>
+
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+	</body>
+</html>

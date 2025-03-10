@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Ajax, Internet Explorer y la caché</title>
+		<meta name="description" content="Resolver problemas con la memoria caché en las peticiones AJAX con Internet Explorer.">
+		
+		
+		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+            <div class="section">
+                <a href="/raohmaru-blog/" class="home-link">Reinventing the wheel</a>
+                <nav>
+                    <h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/raohmaru-blog/about/">About</a></li>
+                        <li class="nav-item"><a href="/raohmaru-blog/tags/">Tags</a></li>
+                        <li class="nav-item"><a href="https://github.com/raohmaru">Github</a></li>
+                    </ul>
+                </nav>
+            </div>
+		</header>
+
+		<main id="skip">
+            <div class="section">
+                
+<h1 id="ajax-internet-explorer-y-la-cache">Ajax, Internet Explorer y la caché</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2016-04-28">28 April 2016</time></li>
+        <li><a href="/raohmaru-blog/tags/javascript/" class="post-tag">JavaScript</a>, </li>
+        <li><a href="/raohmaru-blog/tags/http/" class="post-tag">HTTP</a></li>
+</ul>
+
+<p>Si desarrollas sitios web, en algún momento de tu vida te has enfrentado a problemas derivados de la <a href="https://en.wikipedia.org/wiki/Cross-browser">compatibilidad entre navegadores</a>. Y si tuviera que preguntar por el navegador más problematico, sin duda la respuesta sería unánime: Internet Explorer. Cuándo creemos que con la siguiente versión del navegador de Microsoft olvidaremos todas las miserias que hemos sufrido con él, nos sorprende con nuevos obstáculos.</p>
+<p>El último problema que me he encontrado con Internet Explorer no es nuevo, pero merece la pena mencionarlo. Por lo menos está presente desde la versión 8, y está relacionado en cómo cachea las peticiones <a href="https://developer.mozilla.org/es/docs/AJAX">Ajax</a> con el método GET.</p>
+<p>Al visitar un sitio web, el navegador <a href="https://es.wikipedia.org/wiki/Cach%C3%A9_web">guarda en caché</a> los recursos estáticos (imágenes, archivos JavaScript y CSS) para ahorrar ancho de banda en sucesivas visitas y así disminuir el tiempo de carga. Con el contenido dinámico ocurre lo mismo: una petición <a href="https://es.wikipedia.org/wiki/Hypertext_Transfer_Protocol#GET">GET</a> Ajax es almacenada en caché de igual manera que un recurso estático. El navegador obtendrá ese contenido dinámico de la caché hasta que el servidor notifique que ha caducado y se necesite descargar de nuevo.</p>
+<p><img src="/raohmaru-blog/img/http-headers.png" alt="Cabeceras HTTP"></p>
+<p>Pero Internet Explorer, por supuesto, no sigue estas reglas.</p>
+<p>Internet Explorer guarda en caché una petición GET Ajax todo el tiempo necesario y más. Si el servidor no devuelve las cabeceras HTTP de caché correctas, ese tiempo es incierto. Si la cabecera <em>Expires</em> es enviada, IE no actualizará el contenido hasta que éste haya expirado, incluso <a href="http://stackoverflow.com/questions/385367/what-requests-do-browsers-f5-and-ctrl-f5-refreshes-generate">si se fuerza el refresco de la página con Ctrl+F5</a>.</p>
+<h2 id="las-soluciones">Las soluciones</h2>
+<p>Si tenemos control sobre el servidor que suministra los recursos dinámicos, <a href="https://blog.httpwatch.com/2009/08/07/ajax-caching-two-important-facts/">establecer las cabeceras HTTP que permitan cachear las peticiones</a> (como añadir <code>Cache-Control: no-cache</code>) será de gran ayuda.</p>
+<p>Si no podemos modificar las cabeceras que envía el servidor con el contenido dinámico (como añadir <code>Cache-Control: no-cache</code>), tenemos estas soluciones en la parte del cliente:</p>
+<h3 id="peticiones-post">Peticiones POST</h3>
+<p>Las peticiones POST no son cacheadas por el navegador, a no ser que la respuesta incluya las cabeceras <code>Cache-Control</code> or <code>Expires</code>. <strong>Pero utilizar este método en lugar de GET para evitar la caché es una mala práctica:</strong> él método POST es para peticiones que modifican el estado del servidor y no para únicamente obtener datos.</p>
+<h3 id="cache-buster">Cache Buster</h3>
+<p>La técnica <em>cache buster</em> (o <em>cache breaker</em>) consite en añadir a la URL de la petición un parámetro adicional, para que el navegador crea que es una petición a un recurso nuevo y forzando así su descarga.</p>
+<p>https://example.org/books/?id=lotr&amp;<strong>_cb=123456</strong></p>
+<p>Cada vez que se necesite actualizar ese contenido para IE, basta con cambiar el valor del parámetro de cache buster. También se puede utilizar un valor aleatorio, con el inconveniente que ese recurso será siempre descargado por el usuario.</p>
+<p>Si utilizas <a href="https://es.wikipedia.org/wiki/JQuery">jQuery</a> o <a href="http://zeptojs.com">zepto</a> para las peticiones GET Ajax, ten en cuenta que por defecto guardan en caché todas esas peticiones. Para desactivarlo has de pasar la opción <code>cache</code> como <code>false</code>:</p>
+<pre class="language-js" tabindex="0"><code class="language-js">$<span class="token punctuation">.</span><span class="token function">ajax</span><span class="token punctuation">(</span><span class="token punctuation">{</span>  
+    <span class="token literal-property property">url</span><span class="token operator">:</span> <span class="token string">"http://path.to/api/resource"</span><span class="token punctuation">,</span>  
+    <span class="token literal-property property">cache</span><span class="token operator">:</span> <span class="token boolean">false</span>  
+<span class="token punctuation">}</span><span class="token punctuation">)</span>  
+<span class="token punctuation">.</span><span class="token function">done</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">data</span><span class="token punctuation">)</span><span class="token punctuation">{</span>  
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+<p>Otras librerías como Sencha o MooTools tienen opciones similares en sus métodos Ajax. Si optas por utilizar el objeto <a href="https://developer.mozilla.org/es/docs/XMLHttpRequest">XMLHttpRequest</a>, sencillamente añade el parámetro a la URL.</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">var</span> url <span class="token operator">=</span> <span class="token string">'http://path.to/api/resource'</span><span class="token punctuation">,</span>  
+params <span class="token operator">=</span> <span class="token string">'?_cb='</span> <span class="token operator">+</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  
+xhr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">XMLHttpRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+xhr<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'GET'</span><span class="token punctuation">,</span> url<span class="token operator">+</span>params<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+xhr<span class="token punctuation">.</span><span class="token function-variable function">onreadystatechange</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+    <span class="token keyword">if</span><span class="token punctuation">(</span>xhr<span class="token punctuation">.</span>readyState <span class="token operator">==</span> <span class="token number">4</span> <span class="token operator">&amp;&amp;</span> xhr<span class="token punctuation">.</span>status <span class="token operator">==</span> <span class="token number">200</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>xhr<span class="token punctuation">.</span>responseText<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>  
+<span class="token punctuation">}</span><span class="token punctuation">;</span>  
+xhr<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+<p>(<code>Date.now()</code> devuelve el número de milisegundos transcurridos desde el <a href="https://en.wikipedia.org/wiki/Unix_time">tiempo Unix</a>, por lo que es una opción válida para generar un número al azar. Si necesitas dar soporte a Interner Explorer 8 o inferior debes utilizar en su lugar <code>(new Date()).getTime()</code>.)</p>
+
+        <ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/raohmaru-blog/blog/multiples-enlaces-simbolicos-windows-mklink/">Múltiples enlaces simbólicos en Windows</a></li><li class="links-nextprev-next">Next →<br><a href="/raohmaru-blog/blog/experimentos-con-html5-canvas/">Experimentos con HTML5 Canvas</a></li>
+        </ul>
+
+            </div>
+		</main>
+
+		<footer>
+            <div class="section">
+                <p>
+                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
+                    This page was built on 2025-03-10T21:08:11.680Z
+                </p>
+            </div>
+		</footer>
+
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+	</body>
+</html>

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Desarrollando un motor de videojuego en JavaScript</title>
+		<meta name="description" content="Motor de videojuego en JavaScript.">
+		
+		
+		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+            <div class="section">
+                <a href="/raohmaru-blog/" class="home-link">Reinventing the wheel</a>
+                <nav>
+                    <h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/raohmaru-blog/about/">About</a></li>
+                        <li class="nav-item"><a href="/raohmaru-blog/tags/">Tags</a></li>
+                        <li class="nav-item"><a href="https://github.com/raohmaru">Github</a></li>
+                    </ul>
+                </nav>
+            </div>
+		</header>
+
+		<main id="skip">
+            <div class="section">
+                
+<h1 id="desarrollando-un-motor-de-videojuego-en-javascript">Desarrollando un motor de videojuego en JavaScript</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2018-04-16">16 April 2018</time></li>
+        <li><a href="/raohmaru-blog/tags/javascript/" class="post-tag">JavaScript</a>, </li>
+        <li><a href="/raohmaru-blog/tags/game-dev/" class="post-tag">Game Dev</a></li>
+</ul>
+
+<p>Continuando con los experimentos con tecnologías web, y después de haber <a href="https://raohmaru.com/blog/javascript/experimentos-con-html5-canvas/">jugado un poco con Canvas 2D</a>, toca el turno a investigar cómo construir un <a href="https://en.wikipedia.org/wiki/Game_engine">motor de videojuego</a> en HTML5 y JavaScript.</p>
+<p>Hace tiempo que había experimentado con la idea, <a href="https://github.com/raohmaru/as3-platform-game-engine">desarrollando un concepto</a> en Flash ActionScript 3 (si tienes el plugin de Flash instalado <a href="https://raohmaru.com/lab/game/platform-game-egine/">puedes jugar aquí</a> hasta finales de <a href="http://time.com/4874334/adobe-flash-2020/">2020</a>), y ahora que los navegadores están más que preparados para ser una plataforma de videojuegos (y lo demuestra la gran cantidad de <a href="https://github.com/bebraw/jswiki/wiki/Game-Engines">motores HTML5</a> u juegos que hay disponibles) me decidí a programar el mío propio; no con afán comercial, si no por el placer del aprendizaje.</p>
+<p><strong>El resultado está aquí disponible:</strong> <a href="https://github.com/raohmaru/sge">https://github.com/raohmaru/sge</a>.<br>
+Y un ejemplo de algo parecido a un juego: <a href="https://raohmaru.github.io/sge/demo/selfish-gene/index.html">https://raohmaru.github.io/sge/demo/selfish-gene/index.html</a>.</p>
+<p>El concepto del motor es sencillo: consta de una vista (por ahora sólo Canvas 2D es soportado) donde se renderiza el juego cada <em>frame</em>, la animación es controlada con <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame"><code>window.requestAnimationFrame()</code></a> para poder llegar a los <a href="http://es.ign.com/frame-rate/88277/feature/entendiendo-el-frame-rate-y-su-importancia">60 fps</a>, utiliza el concepto de <a href="https://en.wikipedia.org/wiki/Sprite_%28computer_graphics%29"><em>sprites</em></a> para manipular los elementos del juego, y tiene un sistema de detección de colisiones simplicísimo.</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token comment">// get the Canvas lement from the DOM  </span>
+<span class="token keyword">var</span> canvas <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span>‘maincanvas’<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// New instance of the game  </span>
+<span class="token keyword">var</span> game <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">sge<span class="token punctuation">.</span>Game</span><span class="token punctuation">(</span>canvas<span class="token punctuation">,</span> <span class="token punctuation">{</span>  
+    <span class="token comment">// Game settings  </span>
+    <span class="token literal-property property">renderer</span><span class="token operator">:</span> ‘2D’<span class="token punctuation">,</span> <span class="token comment">// Use Canvas2D  </span>
+    <span class="token literal-property property">size</span><span class="token operator">:</span> sge<span class="token punctuation">.</span>cnst<span class="token punctuation">.</span><span class="token constant">FILL_WINDOW</span><span class="token punctuation">,</span>  
+    <span class="token literal-property property">width</span><span class="token operator">:</span> ‘<span class="token number">100</span><span class="token operator">%</span>’<span class="token punctuation">,</span>  
+    <span class="token literal-property property">height</span><span class="token operator">:</span> ‘<span class="token number">100</span><span class="token operator">%</span>’<span class="token punctuation">,</span>  
+    <span class="token literal-property property">canvasColor</span><span class="token operator">:</span> ‘#c2dcfc’<span class="token punctuation">,</span>  
+    <span class="token literal-property property">fps</span><span class="token operator">:</span> <span class="token number">60</span>  
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Create a sprite  </span>
+<span class="token keyword">var</span> sp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">sge<span class="token punctuation">.</span>sys<span class="token punctuation">.</span>Sprite</span><span class="token punctuation">(</span><span class="token punctuation">{</span>  
+    <span class="token literal-property property">x</span> <span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>  
+    <span class="token literal-property property">y</span> <span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>  
+    <span class="token literal-property property">width</span> <span class="token operator">:</span> <span class="token number">32</span><span class="token punctuation">,</span>  
+    <span class="token literal-property property">height</span><span class="token operator">:</span> <span class="token number">32</span>  
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token comment">// Init the sprite’s view  </span>
+sp<span class="token punctuation">.</span><span class="token function">createView</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token comment">// Fill the sprite with color black  </span>
+sp<span class="token punctuation">.</span><span class="token function">getView</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">drawRect</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> sp<span class="token punctuation">.</span>width<span class="token punctuation">,</span> sp<span class="token punctuation">.</span>height<span class="token punctuation">,</span> ‘#<span class="token number">000</span>’<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token comment">// Add the sprite to the game  </span>
+game<span class="token punctuation">.</span>spriteMgr<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>sp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Add on frame update listener  </span>
+game<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span>sge<span class="token punctuation">.</span>event<span class="token punctuation">.</span><span class="token constant">FRAME</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>  
+    <span class="token comment">// Moves the sprite in circles  </span>
+    sp<span class="token punctuation">.</span>x <span class="token operator">+=</span> Math<span class="token punctuation">.</span><span class="token function">sin</span><span class="token punctuation">(</span>sp<span class="token punctuation">.</span>age<span class="token operator">/</span><span class="token number">10</span><span class="token punctuation">)</span> \<span class="token operator">*</span> <span class="token number">10</span> <span class="token operator">|</span> <span class="token number">0</span><span class="token punctuation">;</span>  
+    sp<span class="token punctuation">.</span>y <span class="token operator">+=</span> Math<span class="token punctuation">.</span><span class="token function">cos</span><span class="token punctuation">(</span>sp<span class="token punctuation">.</span>age<span class="token operator">/</span><span class="token number">10</span><span class="token punctuation">)</span> \<span class="token operator">*</span> <span class="token number">10</span> <span class="token operator">|</span> <span class="token number">0</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Start the game  </span>
+game<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+<h3 id="el-renderizador">El renderizador</h3>
+<p>En un navegador web podemos utilizar diferentes métodos para presentar gráficos: el mismo <a href="https://en.wikipedia.org/wiki/Document_Object_Model">DOM</a>, imágenes <a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a>, manipulando los píxeles de un Canvas 2D, o con <a href="https://es.wikipedia.org/wiki/WebGL">WebGL</a>. Cuando un nuevo motor SGE se inicia, el usuario puede seleccionar que tipo de renderizador utilizar, el cuál actúa como una pieza desacoplada: a través de una interfaz agnóstica, el motor del juego pasa instrucciones al renderizador seleccionado para que se actualice cada fotograma.</p>
+<h3 id="entity-component-system">Entity-Component-System</h3>
+<p>Cada elemento que se puede añadir al juego se considera una entidad (<em>entity</em> en inglés), al cuál se le pueden añadir rasgos (o «componentes») que añaden nuevas características o comportamientos a la entidad. Finalmente, un sistema se encarga de la lógica detrás de cada rasgo (como mover una entidad que tiene el rasgo <em>Movable</em>, o comprobar los puntos de vida del rasgo <strong>Destroyable</strong>).</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token comment">// Create a new Entity  </span>
+<span class="token keyword">var</span> hero <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">sge<span class="token punctuation">.</span>sys<span class="token punctuation">.</span>Entity</span><span class="token punctuation">(</span><span class="token punctuation">{</span>  
+    <span class="token comment">// Properties for the trait Renderable  </span>
+    <span class="token literal-property property">x</span> <span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>  
+    <span class="token literal-property property">y</span> <span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>  
+    <span class="token literal-property property">width</span> <span class="token operator">:</span> <span class="token number">32</span><span class="token punctuation">,</span>  
+    <span class="token literal-property property">height</span><span class="token operator">:</span> <span class="token number">32</span><span class="token punctuation">,</span>  
+    <span class="token comment">// Properties for the trait Movable  </span>
+    <span class="token literal-property property">speed</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>  
+    <span class="token comment">// Properties for the trait Destroyable  </span>
+    <span class="token literal-property property">hp</span><span class="token operator">:</span> <span class="token number">8</span>  
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token comment">// Add some traits  </span>
+hero<span class="token punctuation">.</span><span class="token function">addTrait</span><span class="token punctuation">(</span>‘Renderable’<span class="token punctuation">,</span> sge<span class="token punctuation">.</span>sys<span class="token punctuation">.</span>trait<span class="token punctuation">.</span>Renderable<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+hero<span class="token punctuation">.</span><span class="token function">addTrait</span><span class="token punctuation">(</span>‘Movable’<span class="token punctuation">,</span> sge<span class="token punctuation">.</span>sys<span class="token punctuation">.</span>trait<span class="token punctuation">.</span>Movable<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+hero<span class="token punctuation">.</span><span class="token function">addTrait</span><span class="token punctuation">(</span>‘Destroyable’<span class="token punctuation">,</span> sge<span class="token punctuation">.</span>sys<span class="token punctuation">.</span>trait<span class="token punctuation">.</span>Destroyable<span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+<p>Este patrón de arquitectura se conoce como <a href="https://en.wikipedia.org/wiki/Entity%E2%80%93component%E2%80%93system">Entity-Component-System</a>, y es el más utilizado en el desarrollo de videojuegos. Una de las ventajas que ofrece es que permite crear nuevos objetos por composición (nuestra entidad Hero tiene los rasgos Renderable, Movable y Health), en contraste con la creación de objetos por <a href="https://es.wikipedia.org/wiki/Herencia_(inform%C3%A1tica)">herencia</a> (en este caso nuestro entidad Hero tendría una larga cadena de herencias: Hero &lt;&lt; LivingEntity &lt;&lt; MovableEntity &lt;&lt; Entity).</p>
+<blockquote>
+<p>Puedes encontrar más información sobre este patrón en</p>
+<ul>
+<li><a href="https://spin.atomicobject.com/2016/04/22/entity-component-systems/">https://spin.atomicobject.com/2016/04/22/entity-component-systems/</a></li>
+<li><a href="http://www.vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript">http://www.vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript</a></li>
+</ul>
+</blockquote>
+<h3 id="colisiones">Colisiones</h3>
+<p>Todo motor de videojuegos que se precie debe gestionar las colisiones entre los elementos, es decir, cuando un sprite se superpone a otro sprite. Con el <em>trait</em> Solid se añade esta propiedad, permitiendo al sprite chocar con cualquier otro sprite solido en la escena</p>
+<p>¿Pero qué ocurre si hay miles de sprites en pantalla? Por cada sprite se debe comprobar si éste colisiona con cualquiera del resto, en un bucle que recorre todos los sprites disponibles tantas veces como sprites haya en pantalla, sesenta veces por segundos. Es un método poco eficiente, y el motor intenta dar una solución más optima a este problema.</p>
+<p>[<img src="/raohmaru-blog/img/sge-atlas.png" alt="SGE Atlas de sprites">, reduciendo así el número operaciones a realizar.</p>
+<h3 id="conclusiones">Conclusiones</h3>
+<p>Si bien construir un motor de videojuego moderno, eficiente y competitivo es una tarea descomunal, es un ejercicio interesante para entender la arquitectura y los retos que presenta este tipo de software. Sin duda rendimiento y facilidad de uso son sus factores más importantes. JavaScript y el elemento Canvas permiten crear motores que cumplan con estas expectativas, convirtiendo a la Web en la plataforma perfecta para disfrutar de videojuegos en el navegador.</p>
+
+        <ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/raohmaru-blog/blog/plugin-para-wordpress-revisitado/">Plugin para WordPress revisitado</a></li><li class="links-nextprev-next">Next →<br><a href="/raohmaru-blog/blog/experimentos-con-la-web-audio-api-de-javascript/">Experimentos con la Web Audio API de JavaScript</a></li>
+        </ul>
+
+            </div>
+		</main>
+
+		<footer>
+            <div class="section">
+                <p>
+                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
+                    This page was built on 2025-03-10T21:08:11.682Z
+                </p>
+            </div>
+		</footer>
+
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+	</body>
+</html>

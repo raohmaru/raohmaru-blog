@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Default Gravatar Sans, un plugin para WordPress</title>
+		<meta name="description" content="Creación de un plugin para Wordpress.">
+		
+		
+		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+            <div class="section">
+                <a href="/raohmaru-blog/" class="home-link">Reinventing the wheel</a>
+                <nav>
+                    <h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/raohmaru-blog/about/">About</a></li>
+                        <li class="nav-item"><a href="/raohmaru-blog/tags/">Tags</a></li>
+                        <li class="nav-item"><a href="https://github.com/raohmaru">Github</a></li>
+                    </ul>
+                </nav>
+            </div>
+		</header>
+
+		<main id="skip">
+            <div class="section">
+                
+<h1 id="default-gravatar-sans-un-plugin-para-wordpress">Default Gravatar Sans, un plugin para WordPress</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2012-04-29">29 April 2012</time></li>
+        <li><a href="/raohmaru-blog/tags/worpdress/" class="post-tag">worpdress</a>, </li>
+        <li><a href="/raohmaru-blog/tags/php/" class="post-tag">PHP</a></li>
+</ul>
+
+<p>Tras actualizar la bitácora a la plataforma <a href="http://es.wordpress.org/">WordPress</a>, el siguiente paso ha sido descubrir y jugar con la configuración hasta quedar satisfecho, o al menos casi satisfecho: no me acaba de convencer el sistema para mostrar los <a href="http://es.wikipedia.org/wiki/Avatar_%28Internet%29">avatares</a> de los usuarios. Por imperativo del <a href="http://es.wikipedia.org/wiki/Sistema_de_gesti%C3%B3n_de_contenidos">CMS</a> las imágenes son «filtradas» por el sitio <a href="http://gravatar.com/">Gravatar.com</a> aun cuando éstas sean archivos locales sin ninguna afiliación a tal sitio.</p>
+<p>Así, si yo quiero mostrar una imagen para los usuarios que comentan sin estar identificados, por ejemplo</p>
+<p><code>http://raohmaru.com/blog/wp-content/uploads/2012/04/default_avatar.png</code></p>
+<p>la dirección URL se convierte en</p>
+<p><code>http://1.gravatar.com/avatar/f944229af6b258c09f105781f66ef3e5?d=http://raohmaru.com/blog/wp-content/uploads/2012/04/default_avatar.png</code></p>
+<p>Ésta acción puede provocar dos situaciones:</p>
+<ul>
+<li>En el caso de sobrecarga de los servidores de Gravatar.com, puede ralentizar la carga del blog y demorar la ejecución de <a href="http://es.wikipedia.org/wiki/Script">scripts</a> mientras se espera la respuesta del servidor.</li>
+<li>El e-mail del usuario va codificado en la petición:<code>http://1.gravatar.com/avatar/**f944229af6b258c09f105781f66ef3e5**</code>y esto no acaba de ser del todo seguro (en este <a href="http://www.developer.it/post/gravatars-why-publishing-your-email-s-hash-is-not-a-good-idea">enlace</a> explican el problema de privacidad que supone).</li>
+</ul>
+<p>Mi solución ha sido programar un <a href="http://es.wikipedia.org/wiki/Complemento_%28inform%C3%A1tica%29"><em>plugin</em></a> para WordPress (¡el primero!) en PHP, que inhabilita por completo las redirecciones a Gravatar.com, y que añade también una opción para utilizar una imagen cualquiera como avatar por defecto.</p>
+<p>A continuación más información sobre el plugin y el enlace al archivo para su descarga.</p>
+<p><strong>[Actualizado el 29/04/2012]</strong><br>
+Plugin registrado en WordPress.org: <a href="http://wordpress.org/extend/plugins/default-gravatar-sans/">http://wordpress.org/extend/plugins/default-gravatar-sans/</a></p>
+<h2 id="default-gravatar-sans">Default Gravatar Sans</h2>
+<p><img src="/raohmaru-blog/img/default-gravatar-sans.png" alt="Opciones de configuración del plugin"></p>
+<p><a href="http://www.mediafire.com/?v2j5unkb0guz139"><strong>Download Default Gravatar Sans 1.0</strong></a></p>
+<p>Disables Gravatar.com avatars, and allows one local default avatar image for users without avatar in his profile. To be used alongside <a href="http://www.get10up.com/plugins/simple-local-avatars-wordpress/">Simple Local Avatars</a>.</p>
+<p>Based on the plugin <a href="http://wordpress.stackexchange.com/questions/17413/removing-gravatar-com-support-for-wordpress-and-simple-local-avatars">Disable Default Avatars</a> by <a href="http://wordpress.stackexchange.com/users/1685/thedeadmedic">TheDeadMedic</a>.</p>
+<p>Installation</p>
+<ol>
+<li>Install with the WordPress plugin control panel, or download the plugin, unzip and upload the extracted folder to the ‘/wp-content/plugins/’ directory.</li>
+<li>Activate the plugin through the ‘Plugins’ menu in WordPress.</li>
+<li>Change the URL option of the default Local Avatar under Settings &gt; Discussion.</li>
+</ol>
+
+        <ul class="links-nextprev"><li class="links-nextprev-next">Next →<br><a href="/raohmaru-blog/blog/internacionalizacion-en-php/">Internacionalización en PHP</a></li>
+        </ul>
+
+            </div>
+		</main>
+
+		<footer>
+            <div class="section">
+                <p>
+                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
+                    This page was built on 2025-03-10T21:08:11.681Z
+                </p>
+            </div>
+		</footer>
+
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+	</body>
+</html>

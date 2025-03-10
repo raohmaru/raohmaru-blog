@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Internacionalización en PHP</title>
+		<meta name="description" content="Internacionalización en PHP con GNU gettext.">
+		
+		
+		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+            <div class="section">
+                <a href="/raohmaru-blog/" class="home-link">Reinventing the wheel</a>
+                <nav>
+                    <h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/raohmaru-blog/about/">About</a></li>
+                        <li class="nav-item"><a href="/raohmaru-blog/tags/">Tags</a></li>
+                        <li class="nav-item"><a href="https://github.com/raohmaru">Github</a></li>
+                    </ul>
+                </nav>
+            </div>
+		</header>
+
+		<main id="skip">
+            <div class="section">
+                
+<h1 id="internacionalizacion-en-php">Internacionalización en PHP</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2012-05-18">18 May 2012</time></li>
+        <li><a href="/raohmaru-blog/tags/i18n/" class="post-tag">i18n</a>, </li>
+        <li><a href="/raohmaru-blog/tags/php/" class="post-tag">PHP</a></li>
+</ul>
+
+<p>En el desarrollo de un sitio web muchas veces nos hemos encontrado con el desafío de la traducción, servir páginas en diferentes idiomas sin que esto suponga un calvario por duplicar contenidos y/o hacer el código más difícil de mantener (y como consecuencia romper una de las <a href="http://identidadgeek.com/el-mejor-consejo-para-los-programadores-en-la-historia-de-la-humanidad/2010/01/">reglas básicas</a> para el buen mantenimiento del código). En informática de software el proceso de llevar a buen término esta tarea se conoce como <a href="http://es.wikipedia.org/wiki/Internacionalizaci%C3%B3n_y_localizaci%C3%B3n">Internacionalización</a>: diseñar un programa capaz de adaptarse a distintas lenguas sin realizar cambios en el código.</p>
+<p>Si hablamos de un <a href="http://en.wikipedia.org/wiki/Microsite">microsite</a> sencillo de páginas estáticas, una opción rápida y barata es utilizar el Traductor de sitios de Google, un fragmento de JavaScript de esos <em>plug-and-play</em> que hace todo el trabajo por nosotros sin tocar el codigo HTML. La parte negativa es que la traducción no es muy fiel, y además hacemos publicidad gratuita a los de Mountain View.</p>
+<p>Cuando se trata de sitios complejos, dinámicos, y cuya traducción posiblemente se haya contratado a profesionales, es necesario entonces programar el sitio de manera que los textos traducidos sean independientes de la maquetación, para una fácil modificación de los mismos en caso de correcciones o erratas, permitiendo además que alguien ajeno al mundo de la programación sea capaz de actualizar ese texto (pues eso, i18n).<br>
+Trabajando con PHP como tecnología del servidor, había recurrido en varios proyectos a uno de estos dos métodos:</p>
+<ul>
+<li>Almacenar todas las cadenas de texto en una base de datos, recuperándolas según el idioma del usuario. En este caso a través de un <a href="http://es.wikipedia.org/wiki/Sistema_de_gesti%C3%B3n_de_contenidos">CMS</a> se podía editar el texto.</li>
+<li>En un archivo PHP crear una tabla de cadenas (al estilo de las utilizadas como <a href="http://msdn.microsoft.com/es-es/library/fdfxk9a4%28v=vs.80%29.aspx">recursos</a> en algunos sistemas operativos) con los textos referenciados por un identificador. Luego simplemente se obtiene de la matriz una cadena en determinado  un idioma.</li>
+</ul>
+<p>En ambos casos, un recurso se carga y es mostrado al usuario el texto correspondiente.</p>
+<pre class="language-php" tabindex="0"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>  
+<span class="token variable">$lang</span> <span class="token operator">=</span> ‘es_ES’<span class="token punctuation">;</span> <span class="token comment">// Define el idioma del usuario  </span>
+<span class="token variable">$locale</span> <span class="token operator">=</span> <span class="token variable">$locales</span><span class="token punctuation">[</span><span class="token variable">$lang</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// Obtiene los textos de algún recurso  </span>
+<span class="token delimiter important">?></span></span>  
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token keyword">echo</span> <span class="token variable">$locale</span><span class="token punctuation">[</span>‘intro’<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token delimiter important">?></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>  </code></pre>
+<p>Entonces, buscando como otros habían resuelto éste mismo problema en PHP, me topé con gettext, los archivos PO y los MO; una solución sencilla y elegante.</p>
+<h2 id="gnu-gettext">GNU gettext</h2>
+<p><a href="http://www.gnu.org/software/gettext/">gettext</a> es un conjunto de herramientas para ayudar a la <a href="http://es.wikipedia.org/wiki/Internacionalizaci%C3%B3n_y_localizaci%C3%B3n#Localizaci.C3.B3n">localización</a> de un programa, desarrollado dentro del proyecto <a href="http://es.wikipedia.org/wiki/GNU">GNU</a> y disponible en tu servidor Linux más cercano. La principal ventaja que ofrece es que agiliza y automatiza las tareas de internacionalización de un sitio web, ya que PHP da soporte a estas herramientas a través de una <a href="http://www.php.net/manual/en/book.gettext.php">API</a>, con funciones como <a href="http://www.php.net/manual/en/function.gettext.php"><code>gettext()</code></a> o <a href="http://www.php.net/manual/en/function.ngettext.php"><code>ngettext()</code></a>.</p>
+<p><strong>Procedimiento a seguir</strong></p>
+<p>En un proyecto PHP, tras maquetar todas las páginas e incluir los textos en el idioma original (en nuestro ejemplo en latín clásico), se han de reemplazar estos por un <code>echo</code> de la función <code>gettext()</code> con ese mismo texto como argumento.</p>
+<p>Dado el fragmento de código…</p>
+<pre class="language-php" tabindex="0"><code class="language-php"><span class="token operator">&lt;</span>h1<span class="token operator">></span>Lorem ipsum dolor sit amet<span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">></span>  
+<span class="token operator">&lt;</span>p<span class="token operator">></span>Consectetur adipiscing elit<span class="token operator">.</span> Donec convallis mauris eu est hendrerit luctus…<span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>  </code></pre>
+<p>… reemplazar el texto por…</p>
+<pre class="language-php" tabindex="0"><code class="language-php"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token keyword">echo</span> <span class="token function">gettext</span><span class="token punctuation">(</span>‘Lorem ipsum dolor sit amet’<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token delimiter important">?></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>  
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token keyword">echo</span> <span class="token function">gettext</span><span class="token punctuation">(</span>‘Consectetur adipiscing elit<span class="token operator">.</span> Donec convallis mauris eu est hendrerit luctus…’<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token delimiter important">?></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>  </code></pre>
+<p>O si preferimos por el alias <code>_()</code>, más corto y legible</p>
+<pre class="language-php" tabindex="0"><code class="language-php"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token keyword">echo</span> <span class="token function">_</span><span class="token punctuation">(</span>‘Lorem ipsum dolor sit amet’<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token delimiter important">?></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>  
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token keyword">echo</span> <span class="token function">_</span><span class="token punctuation">(</span>‘Consectetur adipiscing elit<span class="token operator">.</span> Donec convallis mauris eu est hendrerit luctus…’<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token delimiter important">?></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>  </code></pre>
+<p>El siguiente paso es extraer el texto de los archivos y con él generar una plantilla o «catálogo» con el que trabajar y traducir. Estos catálogos son un tipo de archivo especial (PO) creados con la herramienta <a href="http://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Template.html">xgettext</a> (consultar el enlace para más información). Por suerte, para usuarios de Windows como nosotros, existe un pequeño pero potentísimo programa con interfaz gráfica que nos servirá de mucha ayuda: <a href="http://www.poedit.net/">Poedit</a>.</p>
+<p>Una vez descargado y ejecutado, creamos un nuevo catálogo y en la ventana emergente vamos a la pestaña Carpetas. En este apartado es donde hemos de incluir la ruta a nuestros archivos del proyecto que queremos traducir.</p>
+<p><img src="/raohmaru-blog/img/poedit-1.png" alt="Creación de un nuevo catálogo con Poedit"></p>
+<p>Tras aceptar la configuración y guardar el archivo con extensión .POT (esto es importante), Poedit buscará en los archivos PHP del proyecto cualquier coincidencia con las funciones <code>gettext()</code> o <code>_()</code> (o las que hayamos definido), extraerá el texto y nos presentará en pantalla el resultado.</p>
+<p><img src="/raohmaru-blog/img/poedit-2.png" alt="Traducir con Poedit"></p>
+<p>Este archivo POT con todos los textos de nuestro proyecto servirá de plantilla para la traducción a otros idiomas, desde el mismo programa, facilitando incluso que personas ajenas puedan realizar la traducción sin mancharse las manos con el código.</p>
+<p>Para empezar a traducir, desde Poedit se ha de crear un nuevo catálogo por idioma utilizando la plantilla POT anterior (<em>Archivo</em> &gt; <em>Nuevo catálogo desde un archivo POT…</em>). Esta vez lo único que se cambiará en las propiedades serán los campos Idioma y País acordes al texto de destino (seleccionar un País es opcional, pero ayuda a identificar mejor la traducción y poder crear otras en un mismo idioma pero para regiones diferentes, como Quenya-Noldor y Quenya-Vanyar). Una vez acometidas las traducciones, guardamos el archivo siguiendo unas reglas especiales:</p>
+<ul>
+<li>Primero, creamos en nuestro proyecto una carpeta donde iran los archivos de las traducciones. Por convención la nombraremos «locale».</li>
+<li>Dentro de esta carpeta debemos crear una subcarpeta por archivo de traducción según el <a href="http://www.gnu.org/software/gettext/manual/html_node/Usual-Language-Codes.html">código de idioma</a> y el <a href="http://www.gnu.org/software/gettext/manual/html_node/Country-Codes.html">código de país</a> (si hemos especificado alguno). Y dentro de esta subcarpeta, una nueva de nombre «LC_MESSAGES» donde finalmente guardaremos el archivo.</li>
+<li>El nombre de archivo que pongamos debe ser el mismo para todas las traducciones. Así, si nombramos «example_gettext» a nuestra primera traducción, el resto debe ir con ese mismo nombre (pero en su respectiva carpeta de idioma).</li>
+</ul>
+<p>Al guardar con Poedit, se genera un archivo PO y otro MO: el primero es el catálogo editable, y el segundo es ese mismo catálogo en formato binario que gettext carga y utiliza para la traducción.<br>
+La estructura de directorios de la carpeta de L10n quedaría así:<br>
+<code>/locale/es_ES/LC_MESSAGES/example_gettext.po   /locale/ca_ES/LC_MESSAGES/example_gettext.po   /locale/xx_YY/LC_MESSAGES/example_gettext.po</code></p>
+<p>Ahora llega el momento de utilizar estos catálogos de traducción en nuestro proyecto. Existe mucha literatura sobre la inicialización de gettext, como los comentarios en la <a href="http://www.php.net/manual/en/book.gettext.php">página de referencia</a> de la función o <a href="http://www.mclibre.org/consultar/php/lecciones/php_gettext.html">este artículo</a> de Bartolomé Sintes, pero he aquí mi receta:</p>
+<pre class="language-php" tabindex="0"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token comment">// Este código ha de ir antes que cualquier llamada a gettext()</span>
+
+<span class="token comment">// Definimos el idioma del usuario  </span>
+<span class="token variable">$user_locale</span> <span class="token operator">=</span> ‘es_ES’<span class="token punctuation">;</span>
+
+<span class="token comment">// Establece variables de entorno en el idioma del usuario  </span>
+<span class="token function">putenv</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"LANGUAGE=<span class="token interpolation"><span class="token variable">$user_locale</span></span>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token function">putenv</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"LANG=<span class="token interpolation"><span class="token variable">$user_locale</span></span>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Por si LANGUAGE falla  </span>
+<span class="token comment">// No es recomendable establecer LC_ALL  </span>
+<span class="token comment">// http://www.php.net/manual/es/ref.gettext.php#68853  </span>
+<span class="token comment">//putenv("LC_ALL=$user_locale");</span>
+
+<span class="token comment">// En el caso que utilicemos Apache bajo Windows (con XAMPP por  </span>
+<span class="token comment">// ejemplo), la constante no está definido por defecto  </span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">defined</span><span class="token punctuation">(</span>‘<span class="token constant">LC_MESSAGES</span>’<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token function">define</span><span class="token punctuation">(</span>‘<span class="token constant">LC_MESSAGES</span>’<span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token comment">// Establece la información de la configuración regional  </span>
+<span class="token function">setlocale</span><span class="token punctuation">(</span><span class="token constant">LC_MESSAGES</span><span class="token punctuation">,</span> <span class="token variable">$user_locale</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Especifica la ruta a los catálogos de traducción y el "dominio"  </span>
+<span class="token comment">// al que pertenecen: el nombre de nuestros archivos MO  </span>
+<span class="token function">bindtextdomain</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"example_gettext"</span><span class="token punctuation">,</span> <span class="token string double-quoted-string">"./locale"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token function">textdomain</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"example_gettext"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span>  </code></pre>
+<p>Ahora, cuando visualicemos nuestro sitio todos los textos se traducirán al idioma definido, obteniéndolos de los archivos MO.</p>
+<p>Nota:  Si PHP dice algo tan feo como «<em>Warning: putenv(): Safe Mode warning: Cannot set environment variable ‘LANGUAGE’</em>«, es que se está ejecutando en modo <a href="http://www.php.net/manual/en/features.safe-mode.php">safe_mode</a>. Para evitar este error, se ha de añadir al archivo php.ini la siguiente línea:<br>
+<code>safe_mode_allowed_env_vars = PHP_,LANG,LANGUAGE</code></p>
+<p>Feliz i18n.</p>
+
+        <ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/raohmaru-blog/blog/default-gravatar-sans-plugin-wordpress/">Default Gravatar Sans, un plugin para WordPress</a></li><li class="links-nextprev-next">Next →<br><a href="/raohmaru-blog/blog/raohmaru-toolkit-actionscript/">Raohmaru Toolkit</a></li>
+        </ul>
+
+            </div>
+		</main>
+
+		<footer>
+            <div class="section">
+                <p>
+                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
+                    This page was built on 2025-03-10T21:08:11.682Z
+                </p>
+            </div>
+		</footer>
+
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+	</body>
+</html>

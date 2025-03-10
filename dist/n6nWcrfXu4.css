@@ -1,0 +1,294 @@
+main h1 {
+    margin-block: 0rem 3rem;
+}
+/* Defaults */
+:root {
+	--font-family: -apple-system, system-ui, sans-serif;
+	--font-family-monospace: Consolas, Menlo, Monaco, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Courier New, Courier, monospace;
+}
+
+/* Theme colors */
+:root {
+	--color-gray-20: #e0e0e0;
+	--color-gray-50: #868686;
+	--color-gray-90: #222;
+	--background-color: #f4ebe5;
+	--text-color: var(--color-gray-90);
+	--text-color-link: var(--text-color);
+	--text-color-link-active: #184597;
+	--text-color-link-visited: #888;
+	--syntax-tab-size: 2;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-gray-20: #e0e0e0;
+		--color-gray-50: #868686;
+		--color-gray-90: #dad8d8;
+		/* --text-color and --text-color-link are assigned to --color-gray-_ above */
+		--text-color-link-active: #1493fb;
+		--text-color-link-visited: #a6a6f8;
+		--background-color: #15202b;
+	}
+}
+/* Global stylesheet */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+html {
+    overflow-y: scroll;
+}
+
+/* https://www.a11yproject.com/posts/how-to-hide-content/ */
+.visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+/* Fluid images via https://www.zachleat.com/web/fluid-images/ */
+img {
+    max-width: 100%;
+}
+
+img[width][height] {
+    height: auto;
+}
+
+img[src$=".svg"] {
+    width: 100%;
+    height: auto;
+    max-width: none;
+}
+
+video,
+iframe {
+    width: 100%;
+    height: auto;
+}
+
+iframe {
+    aspect-ratio: 16/9;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+p {
+    line-height: 1.5;
+}
+
+li {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+a[href] {
+    color: var(--text-color-link);
+}
+
+a[href]:hover,
+a[href]:active {
+    color: var(--text-color-link-active);
+}
+
+main,
+footer {
+    padding: 1rem;
+}
+
+main :where(:first-child) {
+    margin-top: 0;
+}
+
+header {
+    border-bottom: 1px dashed var(--color-gray-20);
+}
+
+table {
+    margin: 1em 0;
+}
+
+table td,
+table th {
+    padding-right: 1em;
+}
+
+pre,
+code {
+    font-family: var(--font-family-monospace);
+}
+
+pre:not([class*="language-"]) {
+    margin: .5em 0;
+    line-height: 1.375;
+    /* 22px /16 */
+    -moz-tab-size: var(--syntax-tab-size);
+    -o-tab-size: var(--syntax-tab-size);
+    tab-size: var(--syntax-tab-size);
+    -webkit-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    overflow-x: auto;
+}
+
+code {
+    word-break: break-all;
+}
+
+.section {
+    max-width: 40em;
+    margin: 0 auto;
+}
+
+/* Page view transitions */
+
+@view-transition {
+    navigation: auto;
+    types: slide, forwards;
+}
+
+header {
+    view-transition-name: header;
+}
+
+footer {
+    view-transition-name: footer;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-out {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slide-forwards-in {
+    from {
+        transform: translateY(30px);
+    }
+}
+
+@keyframes slide-forwards-out {
+    to {
+        transform: translateY(-30px);
+    }
+}
+
+@keyframes slide-backwards-in {
+    from {
+        transform: translateY(-30px);
+    }
+}
+
+@keyframes slide-backwards-out {
+    to {
+        transform: translateY(30px);
+    }
+}
+
+html:active-view-transition-type(backwards) {
+    &::view-transition-old(root) {
+        /* Material Design's shared axis transition */
+        animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+            300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-backwards-out;
+    }
+    
+    &::view-transition-new(root) {
+        animation: 210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+            300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-backwards-int;
+    }
+}
+
+&::view-transition-old(root) {
+    animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+        300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-forwards-out;
+}
+
+&::view-transition-new(root) {
+    animation: 210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+        300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-forwards-in;
+}
+/* Header */
+header {
+	padding: 1em;
+    border-bottom: solid 10px var(--color-gray-90);
+
+    .section {
+        display: flex;
+        gap: 1em;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.home-link {
+    display: flex;
+	flex-grow: 1;
+	font-size: 1em; /* 16px /16 */
+	font-weight: 700;
+    text-decoration: none;
+
+    &:after {
+        content: '';
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        margin-left: 10px;
+        background: url(/raohmaru-blog/img/logo.png) 0 0 / cover;
+    }
+}
+footer {
+    margin-top: 3rem;
+    border-top: solid 10px var(--color-gray-90);
+
+    p {
+        margin: 0;
+    }
+}
+/* Nav */
+.nav {
+	display: flex;
+	gap: .5em 1em;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.nav-item {
+	display: inline-block;
+}
+
+.nav-item a[href]:not(:hover) {
+	text-decoration: none;
+}
+
+.nav a[href][aria-current="page"] {
+	text-decoration: underline;
+}

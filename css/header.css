@@ -1,0 +1,30 @@
+/* Header */
+header {
+	padding: 1em;
+    border-bottom: solid 10px var(--color-gray-90);
+
+    .section {
+        display: flex;
+        gap: 1em;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.home-link {
+    display: flex;
+	flex-grow: 1;
+	font-size: 1em; /* 16px /16 */
+	font-weight: 700;
+    text-decoration: none;
+
+    &:after {
+        content: '';
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        margin-left: 10px;
+        background: url(/raohmaru-blog/img/logo.png) 0 0 / cover;
+    }
+}

@@ -1,0 +1,38 @@
+/* Posts list */
+.postlist {
+	padding: 0;
+	padding-left: 1.5rem;
+    list-style-type: decimal-leading-zero;
+}
+
+.postlist-item {
+	margin-bottom: 1em;
+}
+
+.postlist-date,
+.postlist-item::marker {
+	font-size: 0.8125em; /* 13px /16 */
+	color: var(--color-gray-90);
+}
+
+.postlist-date {
+    padding-left: .25em;
+	word-spacing: -0.5px;
+}
+
+.postlist-link {
+	font-size: 1.1875em; /* 19px /16 */
+	font-weight: 700;
+    padding-left: .25em;
+	text-underline-position: from-font;
+	text-underline-offset: 0;
+	text-decoration-thickness: 1px;
+
+    &:visited {
+        color: var(--text-color-link-visited);
+    }
+}
+
+.postlist-item-active .postlist-link {
+	font-weight: bold;
+}

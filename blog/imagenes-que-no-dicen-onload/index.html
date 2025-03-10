@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Imágenes que no dicen onLoad</title>
+		<meta name="description" content="Solucionar problemas relacionado con la carga de imágnes en JavaScript.">
+		
+		
+		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+            <div class="section">
+                <a href="/raohmaru-blog/" class="home-link">Reinventing the wheel</a>
+                <nav>
+                    <h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/raohmaru-blog/about/">About</a></li>
+                        <li class="nav-item"><a href="/raohmaru-blog/tags/">Tags</a></li>
+                        <li class="nav-item"><a href="https://github.com/raohmaru">Github</a></li>
+                    </ul>
+                </nav>
+            </div>
+		</header>
+
+		<main id="skip">
+            <div class="section">
+                
+<h1 id="imagenes-que-no-dicen-onload">Imágenes que no dicen onLoad</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2012-06-22">22 June 2012</time></li>
+        <li><a href="/raohmaru-blog/tags/javascript/" class="post-tag">JavaScript</a></li>
+</ul>
+
+<p>JavaScript y la etiqueta <a href="http://www.w3schools.com/tags/tag_img.asp"><img></a> siempre han sido buenos amigos, desde aquellos días que  gracias a un pequeño <em>script</em> se precargaban todas las imágenes de una página, como por ejemplo los <em>rollovers</em> de ciertos botones.</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">var</span> preload_imgs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"image1.jpg"</span><span class="token punctuation">,</span> <span class="token string">"image2.gif"</span><span class="token punctuation">,</span> <span class="token string">"image3.jpg"</span><span class="token punctuation">]</span><span class="token punctuation">;</span>  
+<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">var</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>preload_imgs<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token keyword">var</span> img <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Image</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    img<span class="token punctuation">.</span>src <span class="token operator">=</span> preload_imgs<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  </code></pre>
+<p>¿Pero que ocurre cuando se crean o se tratan imágenes dinámicamente, y se quiere controlar el preciso momento en que están son (des)cargadas?</p>
+<p>La respuesta parece sencilla: registrar el evento <code>load</code> de la imagen según el navegador del usuario (<a href="https://developer.mozilla.org/en/DOM/element.addEventListener"><code>addEventListener</code></a> para clientes modernos, <a href="http://msdn.microsoft.com/en-us/library/ie/ms536343(v=vs.85).aspx"><code>attachEvent</code></a> para IE arcanos y <code>onload</code> para el resto) y esperamos a que se dispare. El contrapunto es que esto último no siempre ocurre, y las causas pueden ser muy variadas.</p>
+<p>Tomemos el siguiente código de ejemplo:</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">loadHandler</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span>‘container’<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span> <span class="token keyword">this</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> img <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Image</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+img<span class="token punctuation">.</span>src <span class="token operator">=</span> <span class="token string">"carcharoth.jpg"</span><span class="token punctuation">;</span>  
+<span class="token comment">// Se evita deliberadamente la lógica de descubrir el registrador  </span>
+<span class="token comment">// correcto por navegador para ahorrarnos código  </span>
+img<span class="token punctuation">.</span>onload <span class="token operator">=</span> loadHandler<span class="token punctuation">;</span>  </code></pre>
+<p>La primera sensación es que debería funcionar: se añade al documento la imagen una vez cargada; y en efecto lo hace en la mayoría de navegadores de escritorio. Menos en Internet Explorer, versiones 8 e inferiores. El porqué se debe a que se registra el evento <code>onload</code> después de asignar un nuevo origen a la imagen (<code>img.src = &quot;carcharoth.jpg&quot;</code>), y en el caso que la imagen esté en la caché del navegador (ya se ha descargado previamente), IE ejecutará el evento <code>load</code> inmediatamente después de la asignación sin dar tiempo a que se registre.</p>
+<p>Para corregirlo, simplemente se ha de colocar el registrador de eventos antes de cambiar la URL de la imagen:</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">var</span> img <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Image</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+img<span class="token punctuation">.</span>onload <span class="token operator">=</span> loadHandler<span class="token punctuation">;</span>  
+img<span class="token punctuation">.</span>src <span class="token operator">=</span> <span class="token string">"carcharoth.jpg"</span><span class="token punctuation">;</span>  </code></pre>
+<p>O comprobar si la imagen se ha «completado» (<a href="http://www.w3schools.com/jsref/prop_img_complete.asp"><code>img.complete</code></a>) y en consecuencia invocar a pelo el método registrado:</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">var</span> img <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Image</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+img<span class="token punctuation">.</span>onload <span class="token operator">=</span> loadHandler<span class="token punctuation">;</span>  
+<span class="token keyword">if</span><span class="token punctuation">(</span> img<span class="token punctuation">.</span>complete <span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+    img<span class="token punctuation">.</span><span class="token function">onload</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span></code></pre>
+<p>Otra situación: tenemos una imagen en el documento, y cambiamos su origen URL a ese mismo origen vía JavaScript. ¿Debería lanzar un evento <code>load</code>? Así es y así se hace en todos los navegadores a excepción de Chrome; el navegador de Google tiene un pequeño <em>bug</em> que impide lanzar el evento cuando se carga el mismo origen para una imagen.</p>
+<p>Para solucionarlo, como explican en <a href="http://code.google.com/p/chromium/issues/detail?id=7731">éste hilo</a>, se ha de “vaciar” el origen URL de la imagen antes de asignarle el mismo.</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token comment">// La URL de la imagen es "shenglong.jpg"  </span>
+<span class="token keyword">var</span> img <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span>‘myimg’<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    img<span class="token punctuation">.</span>src <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>  
+    img<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"load"</span><span class="token punctuation">,</span> loadHandler<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    img<span class="token punctuation">.</span>src <span class="token operator">=</span> <span class="token string">"shenglong.jpg"</span><span class="token punctuation">;</span>  </code></pre>
+<p>Una manera efectiva de evitar estos comportamientos es utilizar algún tipo de <em>framework</em> que vigile por la buena salud de nuestras imágenes. <a href="http://jquery.com/">jQuery</a>, como no, hace un buen trabajo gracias al método <code>.load()</code>, aunque en la <a href="http://api.jquery.com/load-event/">página de la referencia</a> avisan que tampoco es perfecto.</p>
+<p>Por suerte, un buen samaritano en los comentarios de esa página ofrece un truquillo para que funcione en la mayoría de escenarios:</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token comment">// Crea una imagen vacía  </span>
+<span class="token keyword">var</span> $img <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span>‘<span class="token operator">&lt;</span>img<span class="token operator">></span>’<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token comment">// Registra el evento load  </span>
+$img<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span> loadHandler <span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token comment">// Asigna la URL de la imagen para que el evento load  </span>
+<span class="token comment">// sea correctamente capturado  </span>
+$img<span class="token punctuation">.</span><span class="token function">attr</span><span class="token punctuation">(</span> ‘src’<span class="token punctuation">,</span> ‘mventris<span class="token punctuation">.</span>jpg’ <span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+<p>Y si todo falla, y no hay manera que esas jodidas imágenes de la galería alerten cuando se han cargado completamente, explorando en GitHub encontramos el <em>plugin</em> para jQuery <a href="https://github.com/desandro/imagesloaded">imagesLoaded</a>, creado por Paul Irish (el tío ese que parece que está desarrollando HTML5 el solito). Partiendo de un contenedor, el plugin es capaz de detectar cuándo las imágenes que contiene se han cargado y cuántos errores han ocurrido. Y por las pruebas parece que es muy eficaz.</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">var</span> $container <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span>‘#container’<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token keyword">var</span> preload_imgs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"image1.jpg"</span><span class="token punctuation">,</span> <span class="token string">"image2.gif"</span><span class="token punctuation">,</span> <span class="token string">"image3.jpg"</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">var</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>preload_imgs<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token comment">// Crea las imágenes y las añade al contenedor  </span>
+    <span class="token keyword">var</span> $img <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span>‘<span class="token operator">&lt;</span>img<span class="token operator">></span>’<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    $img<span class="token punctuation">.</span><span class="token function">attr</span><span class="token punctuation">(</span> ‘src’<span class="token punctuation">,</span> preload_imgs<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    $container<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span> $img <span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Se invocará una vez todas las imágenes del contenedor  </span>
+<span class="token comment">// se hayan cargado con o sin error  </span>
+$container<span class="token punctuation">.</span><span class="token function">imagesLoaded</span><span class="token punctuation">(</span> <span class="token keyword">function</span><span class="token punctuation">(</span> <span class="token parameter">$images<span class="token punctuation">,</span> $proper<span class="token punctuation">,</span> $broken</span> <span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    $container<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>  
+    ‘<span class="token operator">&lt;</span>p<span class="token operator">></span>’ <span class="token operator">+</span> $proper<span class="token punctuation">.</span>length <span class="token operator">+</span> ‘ images loaded <span class="token keyword">of</span> ‘ <span class="token operator">+</span> $images<span class="token punctuation">.</span>length  
+    <span class="token operator">+</span> ‘<span class="token operator">&lt;</span>br<span class="token operator">></span>Errors<span class="token operator">:</span> ‘ <span class="token operator">+</span> $broken<span class="token punctuation">.</span>length <span class="token operator">+</span> ‘<span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>’ <span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  </code></pre>
+<p>¿Conoces más formas de detectar vía JavaScript cuando una imagen se ha cargado?</p>
+
+        <ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/raohmaru-blog/blog/ruby-blue-temas-para-flashdevelop/">Ruby Blue, o como crear temas para FlashDevelop</a></li><li class="links-nextprev-next">Next →<br><a href="/raohmaru-blog/blog/compartir-redes-sociales-compartir-google-analytics/">Compartir en redes sociales y medir con Google Analytics</a></li>
+        </ul>
+
+            </div>
+		</main>
+
+		<footer>
+            <div class="section">
+                <p>
+                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
+                    This page was built on 2025-03-10T21:08:11.682Z
+                </p>
+            </div>
+		</footer>
+
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+	</body>
+</html>
