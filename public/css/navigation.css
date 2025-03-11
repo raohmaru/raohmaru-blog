@@ -9,6 +9,7 @@
 
 .nav-item {
 	display: inline-block;
+    margin-bottom: 0;
 }
 
 .nav-item a[href]:not(:hover) {
