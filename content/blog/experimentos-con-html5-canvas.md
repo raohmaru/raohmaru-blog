@@ -12,7 +12,7 @@ En mi caso decidí experimentar con [Canvas 2D](https://www.w3.org/TR/2dcontext/
 
 El elemento Canvas es una zona dentro de nuestra página HTML que renderiza en un [mapa de bits](https://es.wikipedia.org/wiki/Imagen_de_mapa_de_bits), y que con APIs de JavaScript podemos dibujar en él (como las APIs Canvas 2D o [WebGL](https://developer.mozilla.org/en-US/docs/Glossary/WebGL)). El objetivo original del experimento era aprender la [API de Canvas 2D](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D) y empezar a dibujar cuadrados, círculos e imágenes, y finalmente acabó en un proyecto de arte efímero donde el usuario puede crear dibujos únicos que jamás podrá volver a repetir con exactitud.
 
-![Chromatic Big Bang](/img/chromatic-big-bang.jpg)
+![Chromatic Big Bang](/img/blog/chromatic-big-bang.jpg)
 
 _Un colorido Big Bang creado con ERDT._
 

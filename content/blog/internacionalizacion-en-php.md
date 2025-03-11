@@ -61,11 +61,11 @@ El siguiente paso es extraer el texto de los archivos y con él generar una plan
 
 Una vez descargado y ejecutado, creamos un nuevo catálogo y en la ventana emergente vamos a la pestaña Carpetas. En este apartado es donde hemos de incluir la ruta a nuestros archivos del proyecto que queremos traducir.
 
-![Creación de un nuevo catálogo con Poedit](/img/poedit-1.png)
+![Creación de un nuevo catálogo con Poedit](/img/blog/poedit-1.png)
 
 Tras aceptar la configuración y guardar el archivo con extensión .POT (esto es importante), Poedit buscará en los archivos PHP del proyecto cualquier coincidencia con las funciones `gettext()` o `_()` (o las que hayamos definido), extraerá el texto y nos presentará en pantalla el resultado.
 
-![Traducir con Poedit](/img/poedit-2.png )
+![Traducir con Poedit](/img/blog/poedit-2.png )
 
 Este archivo POT con todos los textos de nuestro proyecto servirá de plantilla para la traducción a otros idiomas, desde el mismo programa, facilitando incluso que personas ajenas puedan realizar la traducción sin mancharse las manos con el código.
 

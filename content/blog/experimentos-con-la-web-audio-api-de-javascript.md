@@ -12,7 +12,7 @@ Esta tecnología lleva bastante tiempo disponible ([el primer borrador de la W3C
 
 Para empezar a trabajar con la Web Audio API hay primero que entender como funciona: toda operación para manipular sonido se realiza dentro de un _contexto sonido_, el cual está diseñado como un sistema de nodos interconectados que transforman uno o varios flujos de sonido. Desde un nodo origen se conectan cualquier número de [nodos de audio](https://developer.mozilla.org/en-US/docs/Web/API/AudioNode) que procesan el flujo de audio hasta que finalmente se conecta a un nodo de destino. El flujo de audio pasa por todos estos nodos donde es procesado, hasta terminar en el nodo de destino que puede representar la salida por los altavoces o que se guarde en un archivo. Este conjunto de nodos enlazados se conoce como [audio routing graph](https://developer.mozilla.org/en-US/docs/Web/API/AudioNode#The_audio_routing_graph).
 
-![Contexto de audio y nodos de audio](/img/audio-context.png)
+![Contexto de audio y nodos de audio](/img/blog/audio-context.png)
 
 Traducido a JavaScript, todo empieza con el objeto [AudioContext](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext): el contexto de audio que nos permite crear nodos y procesar un flujo de sonido.
 
@@ -55,7 +55,7 @@ El ejercicio consiste, tras estudiar la Web Audio API, en crear sonidos sintéti
 
 El resultado es una pequeña aplicación web que genera sonidos utilizando como origen un OscillatorNode (para crear un tono constante) o un [Audio​Buffer​Source​Node](https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode) (para generar [ruido blanco](https://es.wikipedia.org/wiki/Ruido_blanco)), al que se le aplica un [envolvente acústico](https://en.wikipedia.org/wiki/Envelope_(music)) para hacerlo más natural y filtros personalizables como nodos intermedios. El sonido generado se destina bien a los altavoces del sistema, o bien a un objeto [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob/Blob) que el usuario puede guardar en su máquina como un archivo OGG.
 
-[![Simple Synthesizer with Web Audio API](/img/sasynth.png)](https://raohmaru.github.io)
+[![Simple Synthesizer with Web Audio API](/img/blog/sasynth.png)](https://raohmaru.github.io)
 
 **Puedes jugar con el sintetizador aquí:** [**https://raohmaru.github.io/simple-audio-synthesizer/src/**](https://raohmaru.github.io/simple-audio-synthesizer/src/) 🎵
 

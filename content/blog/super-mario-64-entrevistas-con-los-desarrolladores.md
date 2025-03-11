@@ -6,7 +6,7 @@ tags: ["Game Dev"]
 language: es
 ---
 
-![Gorra de bebé Mario](/img/mario-hat.webp)
+![Gorra de bebé Mario](/img/blog/mario-hat.webp)
 
 Cómo una simple idea y un pequeño experimento terminó en uno de los video juegos más importantes de la historia.
 

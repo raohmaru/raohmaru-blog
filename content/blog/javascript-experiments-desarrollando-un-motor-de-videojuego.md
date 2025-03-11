@@ -94,7 +94,7 @@ Todo motor de videojuegos que se precie debe gestionar las colisiones entre los 
 
 ¿Pero qué ocurre si hay miles de sprites en pantalla? Por cada sprite se debe comprobar si éste colisiona con cualquiera del resto, en un bucle que recorre todos los sprites disponibles tantas veces como sprites haya en pantalla, sesenta veces por segundos. Es un método poco eficiente, y el motor intenta dar una solución más optima a este problema.
 
-[![SGE Atlas de sprites](/img/sge-atlas.png), reduciendo así el número operaciones a realizar.
+[![SGE Atlas de sprites](/img/blog/sge-atlas.png), reduciendo así el número operaciones a realizar.
 
 ### Conclusiones
 

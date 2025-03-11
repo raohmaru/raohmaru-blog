@@ -24,26 +24,26 @@ A las 16:30 arrancaba oficialmente la 13ª Quedada, que por primera vez estaba s
 
 ### La librería de Ray
 
-![Logo Raylib](/img/raylib_logo.png)  
+![Logo Raylib](/img/blog/raylib_logo.png)  
 La primera charla corrió a cargo de [Ramón Santamaría](https://github.com/raysan5), quién celebró con la audiencia el 3r aniversario de su proyecto [raylib](http://www.raylib.com), una librería para aprender a programar videojuegos y que tiene soporte para múltiples plataformas. La celebración venía acompañada del lanzamiento de una nueva versión, y son tantas la novedades que mejor leer el changelog.
 
 ### Sin conexión
 
-![Logo del juego Unconnected](/img/unconnected.png)  
+![Logo del juego Unconnected](/img/blog/unconnected.png)  
 Desde Banyoles vino Jordi Mariscot, miembro de [Okapi Games](http://okapigames.es/games), a presentar su juego [Unconnected](http://okapigames.es).
 
 ### Videojuegos y emprendedores
 
-![Logo GameBiz](/img/gamebiz_logo.png)[Richard Hebert](http://enti.cat/es/profesor/richard-hebert-cuello-aljamati/) de la escuela [ENTI](http://enti.cat/) habló del [GameBiz EU](http://gamebiz.hku.nl), un proyecto Europeo para fomentar la emprendeduría tecnológica en los videojuegos e intentar resolver a la vez el problema de la elevada tasa de paro juvenil en Europa. ¿Es el auto-empleo en el sector del videojuego la respuesta a esta situación? Lo desconozco pero espero que ayude, siempre que el acceso a este modelo que proponen sea universal.
+![Logo GameBiz](/img/blog/gamebiz_logo.png)[Richard Hebert](http://enti.cat/es/profesor/richard-hebert-cuello-aljamati/) de la escuela [ENTI](http://enti.cat/) habló del [GameBiz EU](http://gamebiz.hku.nl), un proyecto Europeo para fomentar la emprendeduría tecnológica en los videojuegos e intentar resolver a la vez el problema de la elevada tasa de paro juvenil en Europa. ¿Es el auto-empleo en el sector del videojuego la respuesta a esta situación? Lo desconozco pero espero que ayude, siempre que el acceso a este modelo que proponen sea universal.
 
 ### El barrendero espacial
 
-![La nave de Willy Jetman](/img/willy-jetman.png)  
+![La nave de Willy Jetman](/img/blog/willy-jetman.png)  
 El estudio independiente [Last Chicken Games](http://lastchickengames.com/) trajo consigo el plataformas [Willy Jetman](http://willyjetman.com) y demo jugable que estaba disponible en la zona de la muestra. Con motor propio y aire ochentero, será un juego a tener en cuenta cuando salga a la venta en Steam.
 
 ### Indies y citas monstruosas
 
-![Indie G Zine](/img/indie-g-zine.jpg)  
+![Indie G Zine](/img/blog/indie-g-zine.jpg)  
 Julián Quijano de [Wild Youth](http://wildyouth.es/) presentó varios proyectos: [Next2Indies](http://www.next2indies.com/), un servicio de marketing y publicación para facilitar la vida de los grupos de desarrollo _indie_; el libro de ilustraciones con entrevistas [Indie G-Zine](https://www.kickstarter.com/projects/corintio/indie-g-zine-indie-g-bible?lang=es), que homenajea a los mejores clásicos _indie_ y que tiene muy buena pinta; y el juego [Monster Prom](http://steamcommunity.com), un simulador de citas pero con monstruos a lo Monster High… ¿y multijugador?
 
 ### Bit y su lógica
@@ -52,12 +52,12 @@ Los chicos de [OXiAB](http://www.oxiab.com/), además de mostarnos como funciona
 
 ### El tron español
 
-![Portada de Trun](/img/trun.jpg)  
+![Portada de Trun](/img/blog/trun.jpg)  
 Y sin abandonar el MSX, los siguientes en presentar fueron [Xavi Guillorme](http://www.vgsource.net/) y [Jose Roses](http://www.theguybrush.com/) con su [Trun](http://trun.vgsource.net), para hasta cuatro jugadores y escenarios aleatorios. Tanto les gusto programar par el MSX que también presentaron su nuevo proyecto, cuyo argumento y personaje principal tiene un sospechoso parecido a Chicho Terremoto.
 
 ### Equipos remotos
 
-![Colaboración equipos remotos](/img/collaboration-graphic.png)  
+![Colaboración equipos remotos](/img/blog/collaboration-graphic.png)  
 Directa de Irlanda del Norte venía [Gisela Vaquero](https://twitter.com/gisvaq), que nos habló de dos cosas: del juego de estética _steampunk_ [Trainpunk Run](https://www.jellyworldinteractive.com) que ha desarrollado su equipo; y de su experiencia gestionando ese mismo equipo que trabaja de manera remota: reuniones, _plannings_, iteraciones, herramientas de comunicación, etc. Una charla que resultó muy interesante por hablar de unos temas que no se suelen tratar en este tipo de eventos.
 
 ### Lo que tiene un CEO

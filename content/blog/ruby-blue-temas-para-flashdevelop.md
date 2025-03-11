@@ -10,7 +10,7 @@ Quién haya programado algo en [ActionScript](http://es.wikipedia.org/wiki/Actio
 
 El único inconveniente que le veo (que más quieres, es gratuito) es que no hay ninguna manera evidente de cambiar el _theme_ – los colores de la ventana de edición de código. Otros entornos como [Eclipse](http://www.eclipse.org/) permiten muy fácilmente cambiar el tema de colores (gracias al _plugin_ [Eclipse Color Themes](http://eclipsecolorthemes.org/)), y después de haber probado combinaciones de fondos oscuros como [Oblivion](http://eclipsecolorthemes.org/?view=theme&id=1) o [Solarized Dark](http://eclipsecolorthemes.org/?view=theme&id=1115) una ventana de edición en blanco quema mis retinas.
 
-![Pantalla de edición de FlashDevelop](/img/fdtheme-1.png)
+![Pantalla de edición de FlashDevelop](/img/blog/fdtheme-1.png)
 
 _Una página con fondo blanco, el horror…_
 
@@ -19,7 +19,7 @@ Así, para cambiar el _theme_ a FlashDevelop es necesario obtener un archivo .FD
 
 Ahora que sabemos como alterar la combinación de colores, crear un tema nuevo será igual de sencillo.Como ya hemos comentado, un archivo de tema FDZ es en realidad un archivo comprimido que contiene una estructura de directorios y algunos archivos [XML](http://www.w3.org/XML/) que definen los colores para cada lenguaje.
 
-![Estructura de un archivo FDZ](/img/fdtheme-2.png)
+![Estructura de un archivo FDZ](/img/blog/fdtheme-2.png)
 
 _Estructura de un archivo FDZ_
 

@@ -19,7 +19,7 @@ Para programar hace falta un editor de texto avanzado, y aquí tenemos varias op
 + [Visual Studio Code](https://code.visualstudio.com/): Básicamente es la versión reducida del gran (y viejo) Visual Studio enfocada al desarrollo web. Todos los niños guays lo utilizan, así que mejor echarle un vistazo. Es tan personalizable y tiene tantos _plugins_ que no es extraño que sea el editor preferido para programar con _frameworks_ o con [TypeScript](https://www.typescriptlang.org/).
 + Siguiendo la estela de VS Code vienen [Atom](https://atom.io/) (de GitHub, que ahora es propiedad de Microsoft) y [Brackets](http://brackets.io/) (de Adobe), ambos construidos con [Electron](https://github.com/electron/electron) (correcto, se pueden hacer aplicaciones de ordenador con HTML, JavaScript y CSS) y que se pueden extender por igual para cubrir cualquier necesidad. Ambos fueron creados como editores de _frontend_, lo cual es bueno. La pega es que no son tan rápidos como VS Code (en cuanto a rendimiento).
 
-![Estadísticas de Atom, Brackets y Visual Studio Code en GitHub](/img/estadisticas-editores-github.png)
+![Estadísticas de Atom, Brackets y Visual Studio Code en GitHub](/img/blog/estadisticas-editores-github.png)
 
 _Estadísticas de Atom, Brackets y Visual Studio Code en GitHub._  
 _Fuente: [stackshare.io](https://stackshare.io/stackups/atom-vs-brackets-vs-visual-studio-code)_
@@ -42,7 +42,7 @@ El problema más común al trabajar en diferentes proyectos es que éstos suelen
 
 Con NVM podrás instalar cualesquiera versiones de node.js, y cambiar en cualquier momento la versión activa para ejecutar tu proyecto sin problemas de compatibilidad.
 
-![nvm ejecutándose en un terminal](/img/nvm.png)
+![nvm ejecutándose en un terminal](/img/blog/nvm.png)
 
 ## El Servidor de Desarrollo
 
@@ -69,7 +69,7 @@ Personalmente prefiero utilizar un breve comando en el terminal para levantar un
 No importa qué tipo de proyecto vayas a trabajar, ya sea profesional o personal, la gente que almacena su código en un repositorio es un 68% más feliz (dato sin confirmar).  
 Aquí no voy a debatir sobre cuál [VCS](https://es.wikipedia.org/wiki/Control_de_versiones) es mejor, pero indudablemete [git](https://es.wikipedia.org/wiki/Git) es el más popular ya que hay muchas plataformas gratuitas para alojar código.
 
-![git-flow](/img/git-flow.png)
+![git-flow](/img/blog/git-flow.png)
 
 Utilizar git en Windows es bastante sencillo, sólo necesitas dos cosas:
 
@@ -84,7 +84,7 @@ Una vez instalado git, necesitarás conectarte al servidor donde subir tu códig
 
 Durante el desarrollo nos vamos a pasar mucho tiempo tecleando en el terminal, y mejor hacerlo en uno que sea más práctico que la consola de Windows.
 
-![Cmder terminal](/img/cmder.png)
+![Cmder terminal](/img/blog/cmder.png)
 
 Para ser sinceros no hay muchas opciones, pero la que más destaca es [Cmder](https://cmder.net/): un reemplazo de la vetusta consola de Windows, con colores (parece una nimiedad pero ayuda mucho en la legibilidad), integración con git, aparece en el menú contextual de Windows para poder abrir un terminal en cualquier carpeta, personalizable, y tiene la opción de poder ejecutar cualquier [shell](https://es.wikipedia.org/wiki/Shell_de_Unix) en una pestaña nueva.
 

@@ -30,7 +30,7 @@ Plugin registrado en WordPress.org: [http://wordpress.org/extend/plugins/default
 
 ## Default Gravatar Sans
 
-![Opciones de configuración del plugin](/img/default-gravatar-sans.png)
+![Opciones de configuración del plugin](/img/blog/default-gravatar-sans.png)
 
 [**Download Default Gravatar Sans 1.0**](http://www.mediafire.com/?v2j5unkb0guz139)
 

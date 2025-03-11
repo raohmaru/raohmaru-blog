@@ -12,7 +12,7 @@ El último problema que me he encontrado con Internet Explorer no es nuevo, pero
 
 Al visitar un sitio web, el navegador [guarda en caché](https://es.wikipedia.org/wiki/Cach%C3%A9_web) los recursos estáticos (imágenes, archivos JavaScript y CSS) para ahorrar ancho de banda en sucesivas visitas y así disminuir el tiempo de carga. Con el contenido dinámico ocurre lo mismo: una petición [GET](https://es.wikipedia.org/wiki/Hypertext_Transfer_Protocol#GET) Ajax es almacenada en caché de igual manera que un recurso estático. El navegador obtendrá ese contenido dinámico de la caché hasta que el servidor notifique que ha caducado y se necesite descargar de nuevo.
 
-![Cabeceras HTTP](/img/http-headers.png)
+![Cabeceras HTTP](/img/blog/http-headers.png)
 
 Pero Internet Explorer, por supuesto, no sigue estas reglas.
 
