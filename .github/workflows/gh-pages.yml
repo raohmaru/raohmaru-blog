@@ -23,7 +23,7 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Setup Bun
+      - name: Install dependencies and build
         run: |
           bun install
           bun run build
