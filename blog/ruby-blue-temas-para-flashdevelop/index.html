@@ -7,7 +7,7 @@
 		<meta name="description" content="Creación de un tema para el editor FlashDevelop.">
 		
 		
-		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+		<link rel="stylesheet" href="/raohmaru-blog/dist/h_MOAowbOj.css">
 	</head>
 	<body>
 		<a href="#skip" class="visually-hidden">Skip to main content</a>
@@ -40,12 +40,12 @@
 
 <p>Quién haya programado algo en <a href="http://es.wikipedia.org/wiki/ActionScript">ActionScript</a> o <a href="http://haxe.org/">HaXe</a> seguramente conocerá el programa <a href="http://www.flashdevelop.org/">FlashDevelop</a>, un editor de código <a href="http://en.wikipedia.org/wiki/Open_source" title="Código abierto">open source</a> bastante completo y potente para Windows (creo que para Linux y Mac hay una <a href="http://www.joshuagranick.com/blog/?p=753">versión con MonoDevelop</a>).</p>
 <p>El único inconveniente que le veo (que más quieres, es gratuito) es que no hay ninguna manera evidente de cambiar el <em>theme</em> – los colores de la ventana de edición de código. Otros entornos como <a href="http://www.eclipse.org/">Eclipse</a> permiten muy fácilmente cambiar el tema de colores (gracias al <em>plugin</em> <a href="http://eclipsecolorthemes.org/">Eclipse Color Themes</a>), y después de haber probado combinaciones de fondos oscuros como <a href="http://eclipsecolorthemes.org/?view=theme&amp;id=1">Oblivion</a> o <a href="http://eclipsecolorthemes.org/?view=theme&amp;id=1115">Solarized Dark</a> una ventana de edición en blanco quema mis retinas.</p>
-<p><img src="/raohmaru-blog/img/fdtheme-1.png" alt="Pantalla de edición de FlashDevelop"></p>
+<p><img src="/raohmaru-blog/img/blog/fdtheme-1.png" alt="Pantalla de edición de FlashDevelop"></p>
 <p><em>Una página con fondo blanco, el horror…</em></p>
 <p>Así, para cambiar el <em>theme</em> a FlashDevelop es necesario obtener un archivo .FDZ (que no es más que un archivo comprimido ZIP con otra extensión), ejecutarlo y aceptar la instalación. La próxima vez que se lance FlashDevelop habrá cambiado de colores, probablemente a mejor.<br>
 <strong>(Puedes probar con <a href="http://www.mediafire.com/?p735dywb2npnu2y">éste archivo FDZ basado en Ruby Blue</a>, creado por mismamente yo.)</strong></p>
 <p>Ahora que sabemos como alterar la combinación de colores, crear un tema nuevo será igual de sencillo.Como ya hemos comentado, un archivo de tema FDZ es en realidad un archivo comprimido que contiene una estructura de directorios y algunos archivos <a href="http://www.w3.org/XML/">XML</a> que definen los colores para cada lenguaje.</p>
-<p><img src="/raohmaru-blog/img/fdtheme-2.png" alt="Estructura de un archivo FDZ"></p>
+<p><img src="/raohmaru-blog/img/blog/fdtheme-2.png" alt="Estructura de un archivo FDZ"></p>
 <p><em>Estructura de un archivo FDZ</em></p>
 <p>Entonces, para empezar a crear el tema, se ha de replicar esa misma jerarquía de carpetas en algún sitio del disco duro, si se quiere dentro de un directorio con el nombre del tema:</p>
 <p><code>Mi tema\$(BaseDir)\Settings\Languages\</code></p>
@@ -95,12 +95,12 @@
 		<footer>
             <div class="section">
                 <p>
-                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
-                    This page was built on 2025-03-10T21:08:11.683Z
+                    Built with <a href="https://www.11ty.dev/" target="_blank">Eleventy v3.1.2</a> and <a href="https://bun.sh/" target="_blank">bun</a>.<br>
+                    This page was built on 2025-07-29T18:14:32.498Z.
                 </p>
             </div>
 		</footer>
 
-        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202562918"></script>
 	</body>
 </html>

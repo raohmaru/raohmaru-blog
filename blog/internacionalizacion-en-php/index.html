@@ -7,7 +7,7 @@
 		<meta name="description" content="Internacionalización en PHP con GNU gettext.">
 		
 		
-		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+		<link rel="stylesheet" href="/raohmaru-blog/dist/h_MOAowbOj.css">
 	</head>
 	<body>
 		<a href="#skip" class="visually-hidden">Skip to main content</a>
@@ -67,9 +67,9 @@ Trabajando con PHP como tecnología del servidor, había recurrido en varios pro
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token keyword">echo</span> <span class="token function">_</span><span class="token punctuation">(</span>‘Consectetur adipiscing elit<span class="token operator">.</span> Donec convallis mauris eu est hendrerit luctus…’<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token delimiter important">?></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>  </code></pre>
 <p>El siguiente paso es extraer el texto de los archivos y con él generar una plantilla o «catálogo» con el que trabajar y traducir. Estos catálogos son un tipo de archivo especial (PO) creados con la herramienta <a href="http://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Template.html">xgettext</a> (consultar el enlace para más información). Por suerte, para usuarios de Windows como nosotros, existe un pequeño pero potentísimo programa con interfaz gráfica que nos servirá de mucha ayuda: <a href="http://www.poedit.net/">Poedit</a>.</p>
 <p>Una vez descargado y ejecutado, creamos un nuevo catálogo y en la ventana emergente vamos a la pestaña Carpetas. En este apartado es donde hemos de incluir la ruta a nuestros archivos del proyecto que queremos traducir.</p>
-<p><img src="/raohmaru-blog/img/poedit-1.png" alt="Creación de un nuevo catálogo con Poedit"></p>
+<p><img src="/raohmaru-blog/img/blog/poedit-1.png" alt="Creación de un nuevo catálogo con Poedit"></p>
 <p>Tras aceptar la configuración y guardar el archivo con extensión .POT (esto es importante), Poedit buscará en los archivos PHP del proyecto cualquier coincidencia con las funciones <code>gettext()</code> o <code>_()</code> (o las que hayamos definido), extraerá el texto y nos presentará en pantalla el resultado.</p>
-<p><img src="/raohmaru-blog/img/poedit-2.png" alt="Traducir con Poedit"></p>
+<p><img src="/raohmaru-blog/img/blog/poedit-2.png" alt="Traducir con Poedit"></p>
 <p>Este archivo POT con todos los textos de nuestro proyecto servirá de plantilla para la traducción a otros idiomas, desde el mismo programa, facilitando incluso que personas ajenas puedan realizar la traducción sin mancharse las manos con el código.</p>
 <p>Para empezar a traducir, desde Poedit se ha de crear un nuevo catálogo por idioma utilizando la plantilla POT anterior (<em>Archivo</em> &gt; <em>Nuevo catálogo desde un archivo POT…</em>). Esta vez lo único que se cambiará en las propiedades serán los campos Idioma y País acordes al texto de destino (seleccionar un País es opcional, pero ayuda a identificar mejor la traducción y poder crear otras en un mismo idioma pero para regiones diferentes, como Quenya-Noldor y Quenya-Vanyar). Una vez acometidas las traducciones, guardamos el archivo siguiendo unas reglas especiales:</p>
 <ul>
@@ -119,12 +119,12 @@ La estructura de directorios de la carpeta de L10n quedaría así:<br>
 		<footer>
             <div class="section">
                 <p>
-                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
-                    This page was built on 2025-03-10T21:08:11.682Z
+                    Built with <a href="https://www.11ty.dev/" target="_blank">Eleventy v3.1.2</a> and <a href="https://bun.sh/" target="_blank">bun</a>.<br>
+                    This page was built on 2025-07-29T18:14:32.497Z.
                 </p>
             </div>
 		</footer>
 
-        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202562918"></script>
 	</body>
 </html>

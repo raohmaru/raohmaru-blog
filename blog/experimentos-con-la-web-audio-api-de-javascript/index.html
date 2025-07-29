@@ -7,7 +7,7 @@
 		<meta name="description" content="Motor de videojuego en JavaScript.">
 		
 		
-		<link rel="stylesheet" href="/raohmaru-blog/dist/u0fmsLUsWO.css">
+		<link rel="stylesheet" href="/raohmaru-blog/dist/h_MOAowbOj.css">
 	</head>
 	<body>
 		<a href="#skip" class="visually-hidden">Skip to main content</a>
@@ -40,7 +40,7 @@
 <p>La <a href="https://developer.mozilla.org/es/docs/Web/API/Web_Audio_API">Web Audio API</a> es una interfaz que nos permite generar y modificar flujos de audio. Vamos, crear sonido con JavaScript desde el navegador (o incluso música si eres un virtuoso).</p>
 <p>Esta tecnología lleva bastante tiempo disponible (<a href="https://webaudio.github.io/web-audio-api/">el primer borrador de la W3C</a> data de 2011), y <a href="https://caniuse.com/#search=web%20audio%20api">desde 2014</a> su soporte está incluído en la mayoría de navegadores web. Varias librerías JavaScript demuestran el potencial de esta API, tales como <a href="https://tonejs.github.io/">Tone.js</a> o <a href="https://howlerjs.com/">howler.js</a>, y hay web apps que hacen un uso impresionante del sonido sintetizado: véase <a href="http://labs.dinahmoe.com/plink/">Plink</a> o <a href="http://qiao.github.io/euphony/">Euphony</a>.</p>
 <p>Para empezar a trabajar con la Web Audio API hay primero que entender como funciona: toda operación para manipular sonido se realiza dentro de un <em>contexto sonido</em>, el cual está diseñado como un sistema de nodos interconectados que transforman uno o varios flujos de sonido. Desde un nodo origen se conectan cualquier número de <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioNode">nodos de audio</a> que procesan el flujo de audio hasta que finalmente se conecta a un nodo de destino. El flujo de audio pasa por todos estos nodos donde es procesado, hasta terminar en el nodo de destino que puede representar la salida por los altavoces o que se guarde en un archivo. Este conjunto de nodos enlazados se conoce como <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioNode#The_audio_routing_graph">audio routing graph</a>.</p>
-<p><img src="/raohmaru-blog/img/audio-context.png" alt="Contexto de audio y nodos de audio"></p>
+<p><img src="/raohmaru-blog/img/blog/audio-context.png" alt="Contexto de audio y nodos de audio"></p>
 <p>Traducido a JavaScript, todo empieza con el objeto <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioContext">AudioContext</a>: el contexto de audio que nos permite crear nodos y procesar un flujo de sonido.</p>
 <pre class="language-js" tabindex="0"><code class="language-js"><span class="token comment">// Safari todavía no ha implementado correctamente la API,</span>
 <span class="token comment">// así que tenemos que utilizar la versión con prefijo</span>
@@ -61,7 +61,7 @@ gainNode<span class="token punctuation">.</span><span class="token function">con
 <h3 id="el-experimento">El experimento</h3>
 <p>El ejercicio consiste, tras estudiar la Web Audio API, en crear sonidos sintéticos desde una sencilla aplicación web utilizando un único flujo de audio, pero con libertad para cambiar la mayor cantidad de parámetros posibles. Al no haber estudiado música en mi vida, Hulio, la tarea fue un poco díficil por algunos nuevos conceptos (por lo que recomiendo seguir los enlaces que encontrarás más abajo). Como ayuda, cada párametro que se puede modificar viene acompañado de un breve texto descriptivo para saber qué es lo que estamos tocando.</p>
 <p>El resultado es una pequeña aplicación web que genera sonidos utilizando como origen un OscillatorNode (para crear un tono constante) o un <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode">Audio​Buffer​Source​Node</a> (para generar <a href="https://es.wikipedia.org/wiki/Ruido_blanco">ruido blanco</a>), al que se le aplica un <a href="https://en.wikipedia.org/wiki/Envelope_(music)">envolvente acústico</a> para hacerlo más natural y filtros personalizables como nodos intermedios. El sonido generado se destina bien a los altavoces del sistema, o bien a un objeto <a href="https://developer.mozilla.org/en-US/docs/Web/API/Blob/Blob">Blob</a> que el usuario puede guardar en su máquina como un archivo OGG.</p>
-<p><a href="https://raohmaru.github.io"><img src="/raohmaru-blog/img/sasynth.png" alt="Simple Synthesizer with Web Audio API"></a></p>
+<p><a href="https://raohmaru.github.io"><img src="/raohmaru-blog/img/blog/sasynth.png" alt="Simple Synthesizer with Web Audio API"></a></p>
 <p><strong>Puedes jugar con el sintetizador aquí:</strong> <a href="https://raohmaru.github.io/simple-audio-synthesizer/src/"><strong>https://raohmaru.github.io/simple-audio-synthesizer/src/</strong></a> 🎵</p>
 <p><strong>O probar el</strong> <a href="https://raohmaru.github.io/simple-audio-synthesizer/src/electric-piano.html"><strong>piano electrónico</strong></a> 🎹 <strong>.</strong></p>
 <p>Por supuesto, si tienes curiosidad por ver el código fuente, <a href="https://github.com/raohmaru/simple-audio-synthesizer">lo encontrarás en mi repositorio de GitHub</a>.</p>
@@ -84,12 +84,12 @@ gainNode<span class="token punctuation">.</span><span class="token function">con
 		<footer>
             <div class="section">
                 <p>
-                    Built with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a><br>
-                    This page was built on 2025-03-10T21:08:11.682Z
+                    Built with <a href="https://www.11ty.dev/" target="_blank">Eleventy v3.1.2</a> and <a href="https://bun.sh/" target="_blank">bun</a>.<br>
+                    This page was built on 2025-07-29T18:14:32.497Z.
                 </p>
             </div>
 		</footer>
 
-        <script type="module" src="/raohmaru-blog/js/main.js?v=202521021"></script>
+        <script type="module" src="/raohmaru-blog/js/main.js?v=202562918"></script>
 	</body>
 </html>
