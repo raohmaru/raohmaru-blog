@@ -11,11 +11,11 @@
 		"url": "git://github.com/raohmaru/raohmaru-blog.git"
 	},
 	"devDependencies": {
-		"@11ty/eleventy": "^3.0.0",
+		"@11ty/eleventy": "^3.1.2",
 		"@11ty/eleventy-navigation": "^0.3.5",
-		"@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
-		"luxon": "^3.5.0",
-		"prismjs": "^1.29.0"
+		"@11ty/eleventy-plugin-syntaxhighlight": "^5.0.1",
+		"luxon": "^3.7.1",
+		"prismjs": "^1.30.0"
 	},
 	"description": "Raohmaru's blog web site using the Eleventy site generator.",
 	"engines": {

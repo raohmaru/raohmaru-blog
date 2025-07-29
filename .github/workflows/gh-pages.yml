@@ -1,6 +1,5 @@
-# If you’d like to deploy this to GitHub pages, rename this
-# file to `gh-pages.yml` and read the mini-tutorial on
 # https://www.11ty.dev/docs/deployment/#deploy-an-eleventy-project-to-github-pages
+
 name: Deploy to GitHub Pages
 
 on:
@@ -11,7 +10,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     concurrency:
@@ -22,10 +21,12 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: '1.2.2'
+          bun-version: latest
 
-      - run: bun install
-      - run: bun run build
+      - name: Setup Bun
+        run: |
+          bun install
+          bun run build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
