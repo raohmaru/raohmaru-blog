@@ -2,7 +2,7 @@
 title: Múltiples enlaces simbólicos en Windows
 description: Cómo crear enlaces simbólicos en Windows.
 date: 2016-01-31
-tags: ["shell", "Windows"]
+tags: ["posts", "shell", "Windows"]
 language: es
 ---
 

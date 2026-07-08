@@ -2,7 +2,7 @@
 title: Imágenes que no dicen onLoad
 description: Solucionar problemas relacionado con la carga de imágnes en JavaScript.
 date: 2012-06-22
-tags: ["JavaScript"]
+tags: ["posts", "JavaScript"]
 language: es
 ---
 

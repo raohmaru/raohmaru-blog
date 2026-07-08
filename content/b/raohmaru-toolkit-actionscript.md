@@ -2,7 +2,7 @@
 title: Raohmaru Toolkit
 description: Librería ActionScript 3 para ayudar en el desarrollo de aplicaciones Flash y Flex.
 date: 2012-05-31
-tags: ["as3", "library"]
+tags: ["posts", "ActionScript 3", "library"]
 language: es
 ---
 
@@ -82,7 +82,7 @@ new StageAlignSprite(
 
 **Paprika**, (otra) librería de movimiento y animación. Paprika surgió de un experimento: un intento de programar una clase sencilla, ligera y rápida como las librerías ya consagradas ([TweenLite](http://www.greensock.com/tweenlite/), [Tweener](http://code.google.com/p/tweener/) o [Tweensy](http://code.google.com/p/tweensy/)), pero sin añadir muchas de sus funcionalidades y bytes extras que no se suelen utilizar. Paprika no tiene efectos, ni líneas de tiempo ni soporta plugins, sencillamente anima sin afectar demasiado al rendimiento.
 
-(Y para que se vea que no hablo en balde, una prueba de rendimiento comparándola con otros motores: [http://raohmaru.com/lab/actionscript/raohmaru-toolkit/paprika_performance_test.html](http://raohmaru.com/lab/actionscript/raohmaru-toolkit/paprika_performance_test.html).  
+(Y para que se vea que no hablo en balde, una prueba de rendimiento comparándola con otros motores: ~~http://raohmaru.com/lab/actionscript/raohmaru-toolkit/paprika_performance_test.html~~.  
 Estos son los resultados en un Intel Core 2 Duo a 1.6 Ghz:)
 
 | Motor | FPS (Mín. / Máx. / Media) | MEM (Mín. / Máx.) (MB) |

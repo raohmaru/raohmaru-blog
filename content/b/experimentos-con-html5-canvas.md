@@ -2,7 +2,7 @@
 title: Experimentos con HTML5 Canvas
 description: Experimentos con el API HTML5 Canvas 2D en JavaScript.
 date: 2016-05-29
-tags: ["JavaScript"]
+tags: ["posts", "JavaScript"]
 language: es
 ---
 
@@ -82,7 +82,7 @@ Cuando se empieza un proyecto web (ya sea un website o una webapp), la primera p
 
 A principios de 2016 vimos como [Microsoft cesaba el soporte a Internet Explorer 8, 9 y 10](https://www.microsoft.com/es-es/WindowsForBusiness/End-of-IE-support). Pero esto no quiso decir que los clientes y usuarios dejarán de utilizarlos de súbito. Y menos los clientes de **tú** proyecto.
 
-Por ese motivo, siendo un proyecto personal, me he dado el gustazo de preocuparme sólo de IE11 y siguientes (bienvenidos [flexbox](https://developer.mozilla.org/es/docs/Web/CSS/CSS_Flexible_Box_Layout/Usando_las_cajas_flexibles_CSS), [@keyframes](https://developer.mozilla.org/es/docs/Web/CSS/@keyframes), [strict mode](http://raohmaru.com/blog/javascript/use-strict/)…).  
+Por ese motivo, siendo un proyecto personal, me he dado el gustazo de preocuparme sólo de IE11 y siguientes (bienvenidos [flexbox](https://developer.mozilla.org/es/docs/Web/CSS/CSS_Flexible_Box_Layout/Usando_las_cajas_flexibles_CSS), [@keyframes](https://developer.mozilla.org/es/docs/Web/CSS/@keyframes), [strict mode](use-strict.md)…).  
 (La compatibilidad con Firefox, Chrome, Safari, Opera va implícita.)
 
 ## Conclusiones

@@ -2,7 +2,7 @@
 title: Internacionalización en PHP
 description: Internacionalización en PHP con GNU gettext.
 date: 2012-05-18
-tags: ["i18n", "PHP"]
+tags: ["posts", "i18n", "PHP"]
 language: es
 ---
 

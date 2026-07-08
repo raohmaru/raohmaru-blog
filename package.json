@@ -1,6 +1,6 @@
 {
-	"name": "raohmaru-blog",
-	"version": "1.0.0",
+	"name": "blog",
+	"version": "1.1.0",
 	"author": {
 		"name": "Raul Parralejo",
 		"email": "namoracon@gmail.com",
@@ -8,25 +8,26 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/raohmaru/raohmaru-blog.git"
+		"url": "git://github.com/raohmaru/blog.git"
 	},
 	"devDependencies": {
-		"@11ty/eleventy": "^3.1.2",
-		"@11ty/eleventy-navigation": "^0.3.5",
-		"@11ty/eleventy-plugin-syntaxhighlight": "^5.0.1",
-		"luxon": "^3.7.1",
-		"prismjs": "^1.30.0"
+		"@11ty/eleventy": "3.1.6",
+		"@11ty/eleventy-navigation": "1.0.5",
+		"@11ty/eleventy-plugin-syntaxhighlight": "5.0.2",
+		"luxon": "3.7.2",
+		"markdown-it-link-attributes": "4.0.1",
+		"prismjs": "1.30.0"
 	},
 	"description": "Raohmaru's blog web site using the Eleventy site generator.",
 	"engines": {
-		"node": ">=18"
+		"bun": ">=1.3"
 	},
-	"homepage": "https://raohmaru.github.io/raohmaru-blog",
+	"homepage": "https://raohmaru.github.io/blog",
 	"license": "MIT",
 	"scripts": {
-		"build": "bunx @11ty/eleventy --pathprefix=/raohmaru-blog/",
-		"watch": "bunx @11ty/eleventy --pathprefix=/raohmaru-blog/ --watch --quiet",
-		"start": "bunx @11ty/eleventy --pathprefix=/raohmaru-blog/ --serve --quiet",
+		"build": "bunx @11ty/eleventy --pathprefix=/blog/",
+		"watch": "bunx @11ty/eleventy --pathprefix=/blog/ --watch --quiet",
+		"start": "bunx @11ty/eleventy --pathprefix=/blog/ --serve --quiet",
 		"debug": "DEBUG=Eleventy* bunx @11ty/eleventy",
 		"debugstart": "DEBUG=Eleventy* bunx @11ty/eleventy --serve --quiet",
 		"benchmark": "DEBUG=Eleventy:Benchmark* bunx @11ty/eleventy"

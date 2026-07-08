@@ -2,6 +2,7 @@ import { IdAttributePlugin, InputPathToUrlTransformPlugin, HtmlBasePlugin } from
 import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import pluginNavigation from "@11ty/eleventy-navigation";
 import pluginFilters from "./_config/filters.js";
+import mila from "markdown-it-link-attributes";
 
 export default async function(eleventyConfig) {	// Copy the contents of the `public` folder to the output folder
 	// For example, `./public/css/` ends up in `_site/css/`
@@ -43,6 +44,21 @@ export default async function(eleventyConfig) {	// Copy the contents of the `pub
 	eleventyConfig.addShortcode("currentBuildDate", () => {
 		return (new Date()).toISOString();
 	});
+
+    // Open external links in a new window/tab
+    const milaOptions = {
+        matcher(href) {
+            // Matches any absolute URL (external link)
+            return href.match(/^https?:/); 
+        },
+        attrs: {
+            target: "_blank",
+            rel: "noopener noreferrer",
+        },
+    };
+
+    // Attach the plugin to Eleventy's markdown library
+    eleventyConfig.amendLibrary("md", (mdLib) => mdLib.use(mila, milaOptions));
 
 	// Features to make your build faster (when you need them)
 

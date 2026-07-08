@@ -2,7 +2,7 @@
 title: Orden de las propiedades en CSS
 description: Cómo ordenar las propiedades de una declaración CSS.
 date: 2015-09-04
-tags: ["CSS"]
+tags: ["posts", "CSS"]
 language: es
 ---
 

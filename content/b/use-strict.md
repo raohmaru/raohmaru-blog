@@ -2,7 +2,7 @@
 title: use strict
 description: Qué es el modo estricto en JavaScript.
 date: 2012-07-12
-tags: ["JavaScript"]
+tags: ["posts", "JavaScript"]
 language: es
 ---
 

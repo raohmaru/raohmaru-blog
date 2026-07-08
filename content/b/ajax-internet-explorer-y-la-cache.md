@@ -2,7 +2,7 @@
 title: Ajax, Internet Explorer y la caché
 description: Resolver problemas con la memoria caché en las peticiones AJAX con Internet Explorer.
 date: 2016-04-28
-tags: ["JavaScript", "HTTP"]
+tags: ["posts", "JavaScript", "HTTP"]
 language: es
 ---
 

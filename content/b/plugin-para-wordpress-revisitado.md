@@ -2,7 +2,7 @@
 title: Plugin para WordPress revisitado
 description: Actualizando un plugin de Wordpress.
 date: 2017-12-26
-tags: ["worpdress", "PHP"]
+tags: ["posts", "WordPress", "PHP"]
 language: es
 ---
 

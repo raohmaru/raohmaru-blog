@@ -2,7 +2,7 @@
 title: Videojuegos en HTML5 con CSS y JavaScript
 description: Desarrollando videojuegos en HTML5, CSS y JavaScript.
 date: 2019-09-01
-tags: ["JavaScript", "Game Dev"]
+tags: ["posts", "JavaScript", "Game Dev"]
 language: es
 ---
 
@@ -116,7 +116,7 @@ Teniendo en cuenta lo anteriormente expuesto, he intentado mantener al mínimo l
 *   Actualizar la posición del cursor.
 *   Animar la puntuación.
 
-Cada elemento es compuesto en la GPU, y su posición CSS cambía sólo cuando es necesario. Tanto en ordenador como en móviles el rendimiento llega a los 60 fps; tuve más problemas con el [audio generado](https://raohmaru.com/blog/javascript/experimentos-con-la-web-audio-api-de-javascript/) en dispositivos móvile que no con los gráficos.
+Cada elemento es compuesto en la GPU, y su posición CSS cambía sólo cuando es necesario. Tanto en ordenador como en móviles el rendimiento llega a los 60 fps; tuve más problemas con el [audio generado](experimentos-con-la-web-audio-api-de-javascript.md) en dispositivos móvile que no con los gráficos.
 
 [**Jugar 🎾**](https://raohmaru.github.io/DOM-Tennis/src/)  
 [**Código fuente**](https://github.com/raohmaru/DOM-Tennis)
