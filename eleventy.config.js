@@ -3,8 +3,10 @@ import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import pluginNavigation from "@11ty/eleventy-navigation";
 import pluginFilters from "./_config/filters.js";
 import mila from "markdown-it-link-attributes";
+import htmlmin from "html-minifier-terser";
 
-export default async function(eleventyConfig) {	// Copy the contents of the `public` folder to the output folder
+export default async function(eleventyConfig) {
+    // Copy the contents of the `public` folder to the output folder
 	// For example, `./public/css/` ends up in `_site/css/`
 	eleventyConfig
 		.addPassthroughCopy({
@@ -41,24 +43,36 @@ export default async function(eleventyConfig) {	// Copy the contents of the `pub
 		// selector: "h1,h2,h3,h4,h5,h6", // default
 	});
 
-	eleventyConfig.addShortcode("currentBuildDate", () => {
-		return (new Date()).toISOString();
-	});
+	eleventyConfig.addShortcode("currentBuildDate", () => (new Date()).toISOString());
 
-    // Open external links in a new window/tab
-    const milaOptions = {
+	eleventyConfig.addShortcode("currentYear", () => (new Date()).getFullYear());
+
+    // Attach the plugin to Eleventy's markdown library
+    eleventyConfig.amendLibrary("md", (mdLib) => mdLib.use(mila, {
         matcher(href) {
             // Matches any absolute URL (external link)
-            return href.match(/^https?:/); 
+            return href.match(/^https?:/);
         },
         attrs: {
+            // Open external links in a new window/tab
             target: "_blank",
             rel: "noopener noreferrer",
         },
-    };
+    }));
 
-    // Attach the plugin to Eleventy's markdown library
-    eleventyConfig.amendLibrary("md", (mdLib) => mdLib.use(mila, milaOptions));
+    // Transforms: https://www.11ty.dev/docs/transforms/
+	eleventyConfig.addTransform("htmlmin", function (content) {
+		// String conversion to handle `permalink: false`
+		if ((this.page.outputPath || "").endsWith(".html")) {
+			return htmlmin.minify(content, {
+				useShortDoctype: true,
+				removeComments: true,
+				collapseWhitespace: true,
+			});
+		}
+		// If not an HTML output, return content as-is
+		return content;
+	});
 
 	// Features to make your build faster (when you need them)
 

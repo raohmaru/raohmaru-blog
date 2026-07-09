@@ -2,7 +2,7 @@
 title: Desarrollo web frontend en Windows
 description: Desarrollo web frontend en Windows. De verdad.
 date: 2020-06-20
-tags: ["posts", "General", "IDE", "Windows"]
+tags: ["posts", "Development", "Windows"]
 language: es
 ---
 

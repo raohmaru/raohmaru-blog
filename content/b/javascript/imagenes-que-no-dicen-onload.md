@@ -6,7 +6,7 @@ tags: ["posts", "JavaScript"]
 language: es
 ---
 
-JavaScript y la etiqueta [<img>](http://www.w3schools.com/tags/tag_img.asp) siempre han sido buenos amigos, desde aquellos días que  gracias a un pequeño _script_ se precargaban todas las imágenes de una página, como por ejemplo los _rollovers_ de ciertos botones.
+JavaScript y la etiqueta [<img>](http://www.w3schools.com/tags/tag_img.asp) siempre han sido buenos amigos, desde aquellos días que  gracias a un pequeño _script_ se precargaban todas las imágenes de una página, como por ejemplo los _rollovers_ de ciertos botones.
 
 ```js
 var preload_imgs = ["image1.jpg", "image2.gif", "image3.jpg"];  

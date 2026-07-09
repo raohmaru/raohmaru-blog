@@ -1,5 +1,5 @@
 export default {
-	title: "Reinventing the wheel",
+	title: "Reinventing the Wheel",
 	url: "https://raohmaru.github.io/blog",
 	language: "en",
 	description: "A blog about frrrontend development and softwarrrre engineering",

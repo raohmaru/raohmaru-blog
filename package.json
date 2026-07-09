@@ -14,9 +14,12 @@
 		"@11ty/eleventy": "3.1.6",
 		"@11ty/eleventy-navigation": "1.0.5",
 		"@11ty/eleventy-plugin-syntaxhighlight": "5.0.2",
+		"html-minifier-terser": "7.2.0",
+		"lightningcss-cli": "1.32.0",
 		"luxon": "3.7.2",
 		"markdown-it-link-attributes": "4.0.1",
-		"prismjs": "1.30.0"
+		"prismjs": "1.30.0",
+		"terser": "5.49.0"
 	},
 	"description": "Raohmaru's blog web site using the Eleventy site generator.",
 	"engines": {
@@ -25,12 +28,14 @@
 	"homepage": "https://raohmaru.github.io/blog",
 	"license": "MIT",
 	"scripts": {
-		"build": "bunx @11ty/eleventy --pathprefix=/blog/",
+		"build": "bunx @11ty/eleventy --pathprefix=/blog/ && npm run min:js && npm run min:css",
 		"watch": "bunx @11ty/eleventy --pathprefix=/blog/ --watch --quiet",
 		"start": "bunx @11ty/eleventy --pathprefix=/blog/ --serve --quiet",
 		"debug": "DEBUG=Eleventy* bunx @11ty/eleventy",
 		"debugstart": "DEBUG=Eleventy* bunx @11ty/eleventy --serve --quiet",
-		"benchmark": "DEBUG=Eleventy:Benchmark* bunx @11ty/eleventy"
+		"benchmark": "DEBUG=Eleventy:Benchmark* bunx @11ty/eleventy",
+		"min:js": "bunx terser ./_site/js/main.js -o ./_site/js/main.js",
+		"min:css": "bunx lightningcss-cli ./_site/dist/*.css -m -d ./_site/dist"
 	},
 	"type": "module"
 }

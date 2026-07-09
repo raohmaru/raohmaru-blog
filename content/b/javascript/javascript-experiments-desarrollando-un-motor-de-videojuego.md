@@ -6,7 +6,7 @@ tags: ["posts", "JavaScript", "Game Dev"]
 language: es
 ---
 
-Continuando con los experimentos con tecnologías web, y después de haber [jugado un poco con Canvas 2D](experimentos-con-html5-canvas.md), toca el turno a investigar cómo construir un [motor de videojuego](https://en.wikipedia.org/wiki/Game_engine) en HTML5 y JavaScript.
+Continuando con los experimentos con tecnologías web, y después de haber [jugado un poco con Canvas 2D](experimentos-con-html5-canvas.md), toca el turno a investigar cómo construir un [motor de videojuego](https://en.wikipedia.org/wiki/Game_engine) en HTML5 y JavaScript.
 
 Hace tiempo que había experimentado con la idea, [desarrollando un concepto](https://github.com/raohmaru/as3-platform-game-engine) en Flash ActionScript 3 (si tienes el plugin de Flash instalado ~~puedes jugar aquí~~ hasta finales de [2020](http://time.com/4874334/adobe-flash-2020/)), y ahora que los navegadores están más que preparados para ser una plataforma de videojuegos (y lo demuestra la gran cantidad de [motores HTML5](https://github.com/bebraw/jswiki/wiki/Game-Engines) u juegos que hay disponibles) me decidí a programar el mío propio; no con afán comercial, si no por el placer del aprendizaje.
 

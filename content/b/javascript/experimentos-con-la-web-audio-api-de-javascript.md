@@ -6,7 +6,7 @@ tags: ["posts", "JavaScript", "Audio"]
 language: es
 ---
 
-La [Web Audio API](https://developer.mozilla.org/es/docs/Web/API/Web_Audio_API) es una interfaz que nos permite generar y modificar flujos de audio. Vamos, crear sonido con JavaScript desde el navegador (o incluso música si eres un virtuoso).
+La [Web Audio API](https://developer.mozilla.org/es/docs/Web/API/Web_Audio_API) es una interfaz que nos permite generar y modificar flujos de audio. Vamos, crear sonido con JavaScript desde el navegador (o incluso música si eres un virtuoso).
 
 Esta tecnología lleva bastante tiempo disponible ([el primer borrador de la W3C](https://webaudio.github.io/web-audio-api/) data de 2011), y [desde 2014](https://caniuse.com/#search=web%20audio%20api) su soporte está incluído en la mayoría de navegadores web. Varias librerías JavaScript demuestran el potencial de esta API, tales como [Tone.js](https://tonejs.github.io/) o [howler.js](https://howlerjs.com/), y hay web apps que hacen un uso impresionante del sonido sintetizado: véase [Plink](http://labs.dinahmoe.com/plink/) o [Euphony](http://qiao.github.io/euphony/).
 

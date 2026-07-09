@@ -6,6 +6,11 @@
 		<title>{{ title or metadata.title }}</title>
 		<meta name="description" content="{{ description or metadata.description }}">
 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+
 		{#-
 		Plain-text bundles are provided via the `eleventy-plugin-bundle` plugin:
 		1. CSS:
@@ -47,7 +52,7 @@
                     {%- for entry in collections.all | eleventyNavigation %}
                         <li class="nav-item"><a href="{{ entry.url }}"{% if entry.url == page.url %} aria-current="page"{% endif %}>{{ entry.title }}</a></li>
                     {%- endfor %}
-                        <li class="nav-item"><a href="https://github.com/raohmaru">Github</a></li>
+                        <li class="nav-item"><a href="https://github.com/raohmaru" target="_blank" rel="noopener noreferrer">Github</a></li>
                     </ul>
                 </nav>
             </div>
@@ -62,8 +67,8 @@
 		<footer>
             <div class="section">
                 <p>
-                    Built with <a href="https://www.11ty.dev/" target="_blank">{{ eleventy.generator }}</a> and <a href="https://bun.sh/" target="_blank">bun</a>.<br>
-                    This page was built on {% currentBuildDate %}.
+                    <strong>&copy;{% currentYear %} Raohmaru 🎏</strong><br>
+                    Built with <a href="https://www.11ty.dev/" target="_blank" rel="noopener noreferrer">{{ eleventy.generator }}</a> and <a href="https://bun.sh/" target="_blank" rel="noopener noreferrer">bun</a> on {% currentBuildDate %}.
                 </p>
             </div>
 		</footer>
