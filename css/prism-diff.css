@@ -3,7 +3,7 @@
  */
 
 pre[class*="language-diff-"] {
-	--eleventy-code-padding: 1.25em;
+	--eleventy-code-padding: 1.25rem;
 	padding-left: var(--eleventy-code-padding);
 	padding-right: var(--eleventy-code-padding);
 }

@@ -1,8 +1,11 @@
-footer {
-    margin-top: 3rem;
-    border-top: solid 10px var(--color-gray-90);
+@layer layout {
+    footer {
+        margin-top: 3rem;
+        font-size: 0.8rem;
+        border-top: solid 5px var(--color-gray-90);
 
-    p {
-        margin: 0;
+        p {
+            margin: 0;
+        }
     }
 }

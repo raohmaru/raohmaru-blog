@@ -1,21 +1,22 @@
-/* Nav */
-.nav {
-	display: flex;
-	gap: .5em 1em;
-	padding: 0;
-	margin: 0;
-	list-style: none;
-}
+@layer layout {
+    .nav {
+        display: flex;
+        gap: .5rem 1rem;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
 
-.nav-item {
-	display: inline-block;
-    margin-bottom: 0;
-}
+    .nav-item {
+        display: inline-block;
+        margin-bottom: 0;
+    }
 
-.nav-item a[href]:not(:hover) {
-	text-decoration: none;
-}
+    .nav-item a[href]:not(:hover) {
+        text-decoration: none;
+    }
 
-.nav a[href][aria-current="page"] {
-	text-decoration: underline;
+    .nav a[href][aria-current="page"] {
+        text-decoration: underline;
+    }
 }
