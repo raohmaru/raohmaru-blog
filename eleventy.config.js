@@ -43,7 +43,7 @@ export default async function(eleventyConfig) {
 		// selector: "h1,h2,h3,h4,h5,h6", // default
 	});
 
-	eleventyConfig.addShortcode("currentBuildDate", () => (new Date()).toISOString());
+	eleventyConfig.addShortcode("currentBuildDate", () => (new Date()).toISOString().substr(0, 19));
 
 	eleventyConfig.addShortcode("currentYear", () => (new Date()).getFullYear());
 

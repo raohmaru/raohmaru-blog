@@ -1,6 +1,5 @@
 @layer page {
     main h1 {
         margin-block: 0rem 4rem;
-        font-family: var(--font-family-title);
     }
 }

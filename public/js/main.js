@@ -1,7 +1,7 @@
 // https://developer.chrome.com/docs/web-platform/view-transitions/same-document
 // https://developer.chrome.com/docs/web-platform/view-transitions/cross-document
 
-// When clicking in a post title link, enable a custom page transition 
+// When clicking in a post title link, enable a custom page transition
 document.querySelector('.postlist')?.addEventListener?.('click', (e) => {
     if (e.target.classList.contains('postlist-link')) {
         // Clear view-transition-name (it must be unique)
@@ -10,7 +10,7 @@ document.querySelector('.postlist')?.addEventListener?.('click', (e) => {
     }
 });
 
-window.addEventListener("pagereveal", (e) => {
+window.addEventListener('pagereveal', (e) => {
     if (e.viewTransition) {
         const transitionType = getTransitionType(navigation.activation.from, navigation.activation.entry);
         // Set transition type used by :active-view-transition-type()
@@ -20,7 +20,7 @@ window.addEventListener("pagereveal", (e) => {
 
 const getTransitionType = (fromNavigationEntry, toNavigationEntry) => {
     if (fromNavigationEntry.url === toNavigationEntry.url) {
-        return "reload";
+        return 'reload';
     } else {
         const currPageIndex = getPageIndexFromPath(new URL(fromNavigationEntry.url).pathname);
         const destPageIndex = getPageIndexFromPath(new URL(toNavigationEntry.url).pathname);
@@ -37,3 +37,9 @@ const getTransitionType = (fromNavigationEntry, toNavigationEntry) => {
 const getPageIndexFromPath = (path) => {
     return path.split('/').length;
 }
+
+document.querySelector('.nav-theme-btn')?.addEventListener?.('click', (e) => {
+    const { colorScheme } = document.documentElement.style;
+    document.documentElement.style.colorScheme = colorScheme ? '' : 'dark';
+    localStorage.setItem('theme', document.documentElement.style.colorScheme);
+});

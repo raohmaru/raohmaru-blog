@@ -36,7 +36,7 @@
         justify-content: center;
         text-transform: capitalize;
 
-        &:before {
+        &::before {
             content: '';
             display: inline-block;
             width: 12px;
@@ -62,7 +62,6 @@
     }
 
     h1 {
-        font-family: var(--font-family-title);
         margin-block: 0rem 3rem;
         /*
         Make the element participate in a separate view transition from the root view transition.

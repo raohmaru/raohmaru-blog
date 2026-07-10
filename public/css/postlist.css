@@ -12,7 +12,7 @@
     .postlist-date,
     .postlist-item::marker {
         font-size: 0.8125rem; /* 13px /16 */
-        color: var(--color-gray-90);
+        color: var(--text-color);
     }
 
     .postlist-date {
@@ -24,9 +24,6 @@
         font-size: 1.1875rem; /* 19px /16 */
         font-weight: 700;
         padding-left: .25rem;
-        text-underline-position: from-font;
-        text-underline-offset: 0;
-        text-decoration-thickness: 1px;
 
         &:visited {
             color: var(--text-color-link-visited);
