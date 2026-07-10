@@ -8,6 +8,7 @@
 
     html,
     body {
+        height: 100%;
         margin: 0;
         padding: 0;
         font-family: var(--font-family);
@@ -19,15 +20,9 @@
         overflow-y: scroll;
     }
 
-    /* https://www.a11yproject.com/posts/how-to-hide-content/ */
-    .visually-hidden {
-        clip: rect(0 0 0 0);
-        clip-path: inset(50%);
-        height: 1px;
-        overflow: hidden;
-        position: absolute;
-        white-space: nowrap;
-        width: 1px;
+    body {
+        display: flex;
+        flex-direction: column;
     }
 
     /* Fluid images via https://www.zachleat.com/web/fluid-images/ */
@@ -64,13 +59,21 @@
     }
 
     li {
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
         line-height: 1.5;
     }
 
     a[href] {
         color: var(--text-color-link);
-        transition: color 0.15s;
+        text-decoration-color: transparent;
+        text-underline-position: from-font;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        transition: color 0.15s, text-decoration-color 0.15s linear;
+    }
+
+    a[href]:hover {
+        text-decoration-color: inherit;
     }
 
     a[href]:hover,
@@ -84,6 +87,7 @@
     }
 
     main {
+        flex: 1;
         padding-top: 2rem;
     }
 
@@ -91,8 +95,18 @@
         margin-top: 0;
     }
 
-    header {
-        border-bottom: 1px dashed var(--color-gray-20);
+    h1,
+    h2,
+    h3 {
+        font-family: var(--font-family-title);
+    }
+
+    h1 {
+        text-shadow: 5px 5px color-mix(in srgb, var(--text-color), transparent 80%);
+    }
+
+    h2 {
+        text-shadow: 3px 3px color-mix(in srgb, var(--text-color), transparent 80%);
     }
 
     table {
@@ -135,78 +149,105 @@
         max-width: 40rem;
         margin: 0 auto;
     }
+}
 
-    /* Page view transitions */
+/* Utils */
 
-    @view-transition {
-        navigation: auto;
-        types: slide, forwards;
+/* https://www.a11yproject.com/posts/how-to-hide-content/ */
+.visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+html[style*="dark"] {
+    .invert-dark,
+    .invert-dark-b::before {
+        filter: invert(1);
     }
+}
 
-    header {
-        view-transition-name: header;
+@media (prefers-color-scheme: dark) {
+    .invert-dark,
+    .invert-dark-b::before {
+        filter: invert(1);
     }
+}
 
-    footer {
-        view-transition-name: footer;
+/* Page view transitions */
+
+@view-transition {
+    navigation: auto;
+    types: slide, forwards;
+}
+
+header {
+    view-transition-name: header;
+}
+
+footer {
+    view-transition-name: footer;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
     }
+}
 
-    @keyframes fade-in {
-        from {
-            opacity: 0;
-        }
+@keyframes fade-out {
+    to {
+        opacity: 0;
     }
+}
 
-    @keyframes fade-out {
-        to {
-            opacity: 0;
-        }
+@keyframes slide-forwards-in {
+    from {
+        transform: translateY(30px);
     }
+}
 
-    @keyframes slide-forwards-in {
-        from {
-            transform: translateY(30px);
-        }
+@keyframes slide-forwards-out {
+    to {
+        transform: translateY(-30px);
     }
+}
 
-    @keyframes slide-forwards-out {
-        to {
-            transform: translateY(-30px);
-        }
+@keyframes slide-backwards-in {
+    from {
+        transform: translateY(-30px);
     }
+}
 
-    @keyframes slide-backwards-in {
-        from {
-            transform: translateY(-30px);
-        }
+@keyframes slide-backwards-out {
+    to {
+        transform: translateY(30px);
     }
+}
 
-    @keyframes slide-backwards-out {
-        to {
-            transform: translateY(30px);
-        }
-    }
-
-    html:active-view-transition-type(backwards) {
-        &::view-transition-old(root) {
-            /* Material Design's shared axis transition */
-            animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
-                300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-backwards-out;
-        }
-
-        &::view-transition-new(root) {
-            animation: 210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
-                300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-backwards-int;
-        }
-    }
-
+html:active-view-transition-type(backwards) {
     &::view-transition-old(root) {
+        /* Material Design's shared axis transition */
         animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
-            300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-forwards-out;
+            300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-backwards-out;
     }
 
     &::view-transition-new(root) {
         animation: 210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
-            300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-forwards-in;
+            300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-backwards-int;
     }
+}
+
+&::view-transition-old(root) {
+    animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+        300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-forwards-out;
+}
+
+&::view-transition-new(root) {
+    animation: 210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+        300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-forwards-in;
 }

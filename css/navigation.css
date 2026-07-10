@@ -1,22 +1,108 @@
 @layer layout {
+    @media screen and (max-width: 480px) {
+        nav {
+            height: 0px;
+            overflow: hidden;
+            transition: height 0.15s ease;
+        }
+
+        nav:has(> .nav-menu:focus) {
+            height: auto;
+        }
+    }
+
     .nav {
         display: flex;
         gap: .5rem 1rem;
         padding: 0;
         margin: 0;
         list-style: none;
+
+        @media screen and (max-width: 480px) {
+            padding-top: 1rem;
+        }
     }
 
     .nav-item {
-        display: inline-block;
+        display: inline-flex;
+        gap: 5px;
+        align-items: center;
         margin-bottom: 0;
+
+        &:last-child {
+            @media screen and (max-width: 480px) {
+                position: relative;
+                flex: 1;
+            }
+        }
     }
 
-    .nav-item a[href]:not(:hover) {
-        text-decoration: none;
+    .nav-item-icon {
+        width: 16px;
+        height: 16px;
+        fill: var(--text-color-inverted);
     }
 
-    .nav a[href][aria-current="page"] {
-        text-decoration: underline;
+    .nav-menu {
+        fill: var(--text-color-inverted);
+        position: absolute;
+        top: 8px;
+        right: 0;
+        padding: 0.5rem 0.9rem;
+        appearance: none;
+        background: none;
+        border: 0;
+
+        @media screen and (min-width: 480px) {
+            display: none;
+        }
+
+        &:focus {
+            span {
+                &::after {
+                    background-color: var(--text-color-inverted);
+                }
+            }
+        }
+
+        span {
+            position: relative;
+            display: inline-block;
+            line-height: 0;
+
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                border-radius: 5px;
+                transition: background-color 0.15s linear;
+            }
+        }
+    }
+
+    .nav-theme-btn {
+        font-size: 1.5rem;
+        line-height: 0;
+
+        @media screen and (max-width: 480px) {
+            position: absolute;
+            right: 10px;
+        }
+
+        &::after {
+            content: "☽";
+        }
+    }
+
+    html[style*="dark"] {
+        .nav-theme-btn::after {
+            content: "☀";
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .nav-item:has(> .nav-theme-btn) {
+            display: none;
+        }
     }
 }

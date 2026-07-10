@@ -1,38 +1,35 @@
 @layer layout {
     header {
         padding: 1rem;
-        border-bottom: solid 10px var(--color-gray-90);
+        background-color: var(--bg-color-inverted);
+        border-bottom: 4px dashed var(--bg-color);
+
+        a[href] {
+            --text-color-link: var(--text-color-inverted);
+            --text-color-link-active: light-dark(var(--color-blue-bright), var(--color-blue-accent));
+            text-decoration: none;
+        }
 
         .section {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
+            @media screen and (min-width: 480px) {
+                display: flex;
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+            }
         }
     }
 
     .home-link {
-        display: flex;
-        flex-grow: 1;
+        display: inline-flex;
         font-size: 1.2rem;
         font-weight: 700;
-        text-decoration: none;
 
-        &:after {
-            content: '';
+        img {
             position: relative;
             top: -2px;
-            display: inline-block;
-            width: 22px;
-            height: 22px;
             margin-left: 10px;
-            background: url(/blog/img/logo.png) 0 0 / cover;
-
-            @media (prefers-color-scheme: dark) {
-                filter: invert(1);
-            }
-
         }
     }
 }

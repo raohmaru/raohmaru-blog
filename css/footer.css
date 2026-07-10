@@ -2,10 +2,14 @@
     footer {
         margin-top: 3rem;
         font-size: 0.8rem;
-        border-top: solid 5px var(--color-gray-90);
+        border-top: dashed 4px var(--bg-color-inverted);
 
         p {
             margin: 0;
+        }
+
+        @media screen and (max-width: 480px) {
+            text-align: center;
         }
     }
 }
