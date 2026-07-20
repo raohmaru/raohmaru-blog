@@ -149,6 +149,23 @@
         max-width: 40rem;
         margin: 0 auto;
     }
+
+    /* Tags */
+    .post-tag {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-transform: capitalize;
+
+        &::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-right: 6px;
+            background: url(/blog/img/tag.svg) 0 0 / cover;
+        }
+    }
 }
 
 /* Utils */
