@@ -2,7 +2,7 @@
 title: "Desarrollando un motor de videojuego en JavaScript"
 description: Motor de videojuego en JavaScript.
 date: 2018-04-16
-tags: ["posts", "JavaScript", "Game Dev"]
+tags: ["JavaScript", "Game Dev"]
 language: es
 ---
 

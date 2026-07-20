@@ -2,7 +2,7 @@
 title: Resumen de la 13ª Quedada Informal de Desarrollo de Videojuegos
 description: Resumen de la 13ª Quedada Informal de Desarrollo de Videojuegos en Cornellà.
 date: 2016-11-17
-tags: ["posts", "Game Dev"]
+tags: ["Game Dev"]
 language: es
 ---
 

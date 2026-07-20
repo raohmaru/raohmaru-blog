@@ -2,7 +2,7 @@
 title: Ruby Blue, o como crear temas para FlashDevelop
 description: Creación de un tema para el editor FlashDevelop.
 date: 2012-06-11
-tags: ["posts", "ActionScript 3", "Flash"]
+tags: ["ActionScript 3", "Flash"]
 language: es
 ---
 

@@ -2,7 +2,7 @@
 title: Contribuir al Open Source
 description: Contribuir al Open Source como programador front end.
 date: 2017-08-12
-tags: ["posts", "Open source", "Development"]
+tags: ["Open source", "Development"]
 language: es
 ---
 

@@ -2,7 +2,7 @@
 title: "Super Mario 64: Entrevistas con los desarrolladores"
 description: Extracto de la entrevista realizada a los desarrolladores de Super Mario 64 en 1996.
 date: 2016-10-02
-tags: ["posts", "Game Dev"]
+tags: ["Game Dev"]
 language: es
 ---
 

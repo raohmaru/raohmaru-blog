@@ -2,8 +2,9 @@
 title: Desarrollo web frontend en Windows
 description: Desarrollo web frontend en Windows. De verdad.
 date: 2020-06-20
-tags: ["posts", "Development", "Windows"]
+tags: ["Development", "Windows"]
 language: es
+readingTime: 1m
 ---
 
 Sí, has leído bien. Aunque se ha generalizado la idea que los programadores frontend utilizan [Linux](https://es.wikipedia.org/wiki/GNU/Linux) y los diseñadores Mac (y que todavía llevan gafas de pasta), muchas empresas están atadas a Microsoft (para bien o para mal), y la mayoría de hogares tienen un PC con Windows porque a) es mucho más barato que un MacBook Pro, y b) Windows viene normalmente de serie.

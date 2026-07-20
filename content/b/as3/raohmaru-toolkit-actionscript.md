@@ -2,7 +2,7 @@
 title: Raohmaru Toolkit
 description: Librería ActionScript 3 para ayudar en el desarrollo de aplicaciones Flash y Flex.
 date: 2012-05-31
-tags: ["posts", "ActionScript 3", "library"]
+tags: ["ActionScript 3", "library"]
 language: es
 ---
 

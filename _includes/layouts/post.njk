@@ -5,25 +5,37 @@ layout: layouts/base.njk
 {%- css %}{% include "node_modules/prismjs/themes/prism-okaidia.css" %}{% endcss %}
 {%- css %}{% include "public/css/prism-diff.css" %}{%- endcss %}
 {%- css %}{% include "public/css/post.css" %}{% endcss %}
-<h1>{{ title }}</h1>
 
-<ul class="post-metadata">
-	<li><time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time></li>
-	{%- for tag in tags | filterTagList %}
-	{%- set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}
-        <li><a href="{{ tagUrl }}" class="post-tag invert-dark-b">{{ tag }}</a></li>
-	{%- endfor %}
-</ul>
+<article itemscope itemtype="https://schema.org/Article">
+    <h1 itemprop="headline">{{ title }}</h1>
 
-{{ content | safe }}
+    <ul class="post-metadata">
+        <li><time itemprop="datePublished" datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time></li>
+        {%- for tag in tags | filterTagList %}
+            {%- set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}
+            <li><a href="{{ tagUrl }}" class="post-tag invert-dark-b">{{ tag }}</a></li>
+        {%- endfor %}
+        <li title="Reading time">⧖ {{ content | readingTime }}m read</li>
+    </ul>
+
+    {{ content | safe }}
+</article>
 
 {%- if collections.posts %}
     {%- set previousPost = collections.posts | getPreviousCollectionItem %}
     {%- set nextPost = collections.posts | getNextCollectionItem %}
     {%- if nextPost or previousPost %}
         <ul class="links-nextprev">
-            {%- if previousPost %}<li class="links-nextprev-prev">← Previous<br> <a href="{{ previousPost.url }}">{{ previousPost.data.title }}</a></li>{% endif %}
-            {%- if nextPost %}<li class="links-nextprev-next">Next →<br><a href="{{ nextPost.url }}">{{ nextPost.data.title }}</a></li>{% endif %}
+            {%- if previousPost %}
+                <li class="link-prev">
+                    <span class="link-arrow">←</span> <a href="{{ previousPost.url }}">{{ previousPost.data.title }}</a>
+                </li>
+            {% endif %}
+            {%- if nextPost %}
+                <li class="link-next">
+                    <a href="{{ nextPost.url }}">{{ nextPost.data.title }}</a> <span class="link-arrow">→</span>
+                </li>
+            {% endif %}
         </ul>
     {%- endif %}
 {%- endif %}

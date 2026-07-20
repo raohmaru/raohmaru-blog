@@ -2,7 +2,7 @@
 title: Videojuegos en HTML5 con CSS y JavaScript
 description: Desarrollando videojuegos en HTML5, CSS y JavaScript.
 date: 2019-09-01
-tags: ["posts", "JavaScript", "Game Dev"]
+tags: ["JavaScript", "Game Dev"]
 language: es
 ---
 

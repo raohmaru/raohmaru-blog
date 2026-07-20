@@ -2,7 +2,7 @@
 title: Experimentos con la Web Audio API de JavaScript
 description: Motor de videojuego en JavaScript.
 date: 2019-04-26
-tags: ["posts", "JavaScript", "Audio"]
+tags: ["JavaScript", "Audio"]
 language: es
 ---
 

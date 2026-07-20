@@ -33,13 +33,18 @@ export default function(eleventyConfig) {
 		return Object.keys(target);
 	});
 
-	eleventyConfig.addFilter("filterTagList", function filterTagList(tags) {
+	eleventyConfig.addFilter("filterTagList", (tags) => {
 		return (tags || []).filter(tag => ["all", "posts"].indexOf(tag) === -1);
 	});
 
 	eleventyConfig.addFilter("sortAlphabetically", strings =>
 		(strings || []).sort((b, a) => b.localeCompare(a))
 	);
+
+	eleventyConfig.addFilter("readingTime", (content) => {
+        let stripHTML = content.replace(/<\/?[^>]+>/g, '');
+        return Math.round(stripHTML.split(' ').length / 200); // words / words per minute
+    });
 
     eleventyConfig.addShortcode('bust', () => `${new Date().getFullYear()}${new Date().getMonth()}${new Date().getDate()}${new Date().getHours()}`);
 };

@@ -2,7 +2,7 @@
 title: Compartir en redes sociales y medir con Google Analytics
 description: Cómo compartir artículos en redes sociales y medir interacciones con Google Analytics.
 date: 2012-07-12
-tags: ["posts", "JavaScript", "Analytics"]
+tags: ["JavaScript", "Analytics"]
 language: es
 ---
 

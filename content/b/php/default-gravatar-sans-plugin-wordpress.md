@@ -2,7 +2,7 @@
 title: Default Gravatar Sans, un plugin para WordPress
 description: Creación de un plugin para Wordpress.
 date: 2012-04-29
-tags: ["posts", "WordPress", "PHP"]
+tags: ["WordPress", "PHP"]
 language: es
 ---
 

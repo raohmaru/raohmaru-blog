@@ -2,7 +2,7 @@
 title: Experimentos con HTML5 Canvas
 description: Experimentos con el API HTML5 Canvas 2D en JavaScript.
 date: 2016-05-29
-tags: ["posts", "JavaScript"]
+tags: ["JavaScript"]
 language: es
 ---
 

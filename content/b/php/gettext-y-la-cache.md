@@ -2,7 +2,7 @@
 title: gettext y la caché
 description: El problema de la cache en GNU gettext.
 date: 2012-06-08
-tags: ["posts", "i18n", "PHP"]
+tags: ["i18n", "PHP"]
 language: es
 ---
 
