@@ -4,6 +4,7 @@ import pluginNavigation from "@11ty/eleventy-navigation";
 import pluginFilters from "./_config/filters.js";
 import mila from "markdown-it-link-attributes";
 import htmlmin from "html-minifier-terser";
+import markdownItFootnote from 'markdown-it-footnote';
 
 export default async function(eleventyConfig) {
     // Copy the contents of the `public` folder to the output folder
@@ -59,6 +60,8 @@ export default async function(eleventyConfig) {
             rel: "noopener noreferrer",
         },
     }));
+    // Markdown footnote support
+    eleventyConfig.amendLibrary("md", (mdLib) => mdLib.use(markdownItFootnote));
 
     // Transforms: https://www.11ty.dev/docs/transforms/
 	eleventyConfig.addTransform("htmlmin", function (content) {
