@@ -10,6 +10,10 @@
         document.documentElement.style.colorScheme = localStorage.getItem('theme') ?? '';
         </script>
 
+        <style>
+            @layer layout, page, module;
+        </style>
+
         <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
