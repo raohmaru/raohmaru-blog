@@ -1,4 +1,8 @@
 @layer page {
+    a[href] {
+        text-decoration-color: inherit;
+    }
+
     .links-nextprev {
         list-style: "";
         border-top: 1px dashed var(--color-gray-90);
@@ -61,12 +65,17 @@
     }
 
     h1 {
-        margin-block: 0rem 3rem;
+        margin-block: 1rem 3rem;
         /*
         Make the element participate in a separate view transition from the root view transition.
         See main.js.
         */
         view-transition-name: title;
+    }
+
+    h2:where(:not(:first-child)),
+    h3:where(:not(:first-child)) {
+        margin-top: 2rem;
     }
 
     /* h2:is([id]) {

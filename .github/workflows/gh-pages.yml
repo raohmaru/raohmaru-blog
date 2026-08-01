@@ -7,9 +7,15 @@ on:
     branches:
       - main
   pull_request:
+    branches:
+      - main
+    types:
+      - closed
 
 jobs:
   deploy:
+    # Only trigger on push or merged PR
+    if: github.event_name == 'push' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       contents: write
