@@ -9,6 +9,6 @@ eleventyNavigation:
 <ul class="tags">
 {% for tag in collections | getKeys | filterTagList | sortAlphabetically %}
 	{% set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}
-	<li><a href="{{ tagUrl }}" class="post-tag invert-dark-b">{{ tag }}</a></li>
+	<li><a href="{{ tagUrl }}" class="post-tag invert-dark-b nounderline">{{ tag }}</a></li>
 {% endfor %}
 </ul>

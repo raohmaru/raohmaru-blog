@@ -1,8 +1,4 @@
 @layer page {
-    a[href] {
-        text-decoration-color: inherit;
-    }
-
     .links-nextprev {
         list-style: "";
         border-top: 1px dashed var(--color-gray-90);
@@ -71,11 +67,6 @@
         See main.js.
         */
         view-transition-name: title;
-    }
-
-    h2:where(:not(:first-child)),
-    h3:where(:not(:first-child)) {
-        margin-top: 2rem;
     }
 
     /* h2:is([id]) {
