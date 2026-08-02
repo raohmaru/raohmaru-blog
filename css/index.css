@@ -63,7 +63,6 @@
 
     a[href] {
         color: var(--text-color-link);
-        text-decoration-color: transparent;
         text-underline-position: from-font;
         text-underline-offset: 2px;
         text-decoration-thickness: 1px;
@@ -77,6 +76,10 @@
     a[href]:hover,
     a[href]:active {
         color: var(--text-color-link-active);
+    }
+
+    a.nounderline[href]:not(:hover) {
+        text-decoration-color: transparent;
     }
 
     main,
@@ -105,6 +108,11 @@
 
     h2 {
         text-shadow: 3px 3px color-mix(in srgb, var(--text-color), transparent 80%);
+    }
+
+    h2:where(:not(:first-child)),
+    h3:where(:not(:first-child)) {
+        margin-top: 2rem;
     }
 
     table {
