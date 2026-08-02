@@ -16,6 +16,7 @@ layout: layouts/base.njk
             <li><a href="{{ tagUrl }}" class="post-tag invert-dark-b nounderline">{{ tag }}</a></li>
         {%- endfor %}
         <li title="Reading time">⧖ {{ content | readingTime }}m read</li>
+        <li><a href="/" class="nounderline" title="Navigate back to the index page">⇧</a></li>
     </ul>
 
     {{ content | safe }}
