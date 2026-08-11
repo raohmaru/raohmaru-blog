@@ -1,13 +1,14 @@
 @layer layout {
-    @media screen and (max-width: 480px) {
+    @media screen and (max-width: 510px) {
         nav {
             height: 0px;
             overflow: hidden;
             transition: height 0.15s ease;
         }
 
-        nav:has(> .nav-menu:focus) {
-            height: auto;
+        nav:has(> .nav-menu:focus, .nav-item a:focus) {
+            height: auto; /* Once interpolate-size: allow-keywords is supported by all major browsers */
+            height: 40px; /* Fallback */
         }
     }
 
@@ -18,7 +19,7 @@
         margin: 0;
         list-style: none;
 
-        @media screen and (max-width: 480px) {
+        @media screen and (max-width: 510px) {
             padding-top: 1rem;
         }
     }
@@ -30,7 +31,7 @@
         margin-bottom: 0;
 
         &:last-child {
-            @media screen and (max-width: 480px) {
+            @media screen and (max-width: 510px) {
                 position: relative;
                 flex: 1;
             }
@@ -52,8 +53,9 @@
         appearance: none;
         background: none;
         border: 0;
+        cursor: pointer;
 
-        @media screen and (min-width: 480px) {
+        @media screen and (min-width: 510px) {
             display: none;
         }
 
@@ -84,7 +86,7 @@
         font-size: 1.5rem;
         line-height: 0;
 
-        @media screen and (max-width: 480px) {
+        @media screen and (max-width: 510px) {
             position: absolute;
             right: 10px;
         }

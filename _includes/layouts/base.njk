@@ -35,6 +35,7 @@
 		{#- Add the contents of a file to the bundle #}
 		{%- css %}{% include "public/css/variables.css" %}{% endcss %}
 		{%- css %}{% include "public/css/index.css" %}{% endcss %}
+		{%- css %}{% include "public/css/utils.css" %}{% endcss %}
 		{%- css %}{% include "public/css/header.css" %}{% endcss %}
 		{%- css %}{% include "public/css/footer.css" %}{% endcss %}
 		{%- css %}{% include "public/css/navigation.css" %}{% endcss %}
@@ -70,7 +71,7 @@
                             <a href="javascript:;" class="nav-theme-btn"></a>
                         </li>
                     </ul>
-                    <button class="nav-menu">
+                    <button class="nav-menu" tabindex="0">
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="4px" viewBox="0 0 4 17"><path d="M3.944 15.041a1.961 1.961 0 1 1-3.923 0 1.961 1.961 0 0 1 3.923 0m0-6.534a1.961 1.961 0 1 1-3.923 0 1.961 1.961 0 0 1 3.923 0m0-6.535a1.961 1.961 0 1 1-3.923 0 1.961 1.961 0 0 1 3.923 0"/></svg>
                         </span>
@@ -88,12 +89,12 @@
 		<footer>
             <div class="section">
                 <p>
-                    <strong>&copy; 2012-{% currentYear %} Raul Parralejo</strong>
-                    <span class="footer-sep">🎏</span>
-                    Built on {% currentBuildDate %}
+                    <strong>&copy; 2012-{% currentYear %} Raül Parralejo</strong>
+                    <span class="footer-sep hidden-sm">🎏</span>
+                    <span>Built on {% currentBuildDate %}</span>
                 </p>
-                <p>
-                    The text content on this site is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener noreferrer">CC BY NC SA 4.0</a>
+                <p class="hidden-sm">
+                    <span>Text content licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener noreferrer">CC BY NC SA 4.0</a></span>
                 </p>
             </div>
 		</footer>

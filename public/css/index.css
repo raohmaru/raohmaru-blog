@@ -69,16 +69,18 @@
         transition: color 0.15s, text-decoration-color 0.15s linear;
     }
 
-    a[href]:hover {
+    a[href]:hover,
+    a[href]:focus {
         text-decoration-color: inherit;
     }
 
     a[href]:hover,
+    a[href]:focus,
     a[href]:active {
         color: var(--text-color-link-active);
     }
 
-    a.nounderline[href]:not(:hover) {
+    a.nounderline[href]:not(:hover, :focus) {
         text-decoration-color: transparent;
     }
 
@@ -100,14 +102,15 @@
     h2,
     h3 {
         font-family: var(--font-family-title);
+        font-weight: 500;
     }
 
     h1 {
-        text-shadow: 5px 5px color-mix(in srgb, var(--text-color), transparent 80%);
+        text-shadow: 5px 5px color-mix(in srgb, var(--text-color) 20%, transparent);
     }
 
     h2 {
-        text-shadow: 3px 3px color-mix(in srgb, var(--text-color), transparent 80%);
+        text-shadow: 3px 3px color-mix(in srgb, var(--text-color) 20%, transparent);
     }
 
     h2:where(:not(:first-child)),
@@ -172,105 +175,4 @@
             background: url(/blog/img/tag.svg) 0 0 / cover;
         }
     }
-}
-
-/* Utils */
-
-/* https://www.a11yproject.com/posts/how-to-hide-content/ */
-.visually-hidden {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
-}
-
-html[style*="dark"] {
-    .invert-dark,
-    .invert-dark-b::before {
-        filter: invert(1);
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    .invert-dark,
-    .invert-dark-b::before {
-        filter: invert(1);
-    }
-}
-
-/* Page view transitions */
-
-@view-transition {
-    navigation: auto;
-    types: slide, forwards;
-}
-
-header {
-    view-transition-name: header;
-}
-
-footer {
-    view-transition-name: footer;
-}
-
-@keyframes fade-in {
-    from {
-        opacity: 0;
-    }
-}
-
-@keyframes fade-out {
-    to {
-        opacity: 0;
-    }
-}
-
-@keyframes slide-forwards-in {
-    from {
-        transform: translateY(30px);
-    }
-}
-
-@keyframes slide-forwards-out {
-    to {
-        transform: translateY(-30px);
-    }
-}
-
-@keyframes slide-backwards-in {
-    from {
-        transform: translateY(-30px);
-    }
-}
-
-@keyframes slide-backwards-out {
-    to {
-        transform: translateY(30px);
-    }
-}
-
-html:active-view-transition-type(backwards) {
-    &::view-transition-old(root) {
-        /* Material Design's shared axis transition */
-        animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
-            300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-backwards-out;
-    }
-
-    &::view-transition-new(root) {
-        animation: 210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
-            300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-backwards-int;
-    }
-}
-
-&::view-transition-old(root) {
-    animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
-        300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-forwards-out;
-}
-
-&::view-transition-new(root) {
-    animation: 210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
-        300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-forwards-in;
 }
