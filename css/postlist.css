@@ -1,18 +1,37 @@
 @layer module {
     .postlist {
+        position: relative;
         padding: 0;
-        padding-left: 4.8rem;
+        list-style-type: none;
+
+        @media screen and (min-width: 480px) {
+            padding-left: 4.8rem;
+        }
     }
 
     .postlist-item {
+        display: flex;
+        flex-direction: column-reverse;
         margin-bottom: 1rem;
-        padding-left: 1rem;
-    }
+        padding-left: 0;
 
-    .postlist-item::marker {
-        content: attr(data-date);
-        font-size: 0.8125rem; /* 13px /16 */
-        color: var(--text-color);
+        @media screen and (min-width: 480px) {
+            display: list-item;
+            padding-left: 1rem;
+        }
+
+        &::before {
+            content: attr(data-date);
+            display: block;
+            font-size: 0.8125rem; /* 13px /16 */
+            color: var(--text-color);
+
+            @media screen and (min-width: 480px) {
+                position: absolute;
+                left: 0;
+                margin-top: 2px;
+            }
+        }
     }
 
     .postlist-date {
